@@ -1,1 +1,2 @@
-export * from './user.entity';
+export * from './entityEnums';
+export * from './entityTypes';

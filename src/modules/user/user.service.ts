@@ -3,6 +3,7 @@ import { UserRepository } from './user.repository';
 import { ExceptionMessageCode, RandomGenerator } from 'src/shared';
 import { User } from 'src/entities';
 import { RefreshTokenRepository } from '../refreshToken/refreshToken.repository';
+import { Selectable } from 'kysely';
 
 @Injectable()
 export class UserService {
@@ -47,7 +48,7 @@ export class UserService {
     return this.userRepository.existsByEmail(email);
   }
 
-  async create(params: Omit<any, 'socketId'>): Promise<User> {
+  async create(params: Omit<any, 'socketId'>): Promise<Selectable<User>> {
     const socketId = this.randomGenerator.hex(32);
 
     const user = await this.userRepository.createUser({ ...params, socketId });

@@ -1,0 +1,58 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator kysely {
+  provider     = "prisma-kysely"
+  output       = "../src/entities"
+  fileName     = "entityTypes.ts"
+  enumFileName = "entityEnums.ts"
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+
+  @@map("gender")
+}
+
+model User {
+  id           BigInt   @id @default(autoincrement())
+  email        String   @unique @db.VarChar(255)
+  userName     String   @map("user_name") @db.VarChar(255)
+  gender       Gender
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  refreshTokens       RefreshToken[]
+  accountVerification AccountVerification?
+
+  @@index([email])
+  @@map("users")
+}
+
+model RefreshToken {
+  id        BigInt   @id @default(autoincrement())
+  userId    BigInt   @map("user_id")
+  value     String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([value], type: Hash)
+  @@map("refresh_tokens")
+}
+
+model AccountVerification {
+  id          BigInt   @id @default(autoincrement())
+  isVerified  Boolean  @default(false) @map("is_verified")
+  oneTimeCode Int      @map("one_time_code")
+  userId      BigInt   @unique @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("account_verification")
+}

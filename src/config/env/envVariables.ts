@@ -28,6 +28,9 @@ export class EnvironmentVariables {
   DATABASE_NAME: string;
 
   @IsString()
+  DATABASE_URL: string;
+
+  @IsString()
   ACCESS_TOKEN_SECRET: string;
 
   @IsInt()
