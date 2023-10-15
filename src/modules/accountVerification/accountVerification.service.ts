@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AccountVerificationRepository } from './accountVerification.repository';
-import { AccountVerificationParams } from './accountVerification.type';
 import { ExceptionMessageCode } from '../../shared';
+import { NewAccountVerification } from 'src/entities';
 
 @Injectable()
 export class AccountVerificationService {
@@ -9,8 +9,19 @@ export class AccountVerificationService {
     private readonly accountVerificationRepository: AccountVerificationRepository,
   ) {}
 
-  async upsert(params: AccountVerificationParams) {
-    return this.accountVerificationRepository.upsert(params);
+  async upsert(params: NewAccountVerification) {
+    const exists = await this.accountVerificationRepository.existsByUserId(
+      params.userId,
+    );
+
+    if (exists) {
+      await this.accountVerificationRepository.updateByUserId(
+        params.userId,
+        params,
+      );
+    }
+
+    await this.accountVerificationRepository.create(params);
   }
 
   async getByUserId(userId: string) {

@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { PasswordEncoder } from './util/password.encoder';
 import { JwtHelper } from './util/jwt.helper';
-import { ExceptionMessageCode, RandomGenerator } from 'src/shared';
+import { ExceptionMessageCode } from 'src/shared';
 import {
   AuthenticationPayload,
   SignInParams,
@@ -16,25 +16,27 @@ export class AuthenticationService {
     private readonly userService: UserService,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
-    private readonly randomGenerator: RandomGenerator,
     private readonly accountVerificationService: AccountVerificationService,
   ) {}
 
-  async signUpWithToken(
-    params: SignUpWithTokenParams,
-  ): Promise<AuthenticationPayload> {
-    const existsByEmail = await this.userService.existsByEmail(params.email);
+  async signUpWithToken({
+    userName,
+    email,
+    gender,
+    password,
+  }: SignUpWithTokenParams): Promise<AuthenticationPayload> {
+    const existsByEmail = await this.userService.existsByEmail(email);
 
     if (existsByEmail) {
       throw new UnauthorizedException(ExceptionMessageCode.USER_EMAIL_EXISTS);
     }
 
-    const { password, ...otherParams } = params;
-
     const hashedPassword = await this.passwordEncoder.encode(password);
 
     const user = await this.userService.create({
-      ...otherParams,
+      email,
+      gender,
+      userName,
       passwordHash: hashedPassword,
     });
 

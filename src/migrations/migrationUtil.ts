@@ -7,10 +7,11 @@ import {
   FileMigrationProvider,
   MigrationResultSet,
 } from 'kysely';
-import { Database, createPostgresPool } from '../config';
+import { createPostgresPool } from '../config';
+import { DB } from 'src/entities';
 
 export const createDatabase = (): Kysely<any> => {
-  return new Kysely<Database>({
+  return new Kysely<DB>({
     dialect: new PostgresDialect({
       pool: createPostgresPool(),
     }),

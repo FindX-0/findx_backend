@@ -1,12 +1,8 @@
 import { Kysely } from 'kysely';
-import { User } from '../entities';
+import { DB } from '../entities';
 import { Pool } from 'pg';
 
-export interface Database {
-  users: User;
-}
-
-export type DB = Kysely<Database>;
+export type KyselyDB = Kysely<DB>;
 
 export type PostgresPoolFactory = () => Pool;
 

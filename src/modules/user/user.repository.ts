@@ -1,75 +1,92 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/entities';
+import { KyselyDB } from 'src/config';
+import {
+  NewUser,
+  SelectableUser,
+  SelectableUserOmitPassword,
+  UserUpdate,
+} from 'src/entities';
+import { InjectKysely } from '../../packages/kyselyModule';
 
 @Injectable()
 export class UserRepository {
-  async getByEmail(email: string): Promise<User | null> {
-    // return this.prismaService.user.findUnique({ where: { email } });
-    return null;
+  constructor(@InjectKysely() private readonly db: KyselyDB) {}
+
+  async getByEmail(email: string): Promise<SelectableUser | null> {
+    return this.db
+      .selectFrom('users')
+      .selectAll()
+      .where('email', '=', email)
+      .executeTakeFirst();
   }
 
   async existsByEmail(email: string): Promise<boolean> {
-    // const count = await this.prismaService.user.count({ where: { email } });
-    // return count > 0;
-    return false;
+    const res = await this.db
+      .selectFrom('users')
+      .where('email', '=', email)
+      .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+
+    return res?.count && res.count > 0;
   }
 
-  async createUser(params: any): Promise<User> {
-    // return this.prismaService.user.create({ data: params });
-    return null;
+  async createUser(params: NewUser): Promise<SelectableUser> {
+    return this.db
+      .insertInto('users')
+      .values(params)
+      .returningAll()
+      .executeTakeFirst();
   }
 
-  async getById(id: string): Promise<User | null> {
-    // return this.prismaService.user.findFirst({
-    //   where: { id },
-    //   select: {
-    //     id: true,
-    //     createdAt: true,
-    //     userName: true,
-    //     email: true,
-    //     gender: true,
-    //     birthDate: true,
-    //     details: true,
-    //     isOnline: true,
-    //   },
-    // });
-    return null;
+  async getById(id: string): Promise<SelectableUserOmitPassword | null> {
+    return this.db
+      .selectFrom('users')
+      .where('id', '=', id)
+      .select(['id', 'createdAt', 'userName', 'email', 'gender'])
+      .executeTakeFirst();
   }
 
-  async getIdByEmail(email: string): Promise<number | null> {
-    // const result = await this.prismaService.user.findFirst({
-    //   where: { email },
-    //   select: { id: true },
-    // });
-    // return result?.id ?? null;
-    return null;
+  async getIdByEmail(email: string): Promise<string | null> {
+    const query = await this.db
+      .selectFrom('users')
+      .select('id')
+      .where('email', '=', email)
+      .executeTakeFirst();
+
+    return query?.id ?? null;
   }
 
-  async updatePasswordById(id: string, newHashedPassword: string) {
-    // return this.prismaService.user.update({
-    //   where: { id },
-    //   data: { passwordHash: newHashedPassword },
-    // });
+  async updatePasswordById(
+    id: string,
+    newPasswordHash: string,
+  ): Promise<SelectableUser | null> {
+    return this.db
+      .updateTable('users')
+      .set({ passwordHash: newPasswordHash })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   async existsById(id: string): Promise<boolean> {
-    // const count = await this.prismaService.user.count({ where: { id } });
-    // return count > 0;
-    return false;
+    const res = await this.db
+      .selectFrom('users')
+      .where('id', '=', id)
+      .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+
+    return res?.count && res.count > 0;
   }
 
-  async updateById(id: string, params: any): Promise<User | null> {
-    // const entity = await this.prismaService.user.findUnique({ where: { id } });
-    // if (!entity) {
-    //   return null;
-    // }
-    // return this.prismaService.user.update({
-    //   where: { id },
-    //   data: {
-    //     ...entity,
-    //     ...(params as any), //TODO fix this shit
-    //   },
-    // });
-    return null;
+  async updateById(
+    id: string,
+    params: UserUpdate,
+  ): Promise<SelectableUser | null> {
+    return this.db
+      .updateTable('users')
+      .where('id', '=', id)
+      .set(params)
+      .returningAll()
+      .executeTakeFirst();
   }
 }

@@ -1,28 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { RefreshToken } from '../../entities';
+import { NewRefreshToken, SelectableRefreshToken } from '../../entities';
+import { InjectKysely } from 'src/packages/kyselyModule';
+import { KyselyDB } from 'src/config';
 
 @Injectable()
 export class RefreshTokenRepository {
-  async createEntity(params: any): Promise<RefreshToken> {
-    // return this.prismaService.refreshToken.create({ data: params });
-    return null;
+  constructor(@InjectKysely() private readonly db: KyselyDB) {}
+
+  async createEntity(params: NewRefreshToken): Promise<SelectableRefreshToken> {
+    return this.db
+      .insertInto('refreshTokens')
+      .values(params)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   async getUserIdByValue(value: string): Promise<string | null> {
-    // const result = await this.prismaService.refreshToken.findFirst({
-    //   where: { value },
-    //   select: { userId: true },
-    // });
+    const res = await this.db
+      .selectFrom('refreshTokens')
+      .select('userId')
+      .where('value', '=', value)
+      .executeTakeFirst();
 
-    // return result?.userId ?? null;
-    return null;
+    return res?.userId ?? null;
   }
 
   async deleteAllByUserId(userId: string): Promise<void> {
-    // await this.prismaService.refreshToken.deleteMany({ where: { userId } });
+    await this.db
+      .deleteFrom('refreshTokens')
+      .where('userId', '=', userId)
+      .executeTakeFirst();
   }
 
   async deleteByValue(value: string): Promise<void> {
-    // await this.prismaService.refreshToken.deleteMany({ where: { value } });
+    await this.db
+      .deleteFrom('refreshTokens')
+      .where('value', '=', value)
+      .executeTakeFirst();
   }
 }

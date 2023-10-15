@@ -1,44 +1,66 @@
 import { Injectable } from '@nestjs/common';
-import { AccountVerificationParams } from './accountVerification.type';
-import { DB } from '../../config';
+import { KyselyDB } from '../../config';
 import { InjectKysely } from '../../packages/kyselyModule';
+import {
+  AccountVerificationUpdate as UpdateAccountVerification,
+  NewAccountVerification,
+  SelectableAccountVerification,
+} from 'src/entities';
 
 @Injectable()
 export class AccountVerificationRepository {
-  constructor(@InjectKysely() private readonly db: DB) {}
+  constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async upsert(params: AccountVerificationParams) {
-    // return this.prismaService.accountVerification.upsert({
-    //   where: {
-    //     userId: params.userId,
-    //   },
-    //   update: {
-    //     oneTimeCode: params.oneTimeCode,
-    //   },
-    //   create: params,
-    // });
+  async create(params: NewAccountVerification): Promise<void> {
+    await this.db.insertInto('accountVerification').values(params).execute();
   }
 
-  async getByUserId(userId: string) {
-    // return this.prismaService.accountVerification.findFirst({
-    //   where: { userId },
-    // });
+  async updateByUserId(
+    userId: string,
+    params: UpdateAccountVerification,
+  ): Promise<void> {
+    await this.db
+      .updateTable('accountVerification')
+      .where('userId', '=', userId)
+      .set(params)
+      .execute();
+  }
+
+  async getByUserId(
+    userId: string,
+  ): Promise<SelectableAccountVerification | null> {
+    return this.db
+      .selectFrom('accountVerification')
+      .selectAll()
+      .where('userId', '=', userId)
+      .executeTakeFirst();
   }
 
   async getIsVerifiedByUserId(userId: string): Promise<boolean | null> {
-    // const result = await this.prismaService.accountVerification.findUnique({
-    //   where: { userId },
-    //   select: { isVerified: true },
-    // });
+    const res = await this.db
+      .selectFrom('accountVerification')
+      .select('isVerified')
+      .where('userId', '=', userId)
+      .executeTakeFirst();
 
-    // return result?.isVerified ?? null;
-    return null;
+    return (res && res.isVerified) ?? null;
   }
 
   async updateIsVerified(userId: string, isVerified: boolean) {
-    // return this.prismaService.accountVerification.update({
-    //   where: { userId },
-    //   data: { isVerified },
-    // });
+    await this.db
+      .updateTable('accountVerification')
+      .where('userId', '=', userId)
+      .set({ isVerified })
+      .execute();
+  }
+
+  async existsByUserId(userId: string): Promise<boolean> {
+    const res = await this.db
+      .selectFrom('accountVerification')
+      .where('userId', '=', userId)
+      .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+
+    return res?.count && res.count > 0;
   }
 }

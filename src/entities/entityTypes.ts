@@ -8,27 +8,27 @@ import type { Gender } from './entityEnums';
 
 export type AccountVerification = {
   id: Generated<string>;
-  is_verified: Generated<boolean>;
-  one_time_code: number;
-  user_id: string;
-  created_at: Generated<Timestamp>;
+  isVerified: Generated<boolean>;
+  oneTimeCode: number;
+  userId: string;
+  createdAt: Generated<Timestamp>;
 };
 export type RefreshToken = {
   id: Generated<string>;
-  user_id: string;
+  userId: string;
   value: string;
-  created_at: Generated<Timestamp>;
+  createdAt: Generated<Timestamp>;
 };
 export type User = {
   id: Generated<string>;
   email: string;
-  user_name: string;
+  userName: string;
   gender: Gender;
-  password_hash: string;
-  created_at: Generated<Timestamp>;
+  passwordHash: string;
+  createdAt: Generated<Timestamp>;
 };
 export type DB = {
-  account_verification: AccountVerification;
-  refresh_tokens: RefreshToken;
+  accountVerification: AccountVerification;
+  refreshTokens: RefreshToken;
   users: User;
 };
