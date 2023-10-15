@@ -8,10 +8,12 @@ import {
 import { Gender } from '../modules';
 
 export interface UserTable {
-  id: Generated<number>;
+  id: Generated<string>;
   username: string;
   gender: ColumnType<Gender, string, Gender>;
   created_at: ColumnType<Date, string | undefined, never>;
+  email: string;
+  passwordHash: string;
 }
 
 export type User = Selectable<UserTable>;

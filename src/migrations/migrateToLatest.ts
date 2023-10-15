@@ -3,6 +3,7 @@ import {
   createDatabaseMigrator,
   handleMigrationResultSet,
 } from './migrationUtil';
+import 'reflect-metadata';
 
 const migrateToLatest = async () => {
   const db = createDatabase();
