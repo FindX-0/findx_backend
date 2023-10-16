@@ -1,0 +1,31 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""AuthPayloadResponse"""
+type AuthPayloadResponseDto {
+  accessToken: ID!
+  hasEmailVerified: Boolean
+  refreshToken: String!
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+}
+
+type Mutation {
+  signUp(input: SignUpInputDto!): AuthPayloadResponseDto!
+}
+
+type Query {
+  sayHello: String!
+}
+
+input SignUpInputDto {
+  email: String!
+  gender: Gender!
+  password: String!
+  userName: String!
+}

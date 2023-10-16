@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { AuthenticationController } from './authentication.controller';
+import { AuthenticationResolver } from './authentication.resolver';
 import { AuthenticationService } from './authentication.service';
 import { JwtHelperModule } from './module/jwtHelper.module';
 import { PasswordEncoder } from './util/password.encoder';
@@ -10,7 +10,11 @@ import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [UserModule, JwtHelperModule, AccountVerificationModule],
-  providers: [AuthenticationService, RandomGenerator, PasswordEncoder],
-  controllers: [AuthenticationController],
+  providers: [
+    AuthenticationResolver,
+    AuthenticationService,
+    RandomGenerator,
+    PasswordEncoder,
+  ],
 })
 export class AuthenticationModule {}

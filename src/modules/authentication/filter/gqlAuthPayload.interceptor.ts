@@ -6,6 +6,7 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
 import { ExceptionMessageCode } from '../../../shared';
@@ -31,27 +32,33 @@ export const AuthPayload = createParamDecorator(
 );
 
 @Injectable()
-export class AuthPayloadInterceptor implements NestInterceptor {
+export class GqlAuthPayloadInterceptor implements NestInterceptor {
   constructor(private readonly jwtHelper: JwtHelper) {}
 
   async intercept(
     context: ExecutionContext,
     next: CallHandler,
   ): Promise<Observable<any>> {
-    const request = context.switchToHttp().getRequest<AuthPayloadRequest>();
+    const gqlContext = GqlExecutionContext.create(context);
+
+    const { req } = gqlContext.getContext();
+
+    if (!req) {
+      return next.handle();
+    }
 
     const authorizationHeader =
-      request.headers['authorization'] || request.headers['Authorization'];
+      req.headers['authorization'] || req.headers['Authorization'];
 
     const jwtToken = authorizationHeader?.slice('Bearer '.length);
 
     if (!authorizationHeader) {
-      request.userAuthPayload = null;
+      req.userAuthPayload = null;
       return next.handle();
     }
 
     if (jwtToken) {
-      request.userAuthPayload = this.jwtHelper.getUserPayload(jwtToken) ?? null;
+      req.userAuthPayload = this.jwtHelper.getUserPayload(jwtToken) ?? null;
     }
 
     return next.handle();

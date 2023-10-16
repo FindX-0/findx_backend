@@ -1,5 +1,9 @@
+import { join } from 'path';
+
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
 import { PostgresDialect } from 'kysely';
 
 import { AppController } from './app.controller';
@@ -7,10 +11,10 @@ import { createPostgresPool } from './config/database.config';
 import { EnvModule } from './config/env';
 import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
-import { AuthPayloadInterceptor } from './modules/authentication/filter/authPayload.interceptor';
-import { JwtAuthGuard } from './modules/authentication/filter/jwtAuth.guard';
+import { GqlAuthPayloadInterceptor } from './modules/authentication/filter/gqlAuthPayload.interceptor';
+import { GqlJwtAuthGuard } from './modules/authentication/filter/gqlJwtAuth.guard';
 import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
-import { VerifiedEmailValidatorGuard } from './modules/authentication/verifiedEmailValidator.guard';
+import { GqlVerifiedEmailValidatorGuard } from './modules/authentication/filter/gqlVerifiedEmailValidator.guard';
 import { UserModule } from './modules/user/user.module';
 import { KyselyModule } from './packages/kyselyModule';
 
@@ -20,6 +24,11 @@ import { KyselyModule } from './packages/kyselyModule';
       dialect: new PostgresDialect({
         pool: createPostgresPool(),
       }),
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      sortSchema: true,
+      autoSchemaFile: join(process.cwd(), 'gql/schema.gql'),
     }),
     EnvModule.forRoot(),
 
@@ -36,15 +45,15 @@ import { KyselyModule } from './packages/kyselyModule';
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: GqlJwtAuthGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: VerifiedEmailValidatorGuard,
+      useClass: GqlVerifiedEmailValidatorGuard,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: AuthPayloadInterceptor,
+      useClass: GqlAuthPayloadInterceptor,
     },
   ],
 })

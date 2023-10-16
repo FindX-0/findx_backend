@@ -2,18 +2,20 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { NO_AUTH_KEY } from './decorator/noAuth.decorator';
-import { NO_EMAIL_VERIFICATION_VALIDATE } from './decorator/noEmailVerificationValidate.decorator';
-import { JwtHelper } from './util/jwt.helper';
-import { ExceptionMessageCode } from '../../shared';
-import { AccountVerificationService } from '../accountVerification/accountVerification.service';
+import { ExceptionMessageCode } from '../../../shared';
+import { AccountVerificationService } from '../../accountVerification/accountVerification.service';
+import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
+import { NO_EMAIL_VERIFICATION_VALIDATE } from '../decorator/noEmailVerificationValidate.decorator';
+import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class VerifiedEmailValidatorGuard implements CanActivate {
+export class GqlVerifiedEmailValidatorGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtHelper: JwtHelper,
@@ -39,10 +41,18 @@ export class VerifiedEmailValidatorGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const gqlContext = GqlExecutionContext.create(context);
+
+    const { req } = gqlContext.getContext();
+
+    if (!req) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.INVALID_REQUEST,
+      );
+    }
 
     const authorizationHeader =
-      request.headers['authorization'] || request.headers['Authorization'];
+      req.headers['authorization'] || req.headers['Authorization'];
 
     if (!authorizationHeader) {
       return false;

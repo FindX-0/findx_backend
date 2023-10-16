@@ -2,16 +2,18 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { ExceptionMessageCode } from '../../../shared';
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class GqlJwtAuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtHelper: JwtHelper,
@@ -27,10 +29,20 @@ export class JwtAuthGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const gqlContext = GqlExecutionContext.create(context);
+
+    const { req } = gqlContext.getContext();
+
+    console.log(req);
+
+    if (!req) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.INVALID_REQUEST,
+      );
+    }
 
     const authorizationHeader =
-      request.headers['authorization'] || request.headers['Authorization'];
+      req.headers['authorization'] || req.headers['Authorization'];
 
     if (!authorizationHeader) {
       return false;
