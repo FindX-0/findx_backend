@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { KyselyDB } from 'src/config';
+import { KyselyDB } from '../../config';
 import {
   NewUser,
   SelectableUser,

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { NewRefreshToken, SelectableRefreshToken } from '../../entities';
-import { InjectKysely } from 'src/packages/kyselyModule';
-import { KyselyDB } from 'src/config';
+import { InjectKysely } from '../../packages/kyselyModule';
+import { KyselyDB } from '../../config';
 
 @Injectable()
 export class RefreshTokenRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async createEntity(params: NewRefreshToken): Promise<SelectableRefreshToken> {
+  async create(params: NewRefreshToken): Promise<SelectableRefreshToken> {
     return this.db
       .insertInto('refreshTokens')
       .values(params)

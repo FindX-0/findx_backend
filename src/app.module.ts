@@ -10,6 +10,8 @@ import { AuthPayloadInterceptor } from './modules/authentication/filter/authPayl
 import { EnvModule } from './config/env';
 import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
 import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -22,8 +24,8 @@ import { AccountVerificationModule } from './modules/accountVerification/account
 
     JwtHelperModule,
     AccountVerificationModule,
-    // AuthenticationModule,
-    // UserModule,
+    AuthenticationModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [

@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { PasswordEncoder } from './util/password.encoder';
 import { JwtHelper } from './util/jwt.helper';
-import { ExceptionMessageCode } from 'src/shared';
+import { ExceptionMessageCode } from '../../shared';
 import {
   AuthenticationPayload,
   SignInParams,

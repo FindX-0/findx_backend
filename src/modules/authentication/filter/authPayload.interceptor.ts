@@ -40,8 +40,7 @@ export class AuthPayloadInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest<AuthPayloadRequest>();
 
     const authorizationHeader =
-      request.headers.get('authorization') ||
-      request.headers.get('Authorization');
+      request.headers['authorization'] || request.headers['Authorization'];
 
     const jwtToken = authorizationHeader?.slice('Bearer '.length);
 

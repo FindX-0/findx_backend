@@ -1,21 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
-import { ExceptionMessageCode, RandomGenerator } from 'src/shared';
+import { ExceptionMessageCode, RandomGenerator } from '../../shared';
 import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
   User,
 } from 'src/entities';
-import { RefreshTokenRepository } from '../refreshToken/refreshToken.repository';
 import { Selectable } from 'kysely';
+import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly refreshTokenRepository: RefreshTokenRepository,
-    private readonly randomGenerator: RandomGenerator,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   async getByEmail(email: string): Promise<SelectableUser | null> {
@@ -25,7 +24,7 @@ export class UserService {
   async findByRefreshToken(
     refreshToken: string,
   ): Promise<SelectableUserOmitPassword | null> {
-    const userId = await this.refreshTokenRepository.getUserIdByValue(
+    const userId = await this.refreshTokenService.getUserIdByValue(
       refreshToken,
     );
 
@@ -37,15 +36,15 @@ export class UserService {
   }
 
   async clearRefreshTokensForUser(userId: string): Promise<void> {
-    return this.refreshTokenRepository.deleteAllByUserId(userId);
+    return this.refreshTokenService.deleteAllByUserId(userId);
   }
 
   async addRefreshTokenByUserId(userId: string, value: string) {
-    await this.refreshTokenRepository.createEntity({ userId, value });
+    await this.refreshTokenService.create({ userId, value });
   }
 
   async deleteRefreshToken(refreshToken: string) {
-    return this.refreshTokenRepository.deleteByValue(refreshToken);
+    return this.refreshTokenService.deleteByValue(refreshToken);
   }
 
   async existsByEmail(email: string): Promise<boolean> {
