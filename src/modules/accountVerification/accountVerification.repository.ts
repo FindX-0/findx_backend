@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import {
   NewAccountVerification,
   SelectableAccountVerification,
-  AccountVerificationUpdate as UpdateAccountVerification,
-} from 'src/entities';
+  UpdateAccountVerification,
+} from '@entities/accountVerification.entity';
 
 import { KyselyDB } from '../../config';
 import { InjectKysely } from '../../packages/kyselyModule';
