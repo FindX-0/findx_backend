@@ -4,6 +4,7 @@ import {
   createParamDecorator,
   ExecutionContext,
   Injectable,
+  InternalServerErrorException,
   NestInterceptor,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
@@ -19,15 +20,23 @@ export interface AuthPayloadRequest extends Request {
 
 export const AuthPayload = createParamDecorator(
   (_: never, context: ExecutionContext) => {
-    const request = context.switchToHttp().getRequest<AuthPayloadRequest>();
+    const gqlContext = GqlExecutionContext.create(context);
 
-    if (!request.userAuthPayload) {
+    const { req } = gqlContext.getContext();
+
+    if (!req) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.INVALID_REQUEST,
+      );
+    }
+
+    if (!req.userAuthPayload) {
       throw new BadRequestException(
         ExceptionMessageCode.MISSING_AUTH_USER_PAYLOAD,
       );
     }
 
-    return request?.userAuthPayload;
+    return req?.userAuthPayload;
   },
 );
 

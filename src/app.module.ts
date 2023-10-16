@@ -4,7 +4,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
+import { GraphQLError } from 'graphql';
 import { PostgresDialect } from 'kysely';
+
+import { validationExceptionFactory } from '@config/validationException.factory';
 
 import { AppController } from './app.controller';
 import { createPostgresPool } from './config/database.config';
@@ -13,8 +16,8 @@ import { AccountVerificationModule } from './modules/accountVerification/account
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { GqlAuthPayloadInterceptor } from './modules/authentication/filter/gqlAuthPayload.interceptor';
 import { GqlJwtAuthGuard } from './modules/authentication/filter/gqlJwtAuth.guard';
-import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
 import { GqlVerifiedEmailValidatorGuard } from './modules/authentication/filter/gqlVerifiedEmailValidator.guard';
+import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
 import { UserModule } from './modules/user/user.module';
 import { KyselyModule } from './packages/kyselyModule';
 
@@ -29,6 +32,7 @@ import { KyselyModule } from './packages/kyselyModule';
       driver: ApolloDriver,
       sortSchema: true,
       autoSchemaFile: join(process.cwd(), 'gql/schema.gql'),
+      formatError: (error: GraphQLError) => ({ message: error.message }),
     }),
     EnvModule.forRoot(),
 
@@ -41,7 +45,10 @@ import { KyselyModule } from './packages/kyselyModule';
   providers: [
     {
       provide: APP_PIPE,
-      useValue: new ValidationPipe({ transform: true }),
+      useValue: new ValidationPipe({
+        transform: true,
+        exceptionFactory: validationExceptionFactory,
+      }),
     },
     {
       provide: APP_GUARD,
