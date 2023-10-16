@@ -1,13 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from './user.repository';
-import { ExceptionMessageCode, RandomGenerator } from '../../shared';
+import { Selectable } from 'kysely';
+
 import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
   User,
 } from 'src/entities';
-import { Selectable } from 'kysely';
+
+import { UserRepository } from './user.repository';
+import { ExceptionMessageCode } from '../../shared';
 import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 
 @Injectable()

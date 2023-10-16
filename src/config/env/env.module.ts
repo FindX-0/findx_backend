@@ -6,9 +6,10 @@ import {
   Provider,
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { EnvModuleOptions } from './envVariables';
+
 import { ENV_SERVICE_TOKEN } from './env.constant';
 import { EnvService } from './env.service';
+import { EnvModuleOptions } from './envVariables';
 import { validateEnvSchema } from './validateEnvSchema';
 
 @Global()

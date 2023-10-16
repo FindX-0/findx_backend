@@ -1,8 +1,9 @@
 import { plainToClass } from 'class-transformer';
 import { validateSync } from 'class-validator';
+
+import { EnvModule } from './env.module';
 import { EnvironmentVariables } from './envVariables';
 import { getAllErrorConstraints } from '../../shared';
-import { EnvModule } from './env.module';
 
 export function validateEnvSchema(config: Record<string, unknown>) {
   const finalConfig = plainToClass(EnvironmentVariables, config, {

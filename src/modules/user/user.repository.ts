@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { KyselyDB } from '../../config';
+
 import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
   UserUpdate,
 } from 'src/entities';
+
+import { KyselyDB } from '../../config';
 import { InjectKysely } from '../../packages/kyselyModule';
 
 @Injectable()

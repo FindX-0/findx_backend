@@ -1,14 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { PasswordEncoder } from './util/password.encoder';
-import { JwtHelper } from './util/jwt.helper';
-import { ExceptionMessageCode } from '../../shared';
+
+import { AccountVerificationService } from '@modules/accountVerification';
+import { UserService } from '@modules/user';
+import { ExceptionMessageCode } from '@shared/constant';
+
 import {
   AuthenticationPayload,
   SignInParams,
   SignUpWithTokenParams,
 } from './authentication.type';
-import { AccountVerificationService } from '../accountVerification/accountVerification.service';
+import { JwtHelper, PasswordEncoder } from './util';
 
 @Injectable()
 export class AuthenticationService {

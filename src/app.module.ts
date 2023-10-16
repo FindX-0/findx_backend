@@ -1,17 +1,18 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { KyselyModule } from './packages/kyselyModule';
-import { PostgresDialect } from 'kysely';
-import { createPostgresPool } from './config/database.config';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { JwtAuthGuard } from './modules/authentication/filter/jwtAuth.guard';
-import { VerifiedEmailValidatorGuard } from './modules/authentication/verifiedEmailValidator.guard';
-import { AuthPayloadInterceptor } from './modules/authentication/filter/authPayload.interceptor';
+import { PostgresDialect } from 'kysely';
+
+import { AppController } from './app.controller';
+import { createPostgresPool } from './config/database.config';
 import { EnvModule } from './config/env';
-import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
 import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { AuthPayloadInterceptor } from './modules/authentication/filter/authPayload.interceptor';
+import { JwtAuthGuard } from './modules/authentication/filter/jwtAuth.guard';
+import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
+import { VerifiedEmailValidatorGuard } from './modules/authentication/verifiedEmailValidator.guard';
 import { UserModule } from './modules/user/user.module';
+import { KyselyModule } from './packages/kyselyModule';
 
 @Module({
   imports: [

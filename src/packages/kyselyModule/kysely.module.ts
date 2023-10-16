@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { KyselyConfig } from 'kysely';
+
 import { KyselyCoreModule } from './kysely.core.module';
 import { KyselyModuleAsyncOptions } from './kysely.interfaces';
 

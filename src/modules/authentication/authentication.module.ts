@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+
+import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
-import { UserModule } from '../user/user.module';
-import { JwtHelper } from './util/jwt.helper';
-import { RandomGenerator } from '../../shared';
 import { JwtHelperModule } from './module/jwtHelper.module';
 import { PasswordEncoder } from './util/password.encoder';
+import { RandomGenerator } from '../../shared';
 import { AccountVerificationModule } from '../accountVerification/accountVerification.module';
-import { AuthenticationController } from './authentication.controller';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [UserModule, JwtHelperModule, AccountVerificationModule],

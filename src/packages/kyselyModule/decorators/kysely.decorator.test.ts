@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
-import { KyselyModule } from '../kysely.module';
+
 import { InjectKysely } from './kysely.decorator';
+import { KyselyModule } from '../kysely.module';
 
 describe('InjectKysely', () => {
   let module: TestingModule;

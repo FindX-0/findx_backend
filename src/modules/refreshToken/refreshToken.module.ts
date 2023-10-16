@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { RefreshTokenRepository } from './refreshToken.repository';
 import { RefreshTokenService } from './refreshToken.service';
 

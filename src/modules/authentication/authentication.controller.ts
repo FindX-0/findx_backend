@@ -1,10 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+
 import { AuthenticationService } from './authentication.service';
 import { NoAuth } from './decorator/noAuth.decorator';
-import { SignUpBodyDto } from './dto/signUpBody.dto';
-import { SignInBodyDto } from './dto/signInBody.dto';
 import { AuthPayloadResponseDto } from './dto/authPayload.dto';
 import { RefreshTokenBodyDto } from './dto/refreshTokenBody.dto';
+import { SignInBodyDto } from './dto/signInBody.dto';
+import { SignUpBodyDto } from './dto/signUpBody.dto';
 
 @Controller('authentication')
 export class AuthenticationController {

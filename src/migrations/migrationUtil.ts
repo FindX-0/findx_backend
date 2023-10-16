@@ -1,14 +1,17 @@
-import * as path from 'path';
 import { promises as fs } from 'fs';
+import * as path from 'path';
+
 import {
+  FileMigrationProvider,
   Kysely,
+  MigrationResultSet,
   Migrator,
   PostgresDialect,
-  FileMigrationProvider,
-  MigrationResultSet,
 } from 'kysely';
-import { createPostgresPool } from '../config';
+
 import { DB } from 'src/entities';
+
+import { createPostgresPool } from '../config';
 
 export const createDatabase = (): Kysely<any> => {
   return new Kysely<DB>({

@@ -5,11 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { JwtHelper } from './util/jwt.helper';
-import { AccountVerificationService } from '../accountVerification/accountVerification.service';
+
 import { NO_AUTH_KEY } from './decorator/noAuth.decorator';
 import { NO_EMAIL_VERIFICATION_VALIDATE } from './decorator/noEmailVerificationValidate.decorator';
+import { JwtHelper } from './util/jwt.helper';
 import { ExceptionMessageCode } from '../../shared';
+import { AccountVerificationService } from '../accountVerification/accountVerification.service';
 
 @Injectable()
 export class VerifiedEmailValidatorGuard implements CanActivate {

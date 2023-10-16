@@ -1,11 +1,12 @@
 import { KyselyConfig, PostgresDialect } from 'kysely';
-import { KYSELY_MODULE_OPTIONS_TOKEN } from '../constants';
-import { KyselyModuleAsyncOptions } from '../kysely.interfaces';
+import { Pool } from 'pg';
+
 import {
   createAsyncOptionsProvider,
   createAsyncProviders,
 } from './kysely.provider-factory';
-import { Pool } from 'pg';
+import { KYSELY_MODULE_OPTIONS_TOKEN } from '../constants';
+import { KyselyModuleAsyncOptions } from '../kysely.interfaces';
 
 describe('Kysely provider factory', () => {
   const useFactory = (): KyselyConfig => ({

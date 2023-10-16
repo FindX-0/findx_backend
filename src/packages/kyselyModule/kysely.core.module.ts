@@ -1,5 +1,6 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { KyselyConfig } from 'kysely';
+
 import {
   KYSELY_MODULE_CONNECTION_TOKEN,
   KYSELY_MODULE_OPTIONS_TOKEN,
