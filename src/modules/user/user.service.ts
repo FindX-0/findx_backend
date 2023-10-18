@@ -5,12 +5,11 @@ import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
-  User,
-} from 'src/entities';
+} from '@entities/user.entity';
+import { RefreshTokenService } from '@modules/refreshToken';
+import { ExceptionMessageCode } from '@shared/constant';
 
 import { UserRepository } from './user.repository';
-import { ExceptionMessageCode } from '../../shared';
-import { RefreshTokenService } from '../refreshToken/refreshToken.service';
 
 @Injectable()
 export class UserService {
@@ -53,7 +52,7 @@ export class UserService {
     return this.userRepository.existsByEmail(email);
   }
 
-  async create(params: NewUser): Promise<Selectable<User>> {
+  async create(params: NewUser): Promise<Selectable<SelectableUser>> {
     return this.userRepository.createUser(params);
   }
 

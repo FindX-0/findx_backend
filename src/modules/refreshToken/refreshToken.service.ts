@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
+import {
+  NewRefreshToken,
+  SelectableRefreshToken,
+} from '@entities/refreshToken.entity';
+
 import { RefreshTokenRepository } from './refreshToken.repository';
-import { NewRefreshToken, SelectableRefreshToken } from '../../entities';
 
 @Injectable()
 export class RefreshTokenService {

@@ -1,9 +1,4 @@
-import { Kysely } from 'kysely';
 import { Pool } from 'pg';
-
-import { DB } from '../entities';
-
-export type KyselyDB = Kysely<DB>;
 
 export type PostgresPoolFactory = () => Pool;
 

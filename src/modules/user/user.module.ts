@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
+import { RefreshTokenModule } from '@modules/refreshToken';
+
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
-import { RefreshTokenModule } from '../refreshToken/refreshToken.module';
 
 @Module({
   imports: [RefreshTokenModule],

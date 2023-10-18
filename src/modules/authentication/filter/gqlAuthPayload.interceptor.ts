@@ -10,7 +10,8 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
-import { ExceptionMessageCode } from '../../../shared';
+import { ExceptionMessageCode } from '@shared/constant';
+
 import { UserAuthPayload } from '../type/userAuthPayload.type';
 import { JwtHelper } from '../util/jwt.helper';
 

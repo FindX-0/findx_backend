@@ -5,7 +5,6 @@ import {
 } from '@nestjs/platform-fastify';
 
 import { AppModule } from './app.module';
-import 'reflect-metadata';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,7 +13,6 @@ async function bootstrap() {
   );
 
   // comperssion might be usefull
-  // use fastify instead of express
 
   // app.set('trust proxy', 1);
   app.enableCors({

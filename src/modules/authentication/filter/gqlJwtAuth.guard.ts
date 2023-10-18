@@ -8,7 +8,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { ExceptionMessageCode } from '../../../shared';
+import { ExceptionMessageCode } from '@shared/constant';
+
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { JwtHelper } from '../util/jwt.helper';
 

@@ -7,19 +7,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 
-import { validationExceptionFactory } from '@config/validationException.factory';
+import { createPostgresPool } from '@config/database';
+import { EnvModule } from '@config/env';
+import { validationExceptionFactory } from '@config/validation/validationException.factory';
+import { AccountVerificationModule } from '@modules/accountVerification';
+import {
+  GqlAuthPayloadInterceptor,
+  GqlJwtAuthGuard,
+  GqlVerifiedEmailValidatorGuard,
+  JwtHelperModule,
+  AuthenticationModule,
+} from '@modules/authentication';
+import { UserModule } from '@modules/user';
+import { KyselyModule } from '@packages/kyselyModule';
 
 import { AppController } from './app.controller';
-import { createPostgresPool } from './config/database.config';
-import { EnvModule } from './config/env';
-import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
-import { AuthenticationModule } from './modules/authentication/authentication.module';
-import { GqlAuthPayloadInterceptor } from './modules/authentication/filter/gqlAuthPayload.interceptor';
-import { GqlJwtAuthGuard } from './modules/authentication/filter/gqlJwtAuth.guard';
-import { GqlVerifiedEmailValidatorGuard } from './modules/authentication/filter/gqlVerifiedEmailValidator.guard';
-import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
-import { UserModule } from './modules/user/user.module';
-import { KyselyModule } from './packages/kyselyModule';
 
 @Module({
   imports: [

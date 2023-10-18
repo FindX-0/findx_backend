@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { KyselyDB } from '../../config';
-import { NewRefreshToken, SelectableRefreshToken } from '../../entities';
-import { InjectKysely } from '../../packages/kyselyModule';
+import { KyselyDB } from '@config/database';
+import {
+  NewRefreshToken,
+  SelectableRefreshToken,
+} from '@entities/refreshToken.entity';
+import { InjectKysely } from '@packages/kyselyModule';
 
 @Injectable()
 export class RefreshTokenRepository {

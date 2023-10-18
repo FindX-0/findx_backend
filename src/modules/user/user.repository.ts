@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
+import { KyselyDB } from '@config/database';
 import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
   UserUpdate,
-} from 'src/entities';
-
-import { KyselyDB } from '../../config';
-import { InjectKysely } from '../../packages/kyselyModule';
+} from '@entities/user.entity';
+import { InjectKysely } from '@packages/kyselyModule';
 
 @Injectable()
 export class UserRepository {
