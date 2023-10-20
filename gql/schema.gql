@@ -15,7 +15,12 @@ enum Gender {
   OTHER
 }
 
+input GoogleSignInInputDto {
+  accessToken: String!
+}
+
 type Mutation {
+  googleSignIn(input: GoogleSignInInputDto!): AuthPayloadResponseDto!
   signUp(input: SignUpInputDto!): AuthPayloadResponseDto!
 }
 

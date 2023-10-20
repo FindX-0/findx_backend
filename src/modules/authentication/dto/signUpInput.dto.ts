@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { Gender } from '../../user';
+import { Gender } from '@entities/entityEnums';
 
 @InputType()
 export class SignUpInputDto {

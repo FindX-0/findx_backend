@@ -43,7 +43,15 @@ export class UserRepository {
     return this.db
       .selectFrom('users')
       .where('id', '=', id)
-      .select(['id', 'createdAt', 'userName', 'email', 'gender'])
+      .select([
+        'id',
+        'createdAt',
+        'userName',
+        'email',
+        'gender',
+        'isCompleted',
+        'authProvider',
+      ])
       .executeTakeFirst();
   }
 

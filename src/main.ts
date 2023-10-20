@@ -4,6 +4,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
+import { registerGqlEnums } from '@config/gql';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -11,6 +13,8 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+
+  registerGqlEnums();
 
   // comperssion might be usefull
 

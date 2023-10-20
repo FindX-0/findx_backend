@@ -18,13 +18,24 @@ enum Gender {
   @@map("gender")
 }
 
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  APPLE
+  FACEBOOK
+
+  @@map("authProvider")
+}
+
 model User {
-  id           BigInt   @id @default(autoincrement())
-  email        String   @unique @db.VarChar(255)
-  userName     String   @db.VarChar(255)
-  gender       Gender
-  passwordHash String   @db.VarChar(255)
-  createdAt    DateTime @default(now())
+  id           BigInt       @id @default(autoincrement())
+  email        String       @unique @db.VarChar(255)
+  userName     String?      @db.VarChar(255)
+  gender       Gender?
+  passwordHash String       @db.VarChar(255)
+  createdAt    DateTime     @default(now())
+  isCompleted  Boolean      @default(true)
+  authProvider AuthProvider @default(EMAIL)
 
   refreshTokens       RefreshToken[]
   accountVerification AccountVerification?

@@ -4,7 +4,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-import type { Gender } from './entityEnums';
+import type { Gender, AuthProvider } from './entityEnums';
 
 export type AccountVerification = {
   id: Generated<string>;
@@ -22,10 +22,12 @@ export type RefreshToken = {
 export type User = {
   id: Generated<string>;
   email: string;
-  userName: string;
-  gender: Gender;
+  userName: string | null;
+  gender: Gender | null;
   passwordHash: string;
   createdAt: Generated<Timestamp>;
+  isCompleted: Generated<boolean>;
+  authProvider: Generated<AuthProvider>;
 };
 export type DB = {
   accountVerification: AccountVerification;

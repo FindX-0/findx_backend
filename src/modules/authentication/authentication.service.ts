@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AccountVerificationService } from '@modules/accountVerification';
-import { UserService } from '@modules/user';
+import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import {
@@ -18,6 +18,7 @@ export class AuthenticationService {
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly accountVerificationService: AccountVerificationService,
+    private readonly userValidator: UserValidator,
   ) {}
 
   async signUpWithToken({
@@ -26,11 +27,7 @@ export class AuthenticationService {
     gender,
     password,
   }: SignUpWithTokenParams): Promise<AuthenticationPayload> {
-    const existsByEmail = await this.userService.existsByEmail(email);
-
-    if (existsByEmail) {
-      throw new UnauthorizedException(ExceptionMessageCode.USER_EMAIL_EXISTS);
-    }
+    await this.userValidator.validateUniqueEmail(email);
 
     const hashedPassword = await this.passwordEncoder.encode(password);
 
@@ -39,6 +36,7 @@ export class AuthenticationService {
       gender,
       userName,
       passwordHash: hashedPassword,
+      isCompleted: true,
     });
 
     const { accessToken, refreshToken } =

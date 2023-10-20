@@ -1,4 +1,4 @@
-import { Gender } from '../user';
+import { Gender } from '@entities/entityEnums';
 
 export type SignUpWithTokenParams = {
   readonly userName: string;

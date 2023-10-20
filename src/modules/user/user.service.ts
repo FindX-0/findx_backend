@@ -48,10 +48,6 @@ export class UserService {
     return this.refreshTokenService.deleteByValue(refreshToken);
   }
 
-  async existsByEmail(email: string): Promise<boolean> {
-    return this.userRepository.existsByEmail(email);
-  }
-
   async create(params: NewUser): Promise<Selectable<SelectableUser>> {
     return this.userRepository.createUser(params);
   }

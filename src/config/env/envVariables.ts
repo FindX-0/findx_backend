@@ -47,4 +47,7 @@ export class EnvironmentVariables {
   @IsInt()
   @Type(() => Number)
   RECOVER_PASSWORD_REQUEST_TIMEOUT_IN_MILLIS: number;
+
+  @IsString()
+  GOOGLE_OAUTH_CLIENT_ID: string;
 }
