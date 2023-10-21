@@ -2,10 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthPayloadResponseType {
+type AuthPayloadType {
   accessToken: String!
   hasEmailVerified: Boolean
   refreshToken: String!
+}
+
+input EmailSignInInput {
+  email: String!
+  password: String!
+}
+
+input EmailSignUpInput {
+  email: String!
+  gender: Gender!
+  password: String!
+  userName: String!
 }
 
 enum Gender {
@@ -19,17 +31,16 @@ input GoogleSignInInput {
 }
 
 type Mutation {
-  googleSignIn(input: GoogleSignInInput!): AuthPayloadResponseType!
-  signUp(input: SignUpInput!): AuthPayloadResponseType!
+  emailSignIn(input: EmailSignInInput!): AuthPayloadType!
+  emailSignUp(input: EmailSignUpInput!): AuthPayloadType!
+  googleSignIn(input: GoogleSignInInput!): AuthPayloadType!
+  refreshToken(input: RefreshTokenInput!): AuthPayloadType!
 }
 
 type Query {
   sayHello: String!
 }
 
-input SignUpInput {
-  email: String!
-  gender: Gender!
-  password: String!
-  userName: String!
+input RefreshTokenInput {
+  refreshToken: String!
 }

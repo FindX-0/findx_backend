@@ -4,12 +4,12 @@ import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
 
-import { AuthPayloadResponseType } from '../gql/authPayload.type';
+import { AuthPayloadType } from '../gql/authPayload.type';
 import { JwtHelper, PasswordEncoder } from '../util';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 
 @Injectable()
-export class SignInWithGoogle {
+export class GoogleSignInUseCase {
   constructor(
     private readonly googleOauthHelper: GoogleOauthHelper,
     private readonly userService: UserService,
@@ -19,7 +19,7 @@ export class SignInWithGoogle {
     private readonly jwtHelper: JwtHelper,
   ) {}
 
-  async call(googleAccessToken: string): Promise<AuthPayloadResponseType> {
+  async call(googleAccessToken: string): Promise<AuthPayloadType> {
     const { email } = await this.googleOauthHelper.getGoogleUserInfo(
       googleAccessToken,
     );

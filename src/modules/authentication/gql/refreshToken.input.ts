@@ -1,6 +1,9 @@
+import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class RefreshTokenBodyDto {
+@InputType()
+export class RefreshTokenInput {
+  @Field()
   @IsNotEmpty()
   @IsString()
   readonly refreshToken: string;

@@ -6,8 +6,12 @@ import { RandomGenerator } from '@shared/util';
 
 import { JwtHelperModule } from './jwtHelper.module';
 import { AuthenticationResolver } from '../authentication.resolver';
-import { AuthenticationService } from '../authentication.service';
-import { SignInWithGoogle } from '../useCase';
+import {
+  EmailSignInUseCase,
+  GoogleSignInUseCase,
+  RefreshTokenUseCase,
+} from '../useCase';
+import { EmailSignUpUseCase } from '../useCase/emailSignUp.usecase';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
@@ -15,11 +19,13 @@ import { PasswordEncoder } from '../util/password.encoder';
   imports: [UserModule, JwtHelperModule, AccountVerificationModule],
   providers: [
     AuthenticationResolver,
-    AuthenticationService,
     RandomGenerator,
     PasswordEncoder,
     GoogleOauthHelper,
-    SignInWithGoogle,
+    GoogleSignInUseCase,
+    EmailSignUpUseCase,
+    EmailSignInUseCase,
+    RefreshTokenUseCase,
   ],
 })
 export class AuthenticationModule {}

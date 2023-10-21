@@ -1,52 +1,62 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { AuthenticationService } from './authentication.service';
 import { NoAuth } from './decorator/noAuth.decorator';
-import { AuthPayloadResponseType } from './gql/authPayload.type';
+import { AuthPayloadType } from './gql/authPayload.type';
+import { EmailSignInInput } from './gql/emailSignIn.input';
+import { EmailSignUpInput } from './gql/emailSignUp.input';
 import { GoogleSignInInput } from './gql/googleSignIn.input';
-import { SignUpInput } from './gql/signUp.input';
-import { SignInWithGoogle } from './useCase';
+import { RefreshTokenInput } from './gql/refreshToken.input';
+import {
+  EmailSignInUseCase,
+  GoogleSignInUseCase,
+  RefreshTokenUseCase,
+} from './useCase';
+import { EmailSignUpUseCase } from './useCase/emailSignUp.usecase';
 
 @Resolver('authentication')
 export class AuthenticationResolver {
   constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly signInWithGoogle: SignInWithGoogle,
+    private readonly emailSignUpUseCase: EmailSignUpUseCase,
+    private readonly googleSignInUseCase: GoogleSignInUseCase,
+    private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly emailSignInUseCase: EmailSignInUseCase,
   ) {}
 
+  @NoAuth()
   @Query(() => String)
   sayHello(): string {
     return 'Hello World!';
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadResponseType)
-  async signUp(
-    @Args('input') input: SignUpInput,
-  ): Promise<AuthPayloadResponseType> {
-    return this.authenticationService.signUpWithToken(input);
+  @Mutation(() => AuthPayloadType)
+  async emailSignUp(
+    @Args('input') input: EmailSignUpInput,
+  ): Promise<AuthPayloadType> {
+    return this.emailSignUpUseCase.call(input);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadResponseType)
+  @Mutation(() => AuthPayloadType)
   async googleSignIn(
     @Args('input') input: GoogleSignInInput,
-  ): Promise<AuthPayloadResponseType> {
-    return this.signInWithGoogle.call(input.accessToken);
+  ): Promise<AuthPayloadType> {
+    return this.googleSignInUseCase.call(input.accessToken);
   }
 
-  // @NoAuth()
-  // @Post('signIn')
-  // async signIn(@Body() body: SignInBodyDto): Promise<AuthPayloadResponseDto> {
-  //   return this.authenticationService.signInWithToken(body);
-  // }
+  @NoAuth()
+  @Mutation(() => AuthPayloadType)
+  async emailSignIn(
+    @Args('input') input: EmailSignInInput,
+  ): Promise<AuthPayloadType> {
+    return this.emailSignInUseCase.call(input);
+  }
 
-  // @NoAuth()
-  // @HttpCode(HttpStatus.OK)
-  // @Post('refresh')
-  // async refresh(
-  //   @Body() body: RefreshTokenBodyDto,
-  // ): Promise<AuthPayloadResponseDto> {
-  //   return this.authenticationService.refreshToken(body.refreshToken);
-  // }
+  @NoAuth()
+  @Mutation(() => AuthPayloadType)
+  async refreshToken(
+    @Args('input') input: RefreshTokenInput,
+  ): Promise<AuthPayloadType> {
+    return this.refreshTokenUseCase.call(input.refreshToken);
+  }
 }
