@@ -11,7 +11,7 @@ import {
 import { Gender } from '@entities/entityEnums';
 
 @InputType()
-export class SignUpInputDto {
+export class SignUpInput {
   @Field()
   @IsString()
   @MaxLength(255)

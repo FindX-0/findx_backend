@@ -2,9 +2,9 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AuthenticationService } from './authentication.service';
 import { NoAuth } from './decorator/noAuth.decorator';
-import { AuthPayloadResponseDto } from './dto/authPayload.dto';
-import { GoogleSignInInputDto } from './dto/googleSignInInput.dto';
-import { SignUpInputDto } from './dto/signUpInput.dto';
+import { AuthPayloadResponseType } from './gql/authPayload.type';
+import { GoogleSignInInput } from './gql/googleSignIn.input';
+import { SignUpInput } from './gql/signUp.input';
 import { SignInWithGoogle } from './useCase';
 
 @Resolver('authentication')
@@ -20,18 +20,18 @@ export class AuthenticationResolver {
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadResponseDto)
+  @Mutation(() => AuthPayloadResponseType)
   async signUp(
-    @Args('input') input: SignUpInputDto,
-  ): Promise<AuthPayloadResponseDto> {
+    @Args('input') input: SignUpInput,
+  ): Promise<AuthPayloadResponseType> {
     return this.authenticationService.signUpWithToken(input);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadResponseDto)
+  @Mutation(() => AuthPayloadResponseType)
   async googleSignIn(
-    @Args('input') input: GoogleSignInInputDto,
-  ): Promise<AuthPayloadResponseDto> {
+    @Args('input') input: GoogleSignInInput,
+  ): Promise<AuthPayloadResponseType> {
     return this.signInWithGoogle.call(input.accessToken);
   }
 

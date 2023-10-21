@@ -4,7 +4,7 @@ import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
 
-import { AuthPayloadResponseDto } from '../dto/authPayload.dto';
+import { AuthPayloadResponseType } from '../gql/authPayload.type';
 import { JwtHelper, PasswordEncoder } from '../util';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 
@@ -19,7 +19,7 @@ export class SignInWithGoogle {
     private readonly jwtHelper: JwtHelper,
   ) {}
 
-  async call(googleAccessToken: string): Promise<AuthPayloadResponseDto> {
+  async call(googleAccessToken: string): Promise<AuthPayloadResponseType> {
     const { email } = await this.googleOauthHelper.getGoogleUserInfo(
       googleAccessToken,
     );

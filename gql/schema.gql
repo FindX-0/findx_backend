@@ -2,9 +2,8 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-"""AuthPayloadResponse"""
-type AuthPayloadResponseDto {
-  accessToken: ID!
+type AuthPayloadResponseType {
+  accessToken: String!
   hasEmailVerified: Boolean
   refreshToken: String!
 }
@@ -15,20 +14,20 @@ enum Gender {
   OTHER
 }
 
-input GoogleSignInInputDto {
+input GoogleSignInInput {
   accessToken: String!
 }
 
 type Mutation {
-  googleSignIn(input: GoogleSignInInputDto!): AuthPayloadResponseDto!
-  signUp(input: SignUpInputDto!): AuthPayloadResponseDto!
+  googleSignIn(input: GoogleSignInInput!): AuthPayloadResponseType!
+  signUp(input: SignUpInput!): AuthPayloadResponseType!
 }
 
 type Query {
   sayHello: String!
 }
 
-input SignUpInputDto {
+input SignUpInput {
   email: String!
   gender: Gender!
   password: String!
