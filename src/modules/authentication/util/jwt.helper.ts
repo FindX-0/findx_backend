@@ -6,6 +6,10 @@ import { EnvService } from '@config/env';
 import { JwtPayload } from '../type/jwtPayload.type';
 import { UserAuthPayload } from '../type/userAuthPayload.type';
 
+type ValidateJwtOptions = {
+  ignoreExpiration: boolean;
+};
+
 @Injectable()
 export class JwtHelper {
   constructor(
@@ -55,25 +59,35 @@ export class JwtHelper {
     };
   }
 
-  async isRefreshTokenValid(token: string): Promise<boolean> {
+  async isRefreshTokenValid(
+    token: string,
+    options?: ValidateJwtOptions,
+  ): Promise<boolean> {
     return this.isJwtTokenValid({
       token,
+      options,
       secret: this.envService.get('REFRESH_TOKEN_SECRET'),
     });
   }
 
-  async isAccessTokenValid(token: string): Promise<boolean> {
+  async isAccessTokenValid(
+    token: string,
+    options?: ValidateJwtOptions,
+  ): Promise<boolean> {
     return this.isJwtTokenValid({
       token,
+      options,
       secret: this.envService.get('ACCESS_TOKEN_SECRET'),
     });
   }
 
   private async isJwtTokenValid({
     token,
+    options,
     secret,
   }: {
     token: string;
+    options?: ValidateJwtOptions;
     secret: string;
   }): Promise<boolean> {
     if (!token) {
@@ -83,7 +97,7 @@ export class JwtHelper {
     try {
       await this.jwtService.verifyAsync(token, {
         secret,
-        ignoreExpiration: false,
+        ignoreExpiration: options?.ignoreExpiration ?? false,
       });
 
       return true;

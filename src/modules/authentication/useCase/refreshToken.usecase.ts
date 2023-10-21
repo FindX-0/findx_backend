@@ -14,9 +14,9 @@ export class RefreshTokenUseCase {
   ) {}
 
   async call(oldRefreshToken: string): Promise<AuthenticationPayload> {
-    //TODO check only for token validity (not for expiration !) ↓
     const isRefreshTokenValid = await this.jwtHelper.isRefreshTokenValid(
       oldRefreshToken,
+      { ignoreExpiration: true },
     );
 
     if (!isRefreshTokenValid) {
@@ -36,7 +36,11 @@ export class RefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.REFRESH_TOKEN_REUSE);
     }
 
-    //TODO check for expiration only
+    const payload = this.jwtHelper.getUserPayload(oldRefreshToken);
+
+    if (Date.now() >= payload.expirationTime * 1000) {
+      throw new UnauthorizedException(ExceptionMessageCode.EXPIRED_TOKEN);
+    }
 
     const { accessToken, refreshToken } =
       this.jwtHelper.generateAuthenticationTokens({
