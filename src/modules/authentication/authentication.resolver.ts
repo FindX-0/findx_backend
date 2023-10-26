@@ -23,12 +23,6 @@ export class AuthenticationResolver {
   ) {}
 
   @NoAuth()
-  @Query(() => String)
-  sayHello(): string {
-    return 'Hello World!';
-  }
-
-  @NoAuth()
   @Mutation(() => AuthPayloadType)
   async emailSignUp(
     @Args('input') input: EmailSignUpInput,

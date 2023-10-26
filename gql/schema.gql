@@ -8,6 +8,18 @@ type AuthPayloadType {
   refreshToken: String!
 }
 
+enum AuthProvider {
+  APPLE
+  EMAIL
+  FACEBOOK
+  GOOGLE
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 input EmailSignInInput {
   email: String!
   password: String!
@@ -38,9 +50,19 @@ type Mutation {
 }
 
 type Query {
-  sayHello: String!
+  getAuthUser: UserType!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+type UserType {
+  authProvider: AuthProvider!
+  createdAt: DateTime!
+  email: String!
+  gender: Gender
+  id: ID!
+  isCompleted: Boolean!
+  userName: String
 }
