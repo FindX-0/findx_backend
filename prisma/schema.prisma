@@ -85,9 +85,28 @@ model AccountVerification {
   @@map("accountVerification")
 }
 
-model MathConcept {
+model MathField {
   id        BigInt   @id @default(autoincrement())
+  name      String
   createdAt DateTime @default(now())
+
+  mathProblems  MathProblem[]
+  mathSubFields MathSubField[]
+
+  @@map("mathFields")
+}
+
+model MathSubField {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  mathFieldId BigInt
+
+  mathField    MathField     @relation(fields: [mathFieldId], references: [id])
+  mathProblems MathProblem[]
+
+  @@map("mathSubFields")
 }
 
 model Ticket {
@@ -97,10 +116,29 @@ model Ticket {
   userId        BigInt
   state         TicketState
   matchId       BigInt?
+
+  @@map("tickets")
 }
 
 model Match {
   id        BigInt     @id @default(autoincrement())
   createdAt DateTime   @default(now())
   state     MatchState
+
+  @@map("matches")
+}
+
+model MathProblem {
+  id         BigInt   @id @default(autoincrement())
+  difficulty Int      @db.SmallInt
+  imagePaths String[]
+  text       String?
+  tex        String?
+
+  mathFieldId    BigInt
+  mathSubFieldId BigInt
+  mathField      MathField    @relation(fields: [mathFieldId], references: [id])
+  mathSubField   MathSubField @relation(fields: [mathSubFieldId], references: [id])
+
+  @@map("mathProblems")
 }

@@ -23,9 +23,25 @@ export type Match = {
   createdAt: Generated<Timestamp>;
   state: MatchState;
 };
-export type MathConcept = {
+export type MathField = {
   id: Generated<string>;
+  name: string;
   createdAt: Generated<Timestamp>;
+};
+export type MathProblem = {
+  id: Generated<string>;
+  difficulty: number;
+  imagePaths: string[];
+  text: string | null;
+  tex: string | null;
+  mathFieldId: string;
+  mathSubFieldId: string;
+};
+export type MathSubField = {
+  id: Generated<string>;
+  name: string;
+  createdAt: Generated<Timestamp>;
+  mathFieldId: string;
 };
 export type RefreshToken = {
   id: Generated<string>;
@@ -53,9 +69,11 @@ export type User = {
 };
 export type DB = {
   accountVerification: AccountVerification;
-  Match: Match;
-  MathConcept: MathConcept;
+  matches: Match;
+  mathFields: MathField;
+  mathProblems: MathProblem;
+  mathSubFields: MathSubField;
   refreshTokens: RefreshToken;
-  Ticket: Ticket;
+  tickets: Ticket;
   users: User;
 };

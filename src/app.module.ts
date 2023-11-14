@@ -18,6 +18,7 @@ import {
   JwtHelperModule,
   AuthenticationModule,
 } from '@modules/authentication';
+import { MatchmakingModule } from '@modules/matchmaking';
 import { UserModule } from '@modules/user';
 import { KyselyModule } from '@packages/kyselyModule';
 
@@ -42,6 +43,7 @@ import { AppController } from './app.controller';
     AccountVerificationModule,
     AuthenticationModule,
     UserModule,
+    MatchmakingModule,
   ],
   controllers: [AppController],
   providers: [

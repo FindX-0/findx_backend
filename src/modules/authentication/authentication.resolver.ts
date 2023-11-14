@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { NoAuth } from './decorator/noAuth.decorator';
 import { AuthPayloadType } from './gql/authPayload.type';

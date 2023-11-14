@@ -12,14 +12,10 @@ import { Observable } from 'rxjs';
 
 import { ExceptionMessageCode } from '@shared/constant';
 
-import { UserAuthPayload } from '../type/userAuthPayload.type';
+import { UserAuthPayload } from '../type';
 import { JwtHelper } from '../util/jwt.helper';
 
-export interface AuthPayloadRequest extends Request {
-  userAuthPayload: UserAuthPayload | null;
-}
-
-export const AuthPayload = createParamDecorator(
+export const GqlAuthPayload = createParamDecorator(
   (_: never, context: ExecutionContext) => {
     const gqlContext = GqlExecutionContext.create(context);
 
@@ -37,7 +33,7 @@ export const AuthPayload = createParamDecorator(
       );
     }
 
-    return req?.userAuthPayload;
+    return req?.userAuthPayload as UserAuthPayload;
   },
 );
 
