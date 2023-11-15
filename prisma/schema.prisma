@@ -10,14 +10,6 @@ generator kysely {
   enumFileName = "entityEnums.ts"
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
-
-  @@map("gender")
-}
-
 enum AuthProvider {
   EMAIL
   GOOGLE
@@ -49,7 +41,6 @@ model User {
   createdAt    DateTime     @default(now())
   email        String       @unique @db.VarChar(255)
   userName     String?      @db.VarChar(255)
-  gender       Gender?
   passwordHash String       @db.VarChar(255)
   isCompleted  Boolean      @default(true)
   authProvider AuthProvider @default(EMAIL)

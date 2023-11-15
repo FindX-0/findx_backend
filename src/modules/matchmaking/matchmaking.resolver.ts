@@ -9,14 +9,16 @@ import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
 export class MatchmakingResolver {
   constructor(private readonly enqueueTicketUseCase: EnqueueTicketUseCase) {}
 
-  @Mutation()
+  @Mutation(() => Boolean)
   async enqueueTicket(
     @GqlAuthPayload() authPayload: UserAuthPayload,
     @Args('input') input: EnqueueTicketInput,
-  ): Promise<void> {
+  ): Promise<boolean> {
     await this.enqueueTicketUseCase.call({
       userId: authPayload.userId,
       ...input,
     });
+
+    return true;
   }
 }

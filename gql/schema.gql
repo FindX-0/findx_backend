@@ -27,15 +27,12 @@ input EmailSignInInput {
 
 input EmailSignUpInput {
   email: String!
-  gender: Gender!
   password: String!
   userName: String!
 }
 
-enum Gender {
-  FEMALE
-  MALE
-  OTHER
+input EnqueueTicketInput {
+  mathConceptId: String!
 }
 
 input GoogleSignInInput {
@@ -45,6 +42,7 @@ input GoogleSignInInput {
 type Mutation {
   emailSignIn(input: EmailSignInInput!): AuthPayloadType!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadType!
+  enqueueTicket(input: EnqueueTicketInput!): Boolean!
   googleSignIn(input: GoogleSignInInput!): AuthPayloadType!
   refreshToken(input: RefreshTokenInput!): AuthPayloadType!
 }
@@ -61,7 +59,6 @@ type UserType {
   authProvider: AuthProvider!
   createdAt: DateTime!
   email: String!
-  gender: Gender
   id: ID!
   isCompleted: Boolean!
   userName: String

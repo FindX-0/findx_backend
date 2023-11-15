@@ -1,14 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-
-import { Gender } from '@entities/entityEnums';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class EmailSignUpInput {
@@ -17,11 +8,6 @@ export class EmailSignUpInput {
   @MaxLength(255)
   @MinLength(2)
   readonly userName: string;
-
-  @Field(() => Gender)
-  @IsNotEmpty()
-  @IsEnum(Gender)
-  readonly gender: Gender;
 
   @Field()
   @IsString()

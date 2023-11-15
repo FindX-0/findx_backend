@@ -38,7 +38,6 @@ export class GoogleSignInUseCase {
 
     const user = await this.userService.create({
       email,
-      gender: null,
       userName: null,
       passwordHash: hashedPassword,
       isCompleted: false,

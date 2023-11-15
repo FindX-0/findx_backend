@@ -4,12 +4,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-import type {
-  Gender,
-  AuthProvider,
-  TicketState,
-  MatchState,
-} from './entityEnums';
+import type { AuthProvider, TicketState, MatchState } from './entityEnums';
 
 export type AccountVerification = {
   id: Generated<string>;
@@ -62,7 +57,6 @@ export type User = {
   createdAt: Generated<Timestamp>;
   email: string;
   userName: string | null;
-  gender: Gender | null;
   passwordHash: string;
   isCompleted: Generated<boolean>;
   authProvider: Generated<AuthProvider>;

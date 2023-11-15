@@ -20,7 +20,6 @@ export class EmailSignUpUseCase {
   async call({
     userName,
     email,
-    gender,
     password,
   }: SignUpWithTokenParams): Promise<AuthenticationPayload> {
     await this.userValidator.validateUniqueEmail(email);
@@ -29,7 +28,6 @@ export class EmailSignUpUseCase {
 
     const user = await this.userService.create({
       email,
-      gender,
       userName,
       passwordHash: hashedPassword,
       isCompleted: true,

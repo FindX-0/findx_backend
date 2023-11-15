@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { AuthProvider, Gender } from '@entities/entityEnums';
+import { AuthProvider } from '@entities/entityEnums';
 
 @ObjectType()
 export class UserType {
@@ -12,9 +12,6 @@ export class UserType {
 
   @Field({ nullable: true })
   userName: string;
-
-  @Field(() => Gender, { nullable: true })
-  gender: Gender;
 
   @Field()
   createdAt: Date;

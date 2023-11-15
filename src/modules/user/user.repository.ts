@@ -48,7 +48,6 @@ export class UserRepository {
         'createdAt',
         'userName',
         'email',
-        'gender',
         'isCompleted',
         'authProvider',
       ])
