@@ -32,7 +32,7 @@ input EmailSignUpInput {
 }
 
 input EnqueueTicketInput {
-  mathConceptId: String!
+  mathFieldId: String!
 }
 
 input GoogleSignInInput {

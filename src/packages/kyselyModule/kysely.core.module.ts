@@ -1,6 +1,8 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { KyselyConfig } from 'kysely';
 
+import { TransactionRunner } from '@shared/util';
+
 import {
   KYSELY_MODULE_CONNECTION_TOKEN,
   KYSELY_MODULE_OPTIONS_TOKEN,
@@ -16,9 +18,9 @@ export class KyselyCoreModule {
     const provider: Provider = createKyselyProvider(config);
 
     return {
-      exports: [provider],
+      exports: [provider, TransactionRunner],
       module: KyselyCoreModule,
-      providers: [provider],
+      providers: [provider, TransactionRunner],
     };
   }
 

@@ -6,5 +6,5 @@ export class EnqueueTicketInput {
   @Field()
   @IsString()
   @IsNotEmpty()
-  mathConceptId: string;
+  mathFieldId: string;
 }

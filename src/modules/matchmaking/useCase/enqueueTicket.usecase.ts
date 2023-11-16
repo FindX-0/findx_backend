@@ -6,14 +6,14 @@ import { TicketRepository } from '../repository/ticket.repository';
 
 type EnqueueTicketParams = {
   userId: string;
-  mathConceptId: string;
+  mathFieldId: string;
 };
 
 @Injectable()
 export class EnqueueTicketUseCase {
   constructor(private readonly ticketRepository: TicketRepository) {}
 
-  async call({ userId, mathConceptId }: EnqueueTicketParams) {
+  async call({ userId, mathFieldId }: EnqueueTicketParams) {
     await this.ticketRepository.updateAllProcessing({
       userId,
       payload: {
@@ -23,7 +23,7 @@ export class EnqueueTicketUseCase {
 
     await this.ticketRepository.create({
       matchId: null,
-      mathConceptId,
+      mathFieldId,
       userId,
       state: TicketState.PROCESSING,
     });

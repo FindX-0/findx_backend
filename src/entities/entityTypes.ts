@@ -17,6 +17,7 @@ export type Match = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
   state: MatchState;
+  mathFieldId: string;
 };
 export type MathField = {
   id: Generated<string>;
@@ -47,7 +48,7 @@ export type RefreshToken = {
 export type Ticket = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
-  mathConceptId: string;
+  mathFieldId: string;
   userId: string;
   state: TicketState;
   matchId: string | null;
