@@ -99,9 +99,15 @@ export class MatchmakingScheduler {
       ),
     ]);
 
+    const timePassed = Date.now() - match.createdAt.getTime();
+    const matchTimeout =
+      this.envService.get('MATCH_START_DELAY') +
+      this.envService.get('MATCH_LIFETIME_MILLIS') -
+      timePassed;
+
     const timeout = setTimeout(
       () => this.finishMatchUseCase.call(match.id, txProvider),
-      this.envService.get('MATCH_LIFETIME_MILLIS'),
+      matchTimeout,
     );
 
     this.schedulerRegistry.addTimeout(
