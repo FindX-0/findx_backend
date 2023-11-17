@@ -10,7 +10,7 @@ import { PostgresDialect } from 'kysely';
 
 import { createPostgresPool } from '@config/database';
 import { EnvModule } from '@config/env';
-import { validationExceptionFactory } from '@config/validation/validationException.factory';
+import { validationExceptionFactory } from '@config/validation';
 import { AccountVerificationModule } from '@modules/accountVerification';
 import {
   GqlAuthPayloadInterceptor,
@@ -20,6 +20,7 @@ import {
   AuthenticationModule,
 } from '@modules/authentication';
 import { MatchmakingModule } from '@modules/matchmaking';
+import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { KyselyModule } from '@packages/kyselyModule';
 
@@ -47,6 +48,7 @@ import { AppController } from './app.controller';
     AuthenticationModule,
     UserModule,
     MatchmakingModule,
+    ServerTimeModule,
   ],
   controllers: [AppController],
   providers: [
