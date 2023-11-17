@@ -6,6 +6,7 @@ import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmakingScheduler';
 import { CreateMatchUseCase } from './useCase/createMatch.usecase';
 import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
+import { FinishMatchUseCase } from './useCase/finishMatch.usecase';
 
 @Module({
   providers: [
@@ -15,6 +16,7 @@ import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
     // usecases
     EnqueueTicketUseCase,
     CreateMatchUseCase,
+    FinishMatchUseCase,
     // resolver/scheduler
     MatchmakingResolver,
     MatchmakingScheduler,

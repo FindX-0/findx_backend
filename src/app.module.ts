@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 
@@ -26,6 +27,9 @@ import { AppController } from './app.controller';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
+    EnvModule.forRoot(),
+
     KyselyModule.forRoot({
       dialect: new PostgresDialect({
         pool: createPostgresPool(),
@@ -37,7 +41,6 @@ import { AppController } from './app.controller';
       autoSchemaFile: join(process.cwd(), 'gql/schema.gql'),
       formatError: (error: GraphQLError) => ({ message: error.message }),
     }),
-    EnvModule.forRoot(),
 
     JwtHelperModule,
     AccountVerificationModule,

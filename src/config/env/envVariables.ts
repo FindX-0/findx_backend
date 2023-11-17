@@ -52,8 +52,10 @@ export class EnvironmentVariables {
   GOOGLE_OAUTH_CLIENT_ID: string;
 
   @IsInt()
+  @Type(() => Number)
   MATCH_LIFETIME_MILLIS: number;
 
   @IsInt()
+  @Type(() => Number)
   MATCHMAKING_INTERVAL_MILLIS: number;
 }
