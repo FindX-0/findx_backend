@@ -57,5 +57,9 @@ export class EnvironmentVariables {
 
   @IsInt()
   @Type(() => Number)
+  MATCH_START_DELAY: number;
+
+  @IsInt()
+  @Type(() => Number)
   MATCHMAKING_INTERVAL_MILLIS: number;
 }

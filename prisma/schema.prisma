@@ -118,6 +118,8 @@ model Ticket {
 model Match {
   id          BigInt     @id @default(autoincrement())
   createdAt   DateTime   @default(now())
+  startAt     DateTime
+  endAt       DateTime
   state       MatchState
   mathFieldId BigInt
 

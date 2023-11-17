@@ -62,10 +62,23 @@ export class MatchmakingScheduler {
     txProvider: TransactionProvider;
     mathFieldId: string;
   }) {
-    const match = await this.createMatchUseCase.call({
-      mathFieldId,
+    const matchCreatedAt = new Date();
+    const matchStartAt = new Date(
+      matchCreatedAt.getTime() + this.envService.get('MATCH_START_DELAY'),
+    );
+    const matchEndAt = new Date(
+      matchStartAt.getTime() + this.envService.get('MATCH_LIFETIME_MILLIS'),
+    );
+
+    const match = await this.createMatchUseCase.call(
+      {
+        mathFieldId,
+        createdAt: matchCreatedAt,
+        startAt: matchStartAt,
+        endAt: matchEndAt,
+      },
       txProvider,
-    });
+    );
 
     await Promise.all([
       this.ticketRepository.updateById(

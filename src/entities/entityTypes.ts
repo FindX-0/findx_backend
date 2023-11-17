@@ -16,6 +16,8 @@ export type AccountVerification = {
 export type Match = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
+  startAt: Timestamp;
+  endAt: Timestamp;
   state: MatchState;
   mathFieldId: string;
 };
