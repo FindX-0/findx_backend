@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Interval } from '@nestjs/schedule';
+import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
+import { EnvService } from '@config/env';
 import { TicketState } from '@entities/entityEnums';
 import { SelectableTicket } from '@entities/ticket.entity';
 import {
@@ -8,16 +9,21 @@ import {
   TransactionRunner,
   groupByToMap,
 } from '@shared/util';
+import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
+import { FinishMatchUseCase } from '../useCase/finishMatch.usecase';
 
 @Injectable()
 export class MatchmakingScheduler {
   constructor(
     private readonly ticketRepository: TicketRepository,
     private readonly createMatchUseCase: CreateMatchUseCase,
+    private readonly finishMatchUseCase: FinishMatchUseCase,
     private readonly transactionRunner: TransactionRunner,
+    private readonly schedulerRegistry: SchedulerRegistry,
+    private readonly envService: EnvService,
   ) {}
 
   @Interval(8000)
@@ -61,22 +67,33 @@ export class MatchmakingScheduler {
       txProvider,
     });
 
-    await this.ticketRepository.updateById(
-      ticketA.id,
-      {
-        state: TicketState.COMPLETED,
-        matchId: match.id,
-      },
-      txProvider.get(),
+    await Promise.all([
+      this.ticketRepository.updateById(
+        ticketA.id,
+        {
+          state: TicketState.COMPLETED,
+          matchId: match.id,
+        },
+        txProvider.get(),
+      ),
+      this.ticketRepository.updateById(
+        ticketB.id,
+        {
+          state: TicketState.COMPLETED,
+          matchId: match.id,
+        },
+        txProvider.get(),
+      ),
+    ]);
+
+    const timeout = setTimeout(
+      () => this.finishMatchUseCase.call(match.id, txProvider),
+      this.envService.get('MATCH_LIFETIME_MILLIS'),
     );
 
-    await this.ticketRepository.updateById(
-      ticketB.id,
-      {
-        state: TicketState.COMPLETED,
-        matchId: match.id,
-      },
-      txProvider.get(),
+    this.schedulerRegistry.addTimeout(
+      TimeoutNameFactory.finishMatchTimeoutName(match.id),
+      timeout,
     );
   }
 }

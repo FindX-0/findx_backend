@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Transaction } from 'kysely';
 
 import { KyselyDB } from '@config/database';
+import { MatchState } from '@entities/entityEnums';
 import { DB } from '@entities/entityTypes';
 import { NewMatch, SelectableMatch } from '@entities/match.entiry';
 import { InjectKysely } from '@packages/kyselyModule';
@@ -19,5 +20,17 @@ export class MatchRepository {
       .values(params)
       .returningAll()
       .executeTakeFirst();
+  }
+
+  async updateStateById(
+    id: string,
+    state: MatchState,
+    tx?: Transaction<DB>,
+  ): Promise<void> {
+    await (tx ?? this.db)
+      .updateTable('matches')
+      .set({ state })
+      .where('id', '=', id)
+      .execute();
   }
 }
