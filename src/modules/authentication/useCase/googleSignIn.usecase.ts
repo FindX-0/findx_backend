@@ -8,7 +8,7 @@ import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
 
-import { AuthPayloadType } from '../gql/authPayload.type';
+import { AuthPayloadObject } from '../gql/authPayload.object';
 import { JwtHelper, PasswordEncoder } from '../util';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 
@@ -23,7 +23,7 @@ export class GoogleSignInUseCase {
     private readonly jwtHelper: JwtHelper,
   ) {}
 
-  async call(googleAccessToken: string): Promise<AuthPayloadType> {
+  async call(googleAccessToken: string): Promise<AuthPayloadObject> {
     const { email } = await this.googleOauthHelper.getGoogleUserInfo(
       googleAccessToken,
     );

@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthPayloadType {
+type AuthPayloadObject {
   accessToken: String!
   hasEmailVerified: Boolean
   refreshToken: String!
@@ -13,6 +13,10 @@ enum AuthProvider {
   EMAIL
   FACEBOOK
   GOOGLE
+}
+
+input CreateMathFieldInput {
+  name: String!
 }
 
 """
@@ -39,28 +43,62 @@ input GoogleSignInInput {
   accessToken: String!
 }
 
+input IdentifierInput {
+  id: ID!
+}
+
+input LastIdPageParamsObject {
+  lastId: ID!
+  limit: Int!
+}
+
+type MathFieldObject {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+}
+
+type MathFieldPageObject {
+  count: Int!
+  data: [MathFieldObject!]!
+}
+
 type Mutation {
-  emailSignIn(input: EmailSignInInput!): AuthPayloadType!
-  emailSignUp(input: EmailSignUpInput!): AuthPayloadType!
-  enqueueTicket(input: EnqueueTicketInput!): Boolean!
-  googleSignIn(input: GoogleSignInInput!): AuthPayloadType!
-  refreshToken(input: RefreshTokenInput!): AuthPayloadType!
+  createMathField(input: CreateMathFieldInput!): MathFieldObject!
+  deleteMathField(input: IdentifierInput!): SuccessObject!
+  emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
+  emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
+  enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
+  googleSignIn(input: GoogleSignInInput!): AuthPayloadObject!
+  refreshToken(input: RefreshTokenInput!): AuthPayloadObject!
+  updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
 }
 
 type Query {
-  getAuthUser: UserType!
-  getServerTime: ServerTimeType!
+  filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
+  getAuthUser: UserObject!
+  getMathFieldById(input: IdentifierInput!): MathFieldObject!
+  getServerTime: ServerTimeObject!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
 }
 
-type ServerTimeType {
+type ServerTimeObject {
   serverTime: Float!
 }
 
-type UserType {
+type SuccessObject {
+  success: Boolean!
+}
+
+input UpdateMathFieldInput {
+  id: ID!
+  name: String
+}
+
+type UserObject {
   authProvider: AuthProvider!
   createdAt: DateTime!
   email: String!

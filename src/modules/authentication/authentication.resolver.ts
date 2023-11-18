@@ -1,7 +1,7 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { NoAuth } from './decorator/noAuth.decorator';
-import { AuthPayloadType } from './gql/authPayload.type';
+import { AuthPayloadObject } from './gql/authPayload.object';
 import { EmailSignInInput } from './gql/emailSignIn.input';
 import { EmailSignUpInput } from './gql/emailSignUp.input';
 import { GoogleSignInInput } from './gql/googleSignIn.input';
@@ -23,34 +23,34 @@ export class AuthenticationResolver {
   ) {}
 
   @NoAuth()
-  @Mutation(() => AuthPayloadType)
+  @Mutation(() => AuthPayloadObject)
   async emailSignUp(
     @Args('input') input: EmailSignUpInput,
-  ): Promise<AuthPayloadType> {
+  ): Promise<AuthPayloadObject> {
     return this.emailSignUpUseCase.call(input);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadType)
+  @Mutation(() => AuthPayloadObject)
   async googleSignIn(
     @Args('input') input: GoogleSignInInput,
-  ): Promise<AuthPayloadType> {
+  ): Promise<AuthPayloadObject> {
     return this.googleSignInUseCase.call(input.accessToken);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadType)
+  @Mutation(() => AuthPayloadObject)
   async emailSignIn(
     @Args('input') input: EmailSignInInput,
-  ): Promise<AuthPayloadType> {
+  ): Promise<AuthPayloadObject> {
     return this.emailSignInUseCase.call(input);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadType)
+  @Mutation(() => AuthPayloadObject)
   async refreshToken(
     @Args('input') input: RefreshTokenInput,
-  ): Promise<AuthPayloadType> {
+  ): Promise<AuthPayloadObject> {
     return this.refreshTokenUseCase.call(input.refreshToken);
   }
 }

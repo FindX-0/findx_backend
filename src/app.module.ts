@@ -20,6 +20,7 @@ import {
   AuthenticationModule,
 } from '@modules/authentication';
 import { MatchmakingModule } from '@modules/matchmaking';
+import { MathFieldModule } from '@modules/mathField/mathField.module';
 import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { KyselyModule } from '@packages/kyselyModule';
@@ -51,6 +52,7 @@ import { AppController } from './app.controller';
     UserModule,
     MatchmakingModule,
     ServerTimeModule,
+    MathFieldModule,
   ],
   controllers: [AppController],
   providers: [

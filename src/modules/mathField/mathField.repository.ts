@@ -7,6 +7,7 @@ import {
   SelectableMathField,
 } from '@entities/mathField.entity';
 import { InjectKysely } from '@packages/kyselyModule';
+import { LastIdPageParams } from '@shared/type';
 
 @Injectable()
 export class MathFieldRepository {
@@ -53,5 +54,27 @@ export class MathFieldRepository {
       .execute();
 
     return Boolean(deleteResults.length);
+  }
+
+  async filter({
+    lastId,
+    limit,
+  }: LastIdPageParams): Promise<SelectableMathField[]> {
+    return this.db
+      .selectFrom('mathFields')
+      .selectAll()
+      .where('id', '>', lastId)
+      .orderBy('createdAt desc')
+      .limit(limit)
+      .execute();
+  }
+
+  async count(): Promise<number> {
+    const countRes = await this.db
+      .selectFrom('mathFields')
+      .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+
+    return countRes?.count ?? 0;
   }
 }

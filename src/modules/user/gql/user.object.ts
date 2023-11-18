@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { AuthProvider } from '@entities/entityEnums';
 
 @ObjectType()
-export class UserType {
+export class UserObject {
   @Field(() => ID)
   id: string;
 
