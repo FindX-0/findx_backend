@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Transaction } from 'kysely';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import { MatchState } from '@entities/entityEnums';
 import { DB } from '@entities/entityTypes';
 import { NewMatch, SelectableMatch } from '@entities/match.entiry';
-import { InjectKysely } from '@packages/kyselyModule';
 
 @Injectable()
 export class MatchRepository {

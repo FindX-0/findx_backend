@@ -7,6 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
+import { KyselyModule } from 'nestjs-kysely';
 
 import { createPostgresPool } from '@config/database';
 import { EnvModule } from '@config/env';
@@ -23,7 +24,7 @@ import { MatchmakingModule } from '@modules/matchmaking';
 import { MathFieldModule } from '@modules/mathField/mathField.module';
 import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
-import { KyselyModule } from '@packages/kyselyModule';
+import { TransactionRunnerModule } from '@shared/util';
 
 import { AppController } from './app.controller';
 
@@ -45,6 +46,7 @@ import { AppController } from './app.controller';
         message: formattedError.message,
       }),
     }),
+    TransactionRunnerModule,
 
     JwtHelperModule,
     AccountVerificationModule,

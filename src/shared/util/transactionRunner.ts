@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Global, Injectable, Module } from '@nestjs/common';
 import { Transaction } from 'kysely';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import { DB } from '@entities/entityTypes';
-import { InjectKysely } from '@packages/kyselyModule';
 
 export interface TransactionProvider {
   get(): Transaction<DB>;
@@ -23,3 +23,10 @@ export class TransactionRunner {
     );
   }
 }
+
+@Global()
+@Module({
+  providers: [TransactionRunner],
+  exports: [TransactionRunner],
+})
+export class TransactionRunnerModule {}

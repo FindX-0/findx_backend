@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import {
@@ -6,7 +7,6 @@ import {
   SelectableAccountVerification,
   UpdateAccountVerification,
 } from '@entities/accountVerification.entity';
-import { InjectKysely } from '@packages/kyselyModule';
 
 @Injectable()
 export class AccountVerificationRepository {

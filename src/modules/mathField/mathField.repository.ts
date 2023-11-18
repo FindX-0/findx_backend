@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import {
@@ -6,7 +7,6 @@ import {
   NewMathField,
   SelectableMathField,
 } from '@entities/mathField.entity';
-import { InjectKysely } from '@packages/kyselyModule';
 import { LastIdPageParams } from '@shared/type';
 
 @Injectable()

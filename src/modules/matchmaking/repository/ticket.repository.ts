@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Transaction } from 'kysely';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import { TicketState } from '@entities/entityEnums';
@@ -9,7 +10,6 @@ import {
   SelectableTicket,
   TicketUpdate,
 } from '@entities/ticket.entity';
-import { InjectKysely } from '@packages/kyselyModule';
 
 @Injectable()
 export class TicketRepository {

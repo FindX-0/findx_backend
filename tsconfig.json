@@ -15,7 +15,6 @@
     "paths": {
       "@modules/*": ["./src/modules/*"],
       "@shared/*": ["./src/shared/*"],
-      "@packages/*": ["./src/packages/*"],
       "@entities/*": ["./src/entities/*"],
       "@config/*": ["./src/config/*"]
     },
