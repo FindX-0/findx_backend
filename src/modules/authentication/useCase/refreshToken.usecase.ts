@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
+import { RefreshTokenService } from '@modules/refreshToken';
 import { UserService } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
@@ -11,6 +12,7 @@ export class RefreshTokenUseCase {
   constructor(
     private readonly userService: UserService,
     private readonly jwtHelper: JwtHelper,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   async call(oldRefreshToken: string): Promise<AuthenticationPayload> {
@@ -32,7 +34,7 @@ export class RefreshTokenUseCase {
         throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
       }
 
-      await this.userService.clearRefreshTokensForUser(decodedPayload.userId);
+      await this.refreshTokenService.deleteAllByUserId(decodedPayload.userId);
       throw new UnauthorizedException(ExceptionMessageCode.REFRESH_TOKEN_REUSE);
     }
 
@@ -50,8 +52,13 @@ export class RefreshTokenUseCase {
         userId: user.id,
       });
 
-    await this.userService.deleteRefreshToken(oldRefreshToken);
-    await this.userService.addRefreshTokenByUserId(user.id, refreshToken);
+    await Promise.all([
+      this.refreshTokenService.deleteByValue(oldRefreshToken),
+      this.refreshTokenService.create({
+        userId: user.id,
+        value: refreshToken,
+      }),
+    ]);
 
     return { accessToken, refreshToken };
   }

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AccountVerificationModule } from '@modules/accountVerification';
+import { RefreshTokenModule } from '@modules/refreshToken';
 import { UserModule } from '@modules/user';
 import { RandomGenerator } from '@shared/util';
 
@@ -16,7 +17,12 @@ import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
 @Module({
-  imports: [UserModule, JwtHelperModule, AccountVerificationModule],
+  imports: [
+    UserModule,
+    JwtHelperModule,
+    AccountVerificationModule,
+    RefreshTokenModule,
+  ],
   providers: [
     AuthenticationResolver,
     RandomGenerator,

@@ -52,13 +52,27 @@ model User {
   @@map("users")
 }
 
-model RefreshToken {
+model AdminUser {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
-  userId    BigInt
-  value     String
 
-  user User @relation(fields: [userId], references: [id])
+  userName     String @db.VarChar(255)
+  passwordHash String @db.VarChar(255)
+
+  refreshTokens RefreshToken[]
+
+  @@map("adminUsers")
+}
+
+model RefreshToken {
+  id          BigInt   @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  userId      BigInt?
+  adminUserId BigInt?
+  value       String
+
+  user      User?      @relation(fields: [userId], references: [id])
+  adminUser AdminUser? @relation(fields: [adminUserId], references: [id])
 
   @@index([value], type: Hash)
   @@map("refreshTokens")

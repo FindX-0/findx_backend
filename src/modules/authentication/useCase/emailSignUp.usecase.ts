@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
+import { RefreshTokenService } from '@modules/refreshToken';
 import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
@@ -16,6 +17,7 @@ export class EmailSignUpUseCase {
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly userValidator: UserValidator,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   async call({
@@ -43,7 +45,10 @@ export class EmailSignUpUseCase {
     const { accessToken, refreshToken } =
       this.jwtHelper.generateAuthenticationTokens({ userId: user.id });
 
-    await this.userService.addRefreshTokenByUserId(user.id, refreshToken);
+    await this.refreshTokenService.create({
+      userId: user.id,
+      value: refreshToken,
+    });
 
     return { accessToken, refreshToken, hasEmailVerified: false };
   }

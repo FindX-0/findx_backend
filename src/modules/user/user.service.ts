@@ -35,18 +35,6 @@ export class UserService {
     return this.userRepository.getById(userId);
   }
 
-  async clearRefreshTokensForUser(userId: string): Promise<void> {
-    return this.refreshTokenService.deleteAllByUserId(userId);
-  }
-
-  async addRefreshTokenByUserId(userId: string, value: string) {
-    await this.refreshTokenService.create({ userId, value });
-  }
-
-  async deleteRefreshToken(refreshToken: string) {
-    return this.refreshTokenService.deleteByValue(refreshToken);
-  }
-
   async create(params: NewUser): Promise<SelectableUser | null> {
     return this.userRepository.createUser(params);
   }

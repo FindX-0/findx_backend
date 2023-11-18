@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
+import { RefreshTokenService } from '@modules/refreshToken';
 import { UserService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
@@ -21,6 +22,7 @@ export class GoogleSignInUseCase {
     private readonly passwordEncoder: PasswordEncoder,
     private readonly randomGenerator: RandomGenerator,
     private readonly jwtHelper: JwtHelper,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   async call(googleAccessToken: string): Promise<AuthPayloadObject> {
@@ -56,8 +58,11 @@ export class GoogleSignInUseCase {
     const { accessToken, refreshToken } =
       this.jwtHelper.generateAuthenticationTokens({ userId: user.id });
 
-    await this.userService.addRefreshTokenByUserId(user.id, refreshToken);
+    await this.refreshTokenService.create({
+      userId: user.id,
+      value: refreshToken,
+    });
 
-    return { accessToken, refreshToken, hasEmailVerified: false };
+    return { accessToken, refreshToken, hasEmailVerified: true };
   }
 }

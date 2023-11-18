@@ -13,6 +13,12 @@ export type AccountVerification = {
   oneTimeCode: number;
   userId: string;
 };
+export type AdminUser = {
+  id: Generated<string>;
+  createdAt: Generated<Timestamp>;
+  userName: string;
+  passwordHash: string;
+};
 export type Match = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
@@ -44,7 +50,8 @@ export type MathSubField = {
 export type RefreshToken = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
-  userId: string;
+  userId: string | null;
+  adminUserId: string | null;
   value: string;
 };
 export type Ticket = {
@@ -66,6 +73,7 @@ export type User = {
 };
 export type DB = {
   accountVerification: AccountVerification;
+  adminUsers: AdminUser;
   matches: Match;
   mathFields: MathField;
   mathProblems: MathProblem;
