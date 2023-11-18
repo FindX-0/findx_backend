@@ -4,3 +4,5 @@ export * from './user.entity';
 export * from './accountVerification.entity';
 export * from './refreshToken.entity';
 export * from './ticket.entity';
+export * from './match.entiry';
+export * from './mathField.entity';
