@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { UserService, UserValidator } from '@modules/user';
+import { ExceptionMessageCode } from '@shared/constant';
 
 import {
   AuthenticationPayload,
@@ -33,10 +34,14 @@ export class EmailSignUpUseCase {
       isCompleted: true,
     });
 
+    if (!user) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.COULD_NOT_CREATE_USER,
+      );
+    }
+
     const { accessToken, refreshToken } =
-      this.jwtHelper.generateAuthenticationTokens({
-        userId: user.id,
-      });
+      this.jwtHelper.generateAuthenticationTokens({ userId: user.id });
 
     await this.userService.addRefreshTokenByUserId(user.id, refreshToken);
 

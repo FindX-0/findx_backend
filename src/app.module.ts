@@ -5,7 +5,7 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
-import { GraphQLError } from 'graphql';
+import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 
 import { createPostgresPool } from '@config/database';
@@ -40,7 +40,9 @@ import { AppController } from './app.controller';
       driver: ApolloDriver,
       sortSchema: true,
       autoSchemaFile: join(process.cwd(), 'gql/schema.gql'),
-      formatError: (error: GraphQLError) => ({ message: error.message }),
+      formatError: (formattedError: GraphQLFormattedError) => ({
+        message: formattedError.message,
+      }),
     }),
 
     JwtHelperModule,

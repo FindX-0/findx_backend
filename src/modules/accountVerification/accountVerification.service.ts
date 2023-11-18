@@ -17,10 +17,10 @@ export class AccountVerificationService {
     );
 
     if (exists) {
-      await this.accountVerificationRepository.updateByUserId(
-        params.userId,
-        params,
-      );
+      await this.accountVerificationRepository.updateByUserId(params.userId, {
+        ...(params.isVerified && { isVerified: params.isVerified }),
+        ...(params.oneTimeCode && { oneTimeCode: params.oneTimeCode }),
+      });
     }
 
     await this.accountVerificationRepository.create(params);

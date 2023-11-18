@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Selectable } from 'kysely';
 
 import {
   NewUser,
@@ -48,7 +47,7 @@ export class UserService {
     return this.refreshTokenService.deleteByValue(refreshToken);
   }
 
-  async create(params: NewUser): Promise<Selectable<SelectableUser>> {
+  async create(params: NewUser): Promise<SelectableUser | null> {
     return this.userRepository.createUser(params);
   }
 

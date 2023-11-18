@@ -31,6 +31,8 @@ export class KyselyCoreModule {
       useFactory: (config: KyselyConfig) => createKyselyClient(config),
     };
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     return {
       exports: [provider],
       imports: options.imports,

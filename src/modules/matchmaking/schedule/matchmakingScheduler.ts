@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env';
@@ -26,6 +26,8 @@ export class MatchmakingScheduler {
     private readonly envService: EnvService,
   ) {}
 
+  private readonly logger = new Logger(MatchmakingScheduler.name);
+
   @Interval(8000)
   async handleTickets(): Promise<void> {
     const processingTickets = await this.ticketRepository.getAll({
@@ -40,9 +42,16 @@ export class MatchmakingScheduler {
     await this.transactionRunner.runTransaction(async (txProvider) => {
       for (const [mathFieldId, tickets] of ticketsGroupedByMatchFieldId) {
         for (let i = 0; i < tickets.length - 1; i += 2) {
+          const ticketA = tickets[i];
+          const ticketB = tickets[i + 1];
+
+          if (!ticketA || !ticketB) {
+            continue;
+          }
+
           await this.createMatch({
-            ticketA: tickets[i],
-            ticketB: tickets[i + 1],
+            ticketA,
+            ticketB,
             txProvider,
             mathFieldId,
           });
@@ -79,6 +88,11 @@ export class MatchmakingScheduler {
       },
       txProvider,
     );
+
+    if (!match) {
+      this.logger.error('Create match returned null');
+      return;
+    }
 
     await Promise.all([
       this.ticketRepository.updateById(

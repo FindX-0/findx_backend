@@ -37,9 +37,7 @@ export class EmailSignInUseCase {
     }
 
     const { accessToken, refreshToken } =
-      this.jwtHelper.generateAuthenticationTokens({
-        userId: user.id,
-      });
+      this.jwtHelper.generateAuthenticationTokens({ userId: user.id });
 
     await this.userService.addRefreshTokenByUserId(user.id, refreshToken);
 

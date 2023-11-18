@@ -8,11 +8,12 @@ export class ValidationException extends BadRequestException {
 }
 
 const formatError = (errors: ValidationError[]) => {
-  const errMsg = {};
+  const errMsg: Record<string, unknown> = {};
+
   errors.forEach((error: ValidationError) => {
-    errMsg[error.property] = error.children.length
+    errMsg[error.property] = error.children?.length
       ? [formatError(error.children)]
-      : [...Object.values(error.constraints)];
+      : [...Object.values(error.constraints ?? {})];
   });
 
   return errMsg;

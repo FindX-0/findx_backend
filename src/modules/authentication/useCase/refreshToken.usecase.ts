@@ -38,7 +38,10 @@ export class RefreshTokenUseCase {
 
     const payload = this.jwtHelper.getUserPayload(oldRefreshToken);
 
-    if (Date.now() >= payload.expirationTime * 1000) {
+    if (
+      !payload?.expirationTime ||
+      Date.now() >= payload.expirationTime * 1000
+    ) {
       throw new UnauthorizedException(ExceptionMessageCode.EXPIRED_TOKEN);
     }
 

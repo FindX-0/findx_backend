@@ -12,17 +12,40 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
     "paths": {
       "@modules/*": ["./src/modules/*"],
       "@shared/*": ["./src/shared/*"],
       "@packages/*": ["./src/packages/*"],
       "@entities/*": ["./src/entities/*"],
       "@config/*": ["./src/config/*"]
-    }
+    },
+
+    // strict mode
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": true,
+
+    // No unused code
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+
+    // No implicit code
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+
+    // Others
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

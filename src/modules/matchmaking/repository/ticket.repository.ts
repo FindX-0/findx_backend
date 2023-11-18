@@ -15,12 +15,14 @@ import { InjectKysely } from '@packages/kyselyModule';
 export class TicketRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async create(params: NewTicket): Promise<SelectableTicket> {
-    return this.db
+  async create(params: NewTicket): Promise<SelectableTicket | null> {
+    const entity = await this.db
       .insertInto('tickets')
       .values(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async updateAllProcessing({
@@ -51,11 +53,13 @@ export class TicketRepository {
     params: TicketUpdate,
     tx?: Transaction<DB>,
   ): Promise<SelectableTicket | null> {
-    return (tx ?? this.db)
+    const entity = await (tx ?? this.db)
       .updateTable('tickets')
       .where('id', '=', id)
       .set(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 }

@@ -12,32 +12,38 @@ import { InjectKysely } from '@packages/kyselyModule';
 export class MathFieldRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async create(values: NewMathField): Promise<SelectableMathField> {
-    return this.db
+  async create(values: NewMathField): Promise<SelectableMathField | null> {
+    const created = await this.db
       .insertInto('mathFields')
       .values(values)
       .returningAll()
       .executeTakeFirst();
+
+    return created ?? null;
   }
 
   async updateById(
     id: string,
     values: MathFieldUpdate,
-  ): Promise<SelectableMathField> {
-    return this.db
+  ): Promise<SelectableMathField | null> {
+    const updated = await this.db
       .updateTable('mathFields')
       .where('id', '=', id)
       .set(values)
       .returningAll()
       .executeTakeFirst();
+
+    return updated ?? null;
   }
 
   async getById(id: string): Promise<SelectableMathField | null> {
-    return this.db
+    const entity = await this.db
       .selectFrom('mathFields')
       .where('id', '=', id)
       .selectAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async deleteById(id: string): Promise<boolean> {

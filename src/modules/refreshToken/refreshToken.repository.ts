@@ -11,12 +11,16 @@ import { InjectKysely } from '@packages/kyselyModule';
 export class RefreshTokenRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async create(params: NewRefreshToken): Promise<SelectableRefreshToken> {
-    return this.db
+  async create(
+    params: NewRefreshToken,
+  ): Promise<SelectableRefreshToken | null> {
+    const entity = await this.db
       .insertInto('refreshTokens')
       .values(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async getUserIdByValue(value: string): Promise<string | null> {

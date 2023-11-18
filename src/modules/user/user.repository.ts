@@ -14,11 +14,13 @@ export class UserRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
   async getByEmail(email: string): Promise<SelectableUser | null> {
-    return this.db
+    const entity = await this.db
       .selectFrom('users')
       .selectAll()
       .where('email', '=', email)
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async existsByEmail(email: string): Promise<boolean> {
@@ -28,19 +30,21 @@ export class UserRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return res?.count && res.count > 0;
+    return Boolean(res?.count && res.count > 0);
   }
 
-  async createUser(params: NewUser): Promise<SelectableUser> {
-    return this.db
+  async createUser(params: NewUser): Promise<SelectableUser | null> {
+    const entity = await this.db
       .insertInto('users')
       .values(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async getById(id: string): Promise<SelectableUserOmitPassword | null> {
-    return this.db
+    const entity = await this.db
       .selectFrom('users')
       .where('id', '=', id)
       .select([
@@ -52,6 +56,8 @@ export class UserRepository {
         'authProvider',
       ])
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async getIdByEmail(email: string): Promise<string | null> {
@@ -68,12 +74,14 @@ export class UserRepository {
     id: string,
     newPasswordHash: string,
   ): Promise<SelectableUser | null> {
-    return this.db
+    const entity = await this.db
       .updateTable('users')
       .set({ passwordHash: newPasswordHash })
       .where('id', '=', id)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async existsById(id: string): Promise<boolean> {
@@ -83,18 +91,20 @@ export class UserRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return res?.count && res.count > 0;
+    return Boolean(res?.count && res.count > 0);
   }
 
   async updateById(
     id: string,
     params: UserUpdate,
   ): Promise<SelectableUser | null> {
-    return this.db
+    const entity = await this.db
       .updateTable('users')
       .where('id', '=', id)
       .set(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 }

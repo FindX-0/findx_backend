@@ -13,7 +13,9 @@ export class RefreshTokenService {
     private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
 
-  async create(params: NewRefreshToken): Promise<SelectableRefreshToken> {
+  async create(
+    params: NewRefreshToken,
+  ): Promise<SelectableRefreshToken | null> {
     return this.refreshTokenRepository.create(params);
   }
 

@@ -13,7 +13,7 @@ export class CreateMatchUseCase {
   async call(
     match: Omit<NewMatch, 'id' | 'state'>,
     txProvider?: TransactionProvider,
-  ): Promise<SelectableMatch> {
+  ): Promise<SelectableMatch | null> {
     return this.matchRepository.create(
       {
         state: MatchState.PENDING,

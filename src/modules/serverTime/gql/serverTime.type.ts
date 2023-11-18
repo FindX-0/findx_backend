@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-ObjectType();
+@ObjectType()
 export class ServerTimeType {
   @Field()
   serverTime: number;

@@ -10,8 +10,8 @@ export class UserType {
   @Field()
   email: string;
 
-  @Field({ nullable: true })
-  userName: string;
+  @Field(() => String, { nullable: true })
+  userName: string | null;
 
   @Field()
   createdAt: Date;

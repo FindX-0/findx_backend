@@ -30,11 +30,13 @@ export class AccountVerificationRepository {
   async getByUserId(
     userId: string,
   ): Promise<SelectableAccountVerification | null> {
-    return this.db
+    const entity = await this.db
       .selectFrom('accountVerification')
       .selectAll()
       .where('userId', '=', userId)
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async getIsVerifiedByUserId(userId: string): Promise<boolean | null> {
@@ -62,6 +64,6 @@ export class AccountVerificationRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return res?.count && res.count > 0;
+    return Boolean(res && res.count > 0);
   }
 }

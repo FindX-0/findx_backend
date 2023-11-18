@@ -65,7 +65,7 @@ export class JwtHelper {
   ): Promise<boolean> {
     return this.isJwtTokenValid({
       token,
-      options,
+      ...(options && { options }),
       secret: this.envService.get('REFRESH_TOKEN_SECRET'),
     });
   }
@@ -76,7 +76,7 @@ export class JwtHelper {
   ): Promise<boolean> {
     return this.isJwtTokenValid({
       token,
-      options,
+      ...(options && { options }),
       secret: this.envService.get('ACCESS_TOKEN_SECRET'),
     });
   }

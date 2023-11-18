@@ -13,13 +13,15 @@ export class MatchRepository {
 
   async create(
     params: NewMatch,
-    tx: Transaction<DB>,
-  ): Promise<SelectableMatch> {
-    return (tx ?? this.db)
+    tx?: Transaction<DB>,
+  ): Promise<SelectableMatch | null> {
+    const entity = await (tx ?? this.db)
       .insertInto('matches')
       .values(params)
       .returningAll()
       .executeTakeFirst();
+
+    return entity ?? null;
   }
 
   async updateStateById(

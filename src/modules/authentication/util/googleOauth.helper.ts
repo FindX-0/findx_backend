@@ -1,9 +1,4 @@
-import {
-  HttpCode,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { GoogleApis, google } from 'googleapis';
 
 import { EnvService } from '@config/env';
@@ -12,9 +7,9 @@ import { ExceptionMessageCode } from '@shared/constant';
 type OAuth2Client = typeof GoogleApis.prototype.auth.OAuth2.prototype;
 
 type GoogleUserInfo = {
-  id?: string;
-  email?: string;
-  name?: string;
+  id: string | null;
+  email: string | null;
+  name: string | null;
 };
 
 type GoogleOauthExpiredError = {
@@ -45,7 +40,11 @@ export class GoogleOauthHelper {
         auth: this.oauth2Client,
       });
 
-      return userInfoResponse.data;
+      return {
+        id: userInfoResponse.data.id ?? null,
+        name: userInfoResponse.data.name ?? null,
+        email: userInfoResponse.data.email ?? null,
+      };
     } catch (e) {
       const error = e as GoogleOauthExpiredError;
 

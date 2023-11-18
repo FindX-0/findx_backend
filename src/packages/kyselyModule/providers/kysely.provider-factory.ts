@@ -21,6 +21,8 @@ export const createAsyncOptionsProvider = (
 ): Provider => {
   const { useFactory, inject, useExisting, useClass } = options;
   if (useFactory) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     return {
       inject,
       provide: KYSELY_MODULE_OPTIONS_TOKEN,

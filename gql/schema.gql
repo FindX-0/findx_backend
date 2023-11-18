@@ -49,10 +49,15 @@ type Mutation {
 
 type Query {
   getAuthUser: UserType!
+  getServerTime: ServerTimeType!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+type ServerTimeType {
+  serverTime: Float!
 }
 
 type UserType {
