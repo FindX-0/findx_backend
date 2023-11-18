@@ -1,3 +1,4 @@
 export * from './gqlAuthPayload.interceptor';
 export * from './gqlJwtAuth.guard';
 export * from './gqlVerifiedEmailValidator.guard';
+export * from './gqlRoles.guard';

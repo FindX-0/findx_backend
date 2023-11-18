@@ -5,7 +5,7 @@ import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB } from '@config/database';
 import { MatchState } from '@entities/entityEnums';
 import { DB } from '@entities/entityTypes';
-import { NewMatch, SelectableMatch } from '@entities/match.entiry';
+import { NewMatch, SelectableMatch } from '@entities/match.entity';
 
 @Injectable()
 export class MatchRepository {

@@ -13,12 +13,14 @@ import { createPostgresPool } from '@config/database';
 import { EnvModule } from '@config/env';
 import { validationExceptionFactory } from '@config/validation';
 import { AccountVerificationModule } from '@modules/accountVerification';
+import { AdminUserModule } from '@modules/adminUser';
 import {
   GqlAuthPayloadInterceptor,
   GqlJwtAuthGuard,
   GqlVerifiedEmailValidatorGuard,
   JwtHelperModule,
   AuthenticationModule,
+  GqlRolesGuard,
 } from '@modules/authentication';
 import { MatchmakingModule } from '@modules/matchmaking';
 import { MathFieldModule } from '@modules/mathField/mathField.module';
@@ -55,6 +57,7 @@ import { AppController } from './app.controller';
     MatchmakingModule,
     ServerTimeModule,
     MathFieldModule,
+    AdminUserModule,
   ],
   controllers: [AppController],
   providers: [
@@ -68,6 +71,10 @@ import { AppController } from './app.controller';
     {
       provide: APP_GUARD,
       useClass: GqlJwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: GqlRolesGuard,
     },
     {
       provide: APP_GUARD,

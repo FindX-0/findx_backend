@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { UserAuthPayload } from '../type';
+import { getBearerTokenFromRequest } from '../util';
 import { JwtHelper } from '../util/jwt.helper';
 
 export const GqlAuthPayload = createParamDecorator(
@@ -49,23 +50,14 @@ export class GqlAuthPayloadInterceptor implements NestInterceptor {
 
     const { req } = gqlContext.getContext();
 
-    if (!req) {
-      return next.handle();
-    }
+    const jwtToken = getBearerTokenFromRequest(req);
 
-    const authorizationHeader =
-      req.headers['authorization'] || req.headers['Authorization'];
-
-    const jwtToken = authorizationHeader?.slice('Bearer '.length);
-
-    if (!authorizationHeader) {
+    if (!jwtToken) {
       req.userAuthPayload = null;
       return next.handle();
     }
 
-    if (jwtToken) {
-      req.userAuthPayload = this.jwtHelper.getUserPayload(jwtToken) ?? null;
-    }
+    req.userAuthPayload = this.jwtHelper.getUserPayload(jwtToken);
 
     return next.handle();
   }

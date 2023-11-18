@@ -55,8 +55,9 @@ export class GoogleSignInUseCase {
       );
     }
 
-    const { accessToken, refreshToken } =
-      this.jwtHelper.generateAuthenticationTokens({ userId: user.id });
+    const { accessToken, refreshToken } = this.jwtHelper.generateAuthTokens({
+      userId: user.id,
+    });
 
     await this.refreshTokenService.create({
       userId: user.id,

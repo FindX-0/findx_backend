@@ -2,7 +2,6 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -13,6 +12,7 @@ import { ExceptionMessageCode } from '@shared/constant';
 
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { NO_EMAIL_VERIFICATION_VALIDATE } from '../decorator/noEmailVerificationValidate.decorator';
+import { getBearerTokenFromRequest } from '../util';
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
@@ -46,20 +46,7 @@ export class GqlVerifiedEmailValidatorGuard implements CanActivate {
 
     const { req } = gqlContext.getContext();
 
-    if (!req) {
-      throw new InternalServerErrorException(
-        ExceptionMessageCode.INVALID_REQUEST,
-      );
-    }
-
-    const authorizationHeader =
-      req.headers['authorization'] || req.headers['Authorization'];
-
-    if (!authorizationHeader) {
-      return false;
-    }
-
-    const accessToken = authorizationHeader.slice('Bearer '.length);
+    const accessToken = getBearerTokenFromRequest(req);
 
     if (!accessToken) {
       throw new UnauthorizedException(ExceptionMessageCode.MISSING_TOKEN);
@@ -69,6 +56,10 @@ export class GqlVerifiedEmailValidatorGuard implements CanActivate {
 
     if (!payload) {
       throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
+    }
+
+    if (payload.isAdmin) {
+      return true;
     }
 
     return this.accountVerificationService.getIsVerifiedByUserId(

@@ -47,10 +47,9 @@ export class RefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.EXPIRED_TOKEN);
     }
 
-    const { accessToken, refreshToken } =
-      this.jwtHelper.generateAuthenticationTokens({
-        userId: user.id,
-      });
+    const { accessToken, refreshToken } = this.jwtHelper.generateAuthTokens({
+      userId: user.id,
+    });
 
     await Promise.all([
       this.refreshTokenService.deleteByValue(oldRefreshToken),

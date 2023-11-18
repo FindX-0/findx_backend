@@ -19,8 +19,11 @@ export type RecoverPasswordParams = {
   readonly password: string;
 };
 
-export type AuthenticationPayload = {
+export type AuthTokenPayload = {
   accessToken: string;
   refreshToken: string;
+};
+
+export type AuthenticationPayload = AuthTokenPayload & {
   hasEmailVerified?: boolean;
 };

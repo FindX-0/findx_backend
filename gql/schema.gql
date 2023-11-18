@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AdminSignInInput {
+  email: String!
+  password: String!
+}
+
+input AdminSignUpInput {
+  email: String!
+  password: String!
+  userName: String!
+}
+
 type AuthPayloadObject {
   accessToken: String!
   hasEmailVerified: Boolean
@@ -47,6 +58,11 @@ input IdentifierInput {
   id: ID!
 }
 
+type JwtTokenPayloadObject {
+  accessToken: String!
+  refreshToken: String!
+}
+
 input LastIdPageParamsObject {
   lastId: ID!
   limit: Int!
@@ -64,6 +80,8 @@ type MathFieldPageObject {
 }
 
 type Mutation {
+  adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
+  adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!

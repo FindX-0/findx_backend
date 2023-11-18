@@ -33,12 +33,18 @@ export class EnvironmentVariables {
   @IsString()
   ACCESS_TOKEN_SECRET: string;
 
+  @IsString()
+  ADMIN_ACCESS_TOKEN_SECRET: string;
+
   @IsInt()
   @Type(() => Number)
   ACCESS_TOKEN_EXPIRATION: number;
 
   @IsString()
   REFRESH_TOKEN_SECRET: string;
+
+  @IsString()
+  ADMIN_REFRESH_TOKEN_SECRET: string;
 
   @IsInt()
   @Type(() => Number)

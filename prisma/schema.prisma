@@ -36,6 +36,12 @@ enum MatchState {
   @@map("matchState")
 }
 
+enum Role {
+  SUPER_ADMIN
+
+  @@map("role")
+}
+
 model User {
   id           BigInt       @id @default(autoincrement())
   createdAt    DateTime     @default(now())
@@ -57,7 +63,9 @@ model AdminUser {
   createdAt DateTime @default(now())
 
   userName     String @db.VarChar(255)
+  email        String @db.VarChar(255)
   passwordHash String @db.VarChar(255)
+  roles        Role[]
 
   refreshTokens RefreshToken[]
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { MatchState } from '@entities/entityEnums';
-import { NewMatch, SelectableMatch } from '@entities/match.entiry';
+import { NewMatch, SelectableMatch } from '@entities/match.entity';
 import { TransactionProvider } from '@shared/util';
 
 import { MatchRepository } from '../repository/match.repository';

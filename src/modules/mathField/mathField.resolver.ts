@@ -1,5 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
+import { Role } from '@entities/entityEnums';
+import { Roles } from '@modules/authentication/decorator/roles.decorator';
 import {
   IdentifierInput,
   SuccessObject,
@@ -16,6 +18,7 @@ import { MathFieldCrudService } from './mathFieldCrud.service';
 export class MathFieldResolver {
   constructor(private readonly mathFieldCrudService: MathFieldCrudService) {}
 
+  @Roles(Role.SUPER_ADMIN)
   @Mutation(() => MathFieldObject)
   async createMathField(
     @Args('input') input: CreateMathFieldInput,
@@ -23,6 +26,7 @@ export class MathFieldResolver {
     return this.mathFieldCrudService.create(input);
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Mutation(() => MathFieldObject)
   async updateMathField(
     @Args('input') input: UpdateMathFieldInput,
@@ -34,6 +38,7 @@ export class MathFieldResolver {
     });
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Mutation(() => SuccessObject)
   async deleteMathField(
     @Args('input') input: IdentifierInput,

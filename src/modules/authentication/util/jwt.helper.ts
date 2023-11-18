@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { EnvService } from '@config/env';
 
+import { AuthTokenPayload } from '../authentication.type';
 import { JwtPayload } from '../type/jwtPayload.type';
 import { UserAuthPayload } from '../type/userAuthPayload.type';
 
@@ -17,24 +18,34 @@ export class JwtHelper {
     private readonly envService: EnvService,
   ) {}
 
-  generateAuthenticationTokens(payload: JwtPayload): {
-    accessToken: string;
-    refreshToken: string;
-  } {
-    const accessTokenExp = this.envService.get('ACCESS_TOKEN_EXPIRATION');
-    const accessTokenSecret = this.envService.get('ACCESS_TOKEN_SECRET');
-
-    const refreshTokenExp = this.envService.get('REFRESH_TOKEN_EXPIRATION');
-    const refreshTokenSecret = this.envService.get('REFRESH_TOKEN_SECRET');
+  generateAuthTokens(payload: Omit<JwtPayload, 'isAdmin'>): AuthTokenPayload {
+    const fullPayload: JwtPayload = { ...payload, isAdmin: false };
 
     return {
-      accessToken: this.jwtService.sign(payload, {
-        expiresIn: accessTokenExp,
-        secret: accessTokenSecret,
+      accessToken: this.jwtService.sign(fullPayload, {
+        expiresIn: this.envService.get('ACCESS_TOKEN_EXPIRATION'),
+        secret: this.envService.get('ACCESS_TOKEN_SECRET'),
       }),
-      refreshToken: this.jwtService.sign(payload, {
-        expiresIn: refreshTokenExp,
-        secret: refreshTokenSecret,
+      refreshToken: this.jwtService.sign(fullPayload, {
+        expiresIn: this.envService.get('REFRESH_TOKEN_EXPIRATION'),
+        secret: this.envService.get('REFRESH_TOKEN_SECRET'),
+      }),
+    };
+  }
+
+  generateAdminAuthTokens(
+    payload: Omit<JwtPayload, 'isAdmin'>,
+  ): AuthTokenPayload {
+    const fullPayload: JwtPayload = { ...payload, isAdmin: true };
+
+    return {
+      accessToken: this.jwtService.sign(fullPayload, {
+        expiresIn: this.envService.get('ACCESS_TOKEN_EXPIRATION'),
+        secret: this.envService.get('ADMIN_ACCESS_TOKEN_SECRET'),
+      }),
+      refreshToken: this.jwtService.sign(fullPayload, {
+        expiresIn: this.envService.get('REFRESH_TOKEN_EXPIRATION'),
+        secret: this.envService.get('ADMIN_REFRESH_TOKEN_SECRET'),
       }),
     };
   }
@@ -46,6 +57,7 @@ export class JwtHelper {
       !payload ||
       typeof payload !== 'object' ||
       typeof payload?.['userId'] !== 'string' ||
+      typeof payload?.['isAdmin'] !== 'boolean' ||
       typeof payload?.['iat'] !== 'number' ||
       typeof payload?.['exp'] !== 'number'
     ) {
@@ -54,6 +66,7 @@ export class JwtHelper {
 
     return {
       userId: payload['userId'],
+      isAdmin: payload['isAdmin'],
       issuedAt: payload['iat'],
       expirationTime: payload['exp'],
     };
