@@ -13,21 +13,27 @@ export class RefreshTokenService {
     private readonly refreshTokenRepository: RefreshTokenRepository,
   ) {}
 
-  async create(
-    params: NewRefreshToken,
-  ): Promise<SelectableRefreshToken | null> {
+  create(params: NewRefreshToken): Promise<SelectableRefreshToken | null> {
     return this.refreshTokenRepository.create(params);
   }
 
-  async getUserIdByValue(value: string): Promise<string | null> {
+  getUserIdByValue(value: string): Promise<string | null> {
     return this.refreshTokenRepository.getUserIdByValue(value);
   }
 
-  async deleteAllByUserId(userId: string): Promise<void> {
+  getAdminUserIdByValue(value: string): Promise<string | null> {
+    return this.refreshTokenRepository.getAdminUserIdByValue(value);
+  }
+
+  deleteAllByUserId(userId: string): Promise<void> {
     return this.refreshTokenRepository.deleteAllByUserId(userId);
   }
 
-  async deleteByValue(value: string): Promise<void> {
+  deleteAllByAdminUserId(adminUserId: string) {
+    return this.refreshTokenRepository.deleteAllByAdminUserId(adminUserId);
+  }
+
+  deleteByValue(value: string): Promise<void> {
     return this.refreshTokenRepository.deleteByValue(value);
   }
 }

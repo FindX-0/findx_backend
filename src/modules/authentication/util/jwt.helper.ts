@@ -83,6 +83,17 @@ export class JwtHelper {
     });
   }
 
+  async isAdminRefreshTokenValid(
+    token: string,
+    options?: ValidateJwtOptions,
+  ): Promise<boolean> {
+    return this.isJwtTokenValid({
+      token,
+      ...(options && { options }),
+      secret: this.envService.get('ADMIN_REFRESH_TOKEN_SECRET'),
+    });
+  }
+
   async isAccessTokenValid(
     token: string,
     options?: ValidateJwtOptions,

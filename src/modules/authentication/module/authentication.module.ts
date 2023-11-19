@@ -9,6 +9,7 @@ import { RandomGenerator } from '@shared/util';
 import { JwtHelperModule } from './jwtHelper.module';
 import { AuthenticationResolver } from '../authentication.resolver';
 import {
+  AdminRefreshTokenUseCase,
   AdminUserSignUpUseCase,
   EmailSignInUseCase,
   GoogleSignInUseCase,
@@ -41,6 +42,7 @@ import { PasswordEncoder } from '../util/password.encoder';
     RefreshTokenUseCase,
     AdminUserSignInUseCase,
     AdminUserSignUpUseCase,
+    AdminRefreshTokenUseCase,
   ],
 })
 export class AuthenticationModule {}

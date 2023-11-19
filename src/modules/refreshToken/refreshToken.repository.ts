@@ -33,11 +33,28 @@ export class RefreshTokenRepository {
     return res?.userId ?? null;
   }
 
+  async getAdminUserIdByValue(value: string): Promise<string | null> {
+    const res = await this.db
+      .selectFrom('refreshTokens')
+      .select('adminUserId')
+      .where('value', '=', value)
+      .executeTakeFirst();
+
+    return res?.adminUserId ?? null;
+  }
+
   async deleteAllByUserId(userId: string): Promise<void> {
     await this.db
       .deleteFrom('refreshTokens')
       .where('userId', '=', userId)
-      .executeTakeFirst();
+      .execute();
+  }
+
+  async deleteAllByAdminUserId(adminUserId: string) {
+    await this.db
+      .deleteFrom('refreshTokens')
+      .where('adminUserId', '=', adminUserId)
+      .execute();
   }
 
   async deleteByValue(value: string): Promise<void> {

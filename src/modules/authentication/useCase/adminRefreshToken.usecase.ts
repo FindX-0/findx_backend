@@ -1,22 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
+import { AdminUserQueryService } from '@modules/adminUser';
 import { RefreshTokenService } from '@modules/refreshToken';
-import { UserService } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthenticationPayload } from '../authentication.type';
 import { JwtHelper } from '../util';
 
 @Injectable()
-export class RefreshTokenUseCase {
+export class AdminRefreshTokenUseCase {
   constructor(
-    private readonly userService: UserService,
+    private readonly adminUserQueryService: AdminUserQueryService,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
   ) {}
 
   async call(oldRefreshToken: string): Promise<AuthenticationPayload> {
-    const isRefreshTokenValid = await this.jwtHelper.isRefreshTokenValid(
+    const isRefreshTokenValid = await this.jwtHelper.isAdminRefreshTokenValid(
       oldRefreshToken,
       { ignoreExpiration: true },
     );
@@ -25,19 +25,25 @@ export class RefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
     }
 
-    const userId = await this.refreshTokenService.getUserIdByValue(
+    const adminUserId = await this.refreshTokenService.getAdminUserIdByValue(
       oldRefreshToken,
     );
-    const user = userId ? await this.userService.getById(userId) : null;
 
-    if (!user) {
+    const adminUser = adminUserId
+      ? await this.adminUserQueryService.getById(adminUserId)
+      : null;
+
+    if (!adminUser) {
       const decodedPayload = this.jwtHelper.getUserPayload(oldRefreshToken);
 
       if (!decodedPayload) {
         throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
       }
 
-      await this.refreshTokenService.deleteAllByUserId(decodedPayload.userId);
+      await this.refreshTokenService.deleteAllByAdminUserId(
+        decodedPayload.userId,
+      );
+
       throw new UnauthorizedException(ExceptionMessageCode.REFRESH_TOKEN_REUSE);
     }
 
@@ -50,14 +56,13 @@ export class RefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.EXPIRED_TOKEN);
     }
 
-    const { accessToken, refreshToken } = this.jwtHelper.generateAuthTokens({
-      userId: user.id,
-    });
+    const { accessToken, refreshToken } =
+      this.jwtHelper.generateAdminAuthTokens({ userId: adminUser.id });
 
     await Promise.all([
       this.refreshTokenService.deleteByValue(oldRefreshToken),
       this.refreshTokenService.create({
-        userId: user.id,
+        adminUserId: adminUser.id,
         value: refreshToken,
       }),
     ]);

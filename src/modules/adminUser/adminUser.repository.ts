@@ -39,6 +39,16 @@ export class AdminUserRepository {
     return entity ?? null;
   }
 
+  async getById(id: string): Promise<SelectableAdminUser | null> {
+    const entity = await this.db
+      .selectFrom('adminUsers')
+      .selectAll()
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
+
   async getRolesById(id: string): Promise<Role[] | null> {
     const res = await this.db
       .selectFrom('adminUsers')

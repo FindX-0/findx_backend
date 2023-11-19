@@ -5,34 +5,16 @@ import {
   SelectableUser,
   SelectableUserOmitPassword,
 } from '@entities/user.entity';
-import { RefreshTokenService } from '@modules/refreshToken';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly refreshTokenService: RefreshTokenService,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getByEmail(email: string): Promise<SelectableUser | null> {
     return this.userRepository.getByEmail(email);
-  }
-
-  async findByRefreshToken(
-    refreshToken: string,
-  ): Promise<SelectableUserOmitPassword | null> {
-    const userId = await this.refreshTokenService.getUserIdByValue(
-      refreshToken,
-    );
-
-    if (!userId) {
-      return null;
-    }
-
-    return this.userRepository.getById(userId);
   }
 
   async create(params: NewUser): Promise<SelectableUser | null> {

@@ -13,6 +13,7 @@ import { GoogleSignInInput } from './gql/googleSignIn.input';
 import { JwtTokenPayloadObject } from './gql/jwtTokenPayload.object';
 import { RefreshTokenInput } from './gql/refreshToken.input';
 import {
+  AdminRefreshTokenUseCase,
   AdminUserSignInUseCase,
   AdminUserSignUpUseCase,
   EmailSignInUseCase,
@@ -30,6 +31,7 @@ export class AuthenticationResolver {
     private readonly emailSignInUseCase: EmailSignInUseCase,
     private readonly adminUserSignInUseCase: AdminUserSignInUseCase,
     private readonly adminUserSignUpUseCase: AdminUserSignUpUseCase,
+    private readonly adminRefreshTokenUseCase: AdminRefreshTokenUseCase,
   ) {}
 
   @NoAuth()
@@ -78,5 +80,13 @@ export class AuthenticationResolver {
     @Args('input') input: AdminSignUpInput,
   ): Promise<JwtTokenPayloadObject> {
     return this.adminUserSignUpUseCase.call(input);
+  }
+
+  @NoAuth()
+  @Mutation(() => JwtTokenPayloadObject)
+  async adminRefreshToken(
+    @Args('input') input: RefreshTokenInput,
+  ): Promise<JwtTokenPayloadObject> {
+    return this.adminRefreshTokenUseCase.call(input.refreshToken);
   }
 }

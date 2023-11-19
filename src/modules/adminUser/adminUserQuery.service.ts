@@ -10,8 +10,12 @@ import { AdminUserRepository } from './adminUser.repository';
 export class AdminUserQueryService {
   constructor(private readonly adminUserRepository: AdminUserRepository) {}
 
-  async getByEmail(email: string): Promise<SelectableAdminUser | null> {
+  getByEmail(email: string): Promise<SelectableAdminUser | null> {
     return this.adminUserRepository.getByEmail(email);
+  }
+
+  getById(id: string): Promise<SelectableAdminUser | null> {
+    return this.adminUserRepository.getById(id);
   }
 
   async getRolesById(id: string): Promise<Role[]> {

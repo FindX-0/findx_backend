@@ -80,6 +80,7 @@ type MathFieldPageObject {
 }
 
 type Mutation {
+  adminRefreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
