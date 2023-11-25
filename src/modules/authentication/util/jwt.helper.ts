@@ -105,6 +105,17 @@ export class JwtHelper {
     });
   }
 
+  async isAdminAccessTokenValid(
+    token: string,
+    options?: ValidateJwtOptions,
+  ): Promise<boolean> {
+    return this.isJwtTokenValid({
+      token,
+      ...(options && { options }),
+      secret: this.envService.get('ADMIN_ACCESS_TOKEN_SECRET'),
+    });
+  }
+
   private async isJwtTokenValid({
     token,
     options,

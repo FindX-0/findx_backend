@@ -40,6 +40,16 @@ export class GqlJwtAuthGuard implements CanActivate {
       throw new UnauthorizedException(ExceptionMessageCode.MISSING_TOKEN);
     }
 
+    const payload = this.jwtHelper.getUserPayload(accessToken);
+
+    if (!payload) {
+      throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
+    }
+
+    if (payload.isAdmin) {
+      return this.jwtHelper.isAdminAccessTokenValid(accessToken);
+    }
+
     return this.jwtHelper.isAccessTokenValid(accessToken);
   }
 }
