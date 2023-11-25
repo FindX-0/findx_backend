@@ -63,7 +63,7 @@ export class MathFieldRepository {
     return this.db
       .selectFrom('mathFields')
       .selectAll()
-      .where('id', '>', lastId)
+      .$if(Boolean(lastId), (qb) => qb.where('id', '>', lastId as string))
       .orderBy('createdAt desc')
       .limit(limit)
       .execute();

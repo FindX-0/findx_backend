@@ -2,6 +2,7 @@ import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
   IsString,
   Max,
@@ -10,10 +11,11 @@ import {
 
 @InputType()
 export class LastIdPageParamsObject {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @IsString()
   @IsNotEmpty()
-  lastId: string;
+  @IsOptional()
+  lastId: string | null;
 
   @Field(() => Int)
   @IsInt()

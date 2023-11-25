@@ -1,4 +1,4 @@
 export type LastIdPageParams = {
-  lastId: string;
+  lastId?: string | null;
   limit: number;
 };

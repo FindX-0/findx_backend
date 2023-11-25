@@ -64,7 +64,7 @@ type JwtTokenPayloadObject {
 }
 
 input LastIdPageParamsObject {
-  lastId: ID!
+  lastId: ID
   limit: Int!
 }
 
