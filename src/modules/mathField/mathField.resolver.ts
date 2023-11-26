@@ -9,7 +9,7 @@ import {
 } from '@shared/gql';
 
 import { CreateMathFieldInput } from './gql/createMathField.input';
-import { MathFieldObject } from './gql/mathField.type';
+import { MathFieldObject } from './gql/mathField.object';
 import { MathFieldPageObject } from './gql/mathFIeldPage.object';
 import { UpdateMathFieldInput } from './gql/updateMathField.input';
 import { MathFieldCrudService } from './mathFieldCrud.service';

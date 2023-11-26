@@ -41,6 +41,7 @@ export type MathField = {
 };
 export type MathProblem = {
   id: Generated<string>;
+  createdAt: Generated<Timestamp>;
   difficulty: number;
   imagePaths: string[];
   text: string | null;

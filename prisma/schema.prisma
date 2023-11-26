@@ -151,7 +151,9 @@ model Match {
 }
 
 model MathProblem {
-  id         BigInt   @id @default(autoincrement())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
   difficulty Int      @db.SmallInt
   imagePaths String[]
   text       String?

@@ -3,19 +3,19 @@ import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import {
-  MathFieldUpdate,
-  NewMathField,
-  SelectableMathField,
-} from '@entities/mathField.entity';
+  MathProblemUpdate,
+  NewMathProblem,
+  SelectableMathProblem,
+} from '@entities/mathProblem.entity';
 import { LastIdPageParams } from '@shared/type';
 
 @Injectable()
-export class MathFieldRepository {
+export class MathProblemRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async create(values: NewMathField): Promise<SelectableMathField | null> {
+  async create(values: NewMathProblem): Promise<SelectableMathProblem | null> {
     const created = await this.db
-      .insertInto('mathFields')
+      .insertInto('mathProblems')
       .values(values)
       .returningAll()
       .executeTakeFirst();
@@ -25,10 +25,10 @@ export class MathFieldRepository {
 
   async updateById(
     id: string,
-    values: MathFieldUpdate,
-  ): Promise<SelectableMathField | null> {
+    values: MathProblemUpdate,
+  ): Promise<SelectableMathProblem | null> {
     const updated = await this.db
-      .updateTable('mathFields')
+      .updateTable('mathProblems')
       .where('id', '=', id)
       .set(values)
       .returningAll()
@@ -37,9 +37,9 @@ export class MathFieldRepository {
     return updated ?? null;
   }
 
-  async getById(id: string): Promise<SelectableMathField | null> {
+  async getById(id: string): Promise<SelectableMathProblem | null> {
     const entity = await this.db
-      .selectFrom('mathFields')
+      .selectFrom('mathProblems')
       .where('id', '=', id)
       .selectAll()
       .executeTakeFirst();
@@ -49,7 +49,7 @@ export class MathFieldRepository {
 
   async deleteById(id: string): Promise<boolean> {
     const deleteResults = await this.db
-      .deleteFrom('mathFields')
+      .deleteFrom('mathProblems')
       .where('id', '=', id)
       .execute();
 
@@ -59,9 +59,9 @@ export class MathFieldRepository {
   async filter({
     lastId,
     limit,
-  }: LastIdPageParams): Promise<SelectableMathField[]> {
+  }: LastIdPageParams): Promise<SelectableMathProblem[]> {
     return this.db
-      .selectFrom('mathFields')
+      .selectFrom('mathProblems')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
       .orderBy('id desc')
@@ -71,7 +71,7 @@ export class MathFieldRepository {
 
   async count(): Promise<number> {
     const countRes = await this.db
-      .selectFrom('mathFields')
+      .selectFrom('mathProblems')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 

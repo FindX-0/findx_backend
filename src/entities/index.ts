@@ -6,3 +6,4 @@ export * from './refreshToken.entity';
 export * from './ticket.entity';
 export * from './match.entity';
 export * from './mathField.entity';
+export * from './mathProblem.entity';

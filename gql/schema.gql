@@ -30,6 +30,14 @@ input CreateMathFieldInput {
   name: String!
 }
 
+input CreateMathProblemInput {
+  difficulty: Int!
+  mathFieldId: String!
+  mathSubFieldId: String!
+  tex: String
+  text: String
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -79,24 +87,44 @@ type MathFieldPageObject {
   data: [MathFieldObject!]!
 }
 
+type MathProblemObject {
+  createdAt: DateTime!
+  difficulty: Int!
+  id: ID!
+  mathFieldId: String!
+  mathSubFieldId: String!
+  tex: String
+  text: String
+}
+
+type MathProblemPageObject {
+  count: Int!
+  data: [MathProblemObject!]!
+}
+
 type Mutation {
   adminRefreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
+  createMathProblem(input: CreateMathProblemInput!): MathProblemObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
+  deleteMathProblem(input: IdentifierInput!): SuccessObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
   googleSignIn(input: GoogleSignInInput!): AuthPayloadObject!
   refreshToken(input: RefreshTokenInput!): AuthPayloadObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
+  updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
 }
 
 type Query {
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
+  filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   getAuthUser: UserObject!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
+  getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getServerTime: ServerTimeObject!
 }
 
@@ -115,6 +143,15 @@ type SuccessObject {
 input UpdateMathFieldInput {
   id: ID!
   name: String
+}
+
+input UpdateMathProblemInput {
+  difficulty: Float
+  id: ID!
+  mathFieldId: String
+  mathSubFieldId: String
+  tex: String
+  text: String
 }
 
 type UserObject {
