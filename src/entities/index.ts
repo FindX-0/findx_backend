@@ -7,3 +7,4 @@ export * from './ticket.entity';
 export * from './match.entity';
 export * from './mathField.entity';
 export * from './mathProblem.entity';
+export * from './mathSubField.entity';

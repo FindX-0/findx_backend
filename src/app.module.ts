@@ -25,6 +25,7 @@ import {
 import { MatchmakingModule } from '@modules/matchmaking';
 import { MathFieldModule } from '@modules/mathField/mathField.module';
 import { MathProblemModule } from '@modules/mathProblem/mathProblem.module';
+import { MathSubFieldModule } from '@modules/mathSubField';
 import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { TransactionRunnerModule } from '@shared/util';
@@ -55,10 +56,11 @@ import { AppController } from './app.controller';
     AccountVerificationModule,
     AuthenticationModule,
     UserModule,
+    AdminUserModule,
     MatchmakingModule,
     ServerTimeModule,
     MathFieldModule,
-    AdminUserModule,
+    MathSubFieldModule,
     MathProblemModule,
   ],
   controllers: [AppController],

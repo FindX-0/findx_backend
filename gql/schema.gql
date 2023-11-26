@@ -38,6 +38,11 @@ input CreateMathProblemInput {
   text: String
 }
 
+input CreateMathSubFieldInput {
+  mathFieldId: String!
+  name: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -102,14 +107,28 @@ type MathProblemPageObject {
   data: [MathProblemObject!]!
 }
 
+type MathSubFieldObject {
+  createdAt: DateTime!
+  id: ID!
+  mathFieldId: String!
+  name: String!
+}
+
+type MathSubFieldPageObject {
+  count: Int!
+  data: [MathSubFieldObject!]!
+}
+
 type Mutation {
   adminRefreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   createMathProblem(input: CreateMathProblemInput!): MathProblemObject!
+  createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
+  deleteMathSubField(input: IdentifierInput!): SuccessObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
@@ -117,14 +136,17 @@ type Mutation {
   refreshToken(input: RefreshTokenInput!): AuthPayloadObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
+  updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
 }
 
 type Query {
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
+  filterMathSubFields(input: LastIdPageParamsObject!): MathSubFieldPageObject!
   getAuthUser: UserObject!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
+  getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!
   getServerTime: ServerTimeObject!
 }
 
@@ -152,6 +174,12 @@ input UpdateMathProblemInput {
   mathSubFieldId: String
   tex: String
   text: String
+}
+
+input UpdateMathSubFieldInput {
+  id: ID!
+  mathFieldId: String
+  name: String
 }
 
 type UserObject {
