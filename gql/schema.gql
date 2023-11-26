@@ -32,14 +32,14 @@ input CreateMathFieldInput {
 
 input CreateMathProblemInput {
   difficulty: Int!
-  mathFieldId: String!
-  mathSubFieldId: String!
+  mathFieldId: ID!
+  mathSubFieldId: ID!
   tex: String
   text: String
 }
 
 input CreateMathSubFieldInput {
-  mathFieldId: String!
+  mathFieldId: ID!
   name: String!
 }
 
@@ -170,15 +170,15 @@ input UpdateMathFieldInput {
 input UpdateMathProblemInput {
   difficulty: Float
   id: ID!
-  mathFieldId: String
-  mathSubFieldId: String
+  mathFieldId: ID
+  mathSubFieldId: ID
   tex: String
   text: String
 }
 
 input UpdateMathSubFieldInput {
   id: ID!
-  mathFieldId: String
+  mathFieldId: ID
   name: String
 }
 

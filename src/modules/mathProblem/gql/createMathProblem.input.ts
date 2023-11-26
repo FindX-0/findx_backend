@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
@@ -28,12 +28,12 @@ export class CreateMathProblemInput {
   @IsOptional()
   tex: string | null;
 
-  @Field()
+  @Field(() => ID)
   @IsString()
   @IsNotEmpty()
   mathFieldId: string;
 
-  @Field()
+  @Field(() => ID)
   @IsString()
   @IsNotEmpty()
   mathSubFieldId: string;

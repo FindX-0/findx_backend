@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
@@ -11,7 +11,7 @@ export class UpdateMathSubFieldInput extends IdentifierInput {
   @IsNotEmpty()
   name: string | null;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()

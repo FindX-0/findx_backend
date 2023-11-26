@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
@@ -8,7 +8,7 @@ export class CreateMathSubFieldInput {
   @IsNotEmpty()
   name: string;
 
-  @Field()
+  @Field(() => ID)
   @IsString()
   @IsNotEmpty()
   mathFieldId: string;

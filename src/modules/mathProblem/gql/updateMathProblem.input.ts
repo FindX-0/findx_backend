@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
@@ -22,13 +22,13 @@ export class UpdateMathProblemInput extends IdentifierInput {
   @IsNotEmpty()
   tex: string | null;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   mathFieldId: string | null;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
