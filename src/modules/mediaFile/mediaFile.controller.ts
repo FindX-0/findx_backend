@@ -1,15 +1,11 @@
 import {
   FileInterceptor,
   UploadedFile,
-  AnyFilesInterceptor,
   DiskStorageFile,
-} from '@blazity/nest-file-fastify';
-import {
-  Controller,
-  Post,
   UploadedFiles,
-  UseInterceptors,
-} from '@nestjs/common';
+  AnyFilesInterceptor,
+} from '@blazity/nest-file-fastify';
+import { Controller, Post, UseInterceptors } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { Role } from '@entities/entityEnums';
