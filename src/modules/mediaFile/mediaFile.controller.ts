@@ -17,7 +17,7 @@ import { Roles } from '@modules/authentication/decorator/roles.decorator';
 import { plainArrayToInstance } from '@shared/util/plainArrayToInstance';
 
 import { MediaFileDto } from './dto/mediaFile.dto';
-import { RESOLVED_PATH_UPLOADS } from './mediaFile.constant';
+import { PATH_UPLOADS } from './mediaFile.constant';
 import { MediaFileCrudService } from './mediaFileCrud.service';
 import { diskStorageFileToNewMediaFileValues } from './util/disk_storage_file_to_new_media_file_values';
 
@@ -27,7 +27,7 @@ export class MediaFileController {
   constructor(private readonly mediaFileCrudService: MediaFileCrudService) {}
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', { dest: RESOLVED_PATH_UPLOADS }))
+  @UseInterceptors(FileInterceptor('file', { dest: PATH_UPLOADS }))
   async upload(@UploadedFile() file: DiskStorageFile): Promise<MediaFileDto> {
     const values = diskStorageFileToNewMediaFileValues(file);
 
@@ -37,7 +37,7 @@ export class MediaFileController {
   }
 
   @Post('uploadMany')
-  @UseInterceptors(AnyFilesInterceptor({ dest: RESOLVED_PATH_UPLOADS }))
+  @UseInterceptors(AnyFilesInterceptor({ dest: PATH_UPLOADS }))
   async uploadMany(@UploadedFiles() files: DiskStorageFile[]) {
     const values = files.map((file) =>
       diskStorageFileToNewMediaFileValues(file),

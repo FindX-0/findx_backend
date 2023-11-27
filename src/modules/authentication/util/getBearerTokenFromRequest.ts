@@ -9,7 +9,6 @@ export const getBearerTokenFromRequest = (req: unknown): string | null => {
     !req.headers ||
     typeof req.headers !== 'object'
   ) {
-    console.log('not passing req validation');
     return null;
   }
 

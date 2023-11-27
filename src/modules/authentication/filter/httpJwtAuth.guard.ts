@@ -33,8 +33,6 @@ export class HttpJwtAuthGuard implements CanActivate {
 
     const accessToken = getBearerTokenFromRequest(req);
 
-    console.log(accessToken);
-
     if (!accessToken) {
       throw new UnauthorizedException(ExceptionMessageCode.MISSING_TOKEN);
     }

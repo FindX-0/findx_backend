@@ -1,1 +1,1 @@
-export * from './mathField.resolver';
+export * from './mathField.module';

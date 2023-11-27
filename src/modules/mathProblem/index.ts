@@ -1,2 +1,2 @@
-export * from './mathProblem.resolver';
+export * from './mathProblem.module';
 export * from './mathProblemCrud.service';
