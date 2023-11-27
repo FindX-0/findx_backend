@@ -3,10 +3,10 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { NewMediaFile, SelectableMediaFile } from '@entities/mediaFile.entity';
 import { ExceptionMessageCode } from '@shared/constant';
 
-import { MediaFileRepository } from './mediaFile.repository';
+import { MediaFileRepository } from '../mediaFile.repository';
 
 @Injectable()
-export class MediaFileCrudService {
+export class CreateMediaFileUsecase {
   constructor(private readonly mediaFileRepository: MediaFileRepository) {}
 
   async create(values: NewMediaFile): Promise<SelectableMediaFile> {

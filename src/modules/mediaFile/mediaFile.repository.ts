@@ -34,4 +34,22 @@ export class MediaFileRepository {
 
     return Boolean(deleteResults.length);
   }
+
+  async getByIds(ids: string[]): Promise<SelectableMediaFile[]> {
+    return this.db
+      .selectFrom('mediaFiles')
+      .where('id', 'in', ids)
+      .selectAll()
+      .execute();
+  }
+
+  async countByIds(ids: string[]): Promise<number> {
+    const countRes = await this.db
+      .selectFrom('mediaFiles')
+      .where('id', 'in', ids)
+      .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .executeTakeFirst();
+
+    return countRes?.count ?? 0;
+  }
 }

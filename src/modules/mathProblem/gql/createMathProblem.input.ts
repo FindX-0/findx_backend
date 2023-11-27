@@ -1,5 +1,6 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -37,4 +38,10 @@ export class CreateMathProblemInput {
   @IsString()
   @IsNotEmpty()
   mathSubFieldId: string;
+
+  @Field(() => [String])
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  imageMediaIds: string[];
 }

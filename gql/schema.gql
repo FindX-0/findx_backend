@@ -32,6 +32,7 @@ input CreateMathFieldInput {
 
 input CreateMathProblemInput {
   difficulty: Int!
+  imageMediaIds: [String!]!
   mathFieldId: ID!
   mathSubFieldId: ID!
   tex: String
@@ -96,6 +97,7 @@ type MathProblemObject {
   createdAt: DateTime!
   difficulty: Int!
   id: ID!
+  images: [MediaFileObject!]!
   mathFieldId: String!
   mathSubFieldId: String!
   tex: String
@@ -117,6 +119,14 @@ type MathSubFieldObject {
 type MathSubFieldPageObject {
   count: Int!
   data: [MathSubFieldObject!]!
+}
+
+type MediaFileObject {
+  createdAt: DateTime!
+  fileName: String!
+  id: ID!
+  mimetype: String!
+  path: String!
 }
 
 type Mutation {
@@ -170,6 +180,7 @@ input UpdateMathFieldInput {
 input UpdateMathProblemInput {
   difficulty: Float
   id: ID!
+  imageMediaIds: [String!]
   mathFieldId: ID
   mathSubFieldId: ID
   tex: String

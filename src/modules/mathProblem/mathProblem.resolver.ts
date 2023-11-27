@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Role } from '@entities/entityEnums';
 import { Roles } from '@modules/authentication/decorator/roles.decorator';
+import { MediaFileQueryService } from '@modules/mediaFile';
 import {
   IdentifierInput,
   SuccessObject,
@@ -18,6 +19,7 @@ import { MathProblemCrudService } from './mathProblemCrud.service';
 export class MathProblemResolver {
   constructor(
     private readonly mathProblemCrudService: MathProblemCrudService,
+    private readonly mediaFileCrudService: MediaFileQueryService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -25,7 +27,13 @@ export class MathProblemResolver {
   async createMathProblem(
     @Args('input') input: CreateMathProblemInput,
   ): Promise<MathProblemObject> {
-    return this.mathProblemCrudService.create({ ...input, imagePaths: [] });
+    const mathProblem = await this.mathProblemCrudService.create({ ...input });
+
+    const images = mathProblem.imageMediaIds.length
+      ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
+      : [];
+
+    return { ...mathProblem, images };
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -35,15 +43,20 @@ export class MathProblemResolver {
   ): Promise<MathProblemObject> {
     const { id, ...values } = input;
 
-    values;
-
-    return this.mathProblemCrudService.updateById(id, {
+    const mathProblem = await this.mathProblemCrudService.updateById(id, {
       ...(values.difficulty && { difficulty: values.difficulty }),
       ...(values.text && { text: values.text }),
       ...(values.tex && { tex: values.tex }),
       ...(values.mathFieldId && { mathFieldId: values.mathFieldId }),
       ...(values.mathSubFieldId && { mathSubFieldId: values.mathSubFieldId }),
+      ...(values.imageMediaIds && { imageMediaIds: values.imageMediaIds }),
     });
+
+    const images = mathProblem.imageMediaIds.length
+      ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
+      : [];
+
+    return { ...mathProblem, images };
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -60,7 +73,13 @@ export class MathProblemResolver {
   async getMathProblemById(
     @Args('input') input: IdentifierInput,
   ): Promise<MathProblemObject> {
-    return this.mathProblemCrudService.getById(input.id);
+    const mathProblem = await this.mathProblemCrudService.getById(input.id);
+
+    const images = mathProblem.imageMediaIds.length
+      ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
+      : [];
+
+    return { ...mathProblem, images };
   }
 
   @Query(() => MathProblemPageObject)

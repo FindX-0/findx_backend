@@ -167,10 +167,10 @@ model MathProblem {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  difficulty Int      @db.SmallInt
-  imagePaths String[]
-  text       String?
-  tex        String?
+  difficulty    Int      @db.SmallInt
+  imageMediaIds String[]
+  text          String?
+  tex           String?
 
   mathFieldId    BigInt
   mathSubFieldId BigInt

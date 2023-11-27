@@ -14,20 +14,22 @@ import { plainArrayToInstance } from '@shared/util/plainArrayToInstance';
 
 import { MediaFileDto } from './dto/mediaFile.dto';
 import { PATH_UPLOADS } from './mediaFile.constant';
-import { MediaFileCrudService } from './mediaFileCrud.service';
+import { CreateMediaFileUsecase } from './usecase/createMediaFile.usecase';
 import { diskStorageFileToNewMediaFileValues } from './util/disk_storage_file_to_new_media_file_values';
 
 @Roles(Role.SUPER_ADMIN)
 @Controller('mediaFile')
 export class MediaFileController {
-  constructor(private readonly mediaFileCrudService: MediaFileCrudService) {}
+  constructor(
+    private readonly createMediaFileUsecase: CreateMediaFileUsecase,
+  ) {}
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', { dest: PATH_UPLOADS }))
   async upload(@UploadedFile() file: DiskStorageFile): Promise<MediaFileDto> {
     const values = diskStorageFileToNewMediaFileValues(file);
 
-    const mediaFile = await this.mediaFileCrudService.create(values);
+    const mediaFile = await this.createMediaFileUsecase.create(values);
 
     return plainToInstance(MediaFileDto, mediaFile);
   }
@@ -39,7 +41,7 @@ export class MediaFileController {
       diskStorageFileToNewMediaFileValues(file),
     );
 
-    const mediaFiles = await this.mediaFileCrudService.createMany(values);
+    const mediaFiles = await this.createMediaFileUsecase.createMany(values);
 
     return plainArrayToInstance(MediaFileDto, mediaFiles);
   }

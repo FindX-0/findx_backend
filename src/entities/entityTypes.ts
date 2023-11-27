@@ -43,7 +43,7 @@ export type MathProblem = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
   difficulty: number;
-  imagePaths: string[];
+  imageMediaIds: string[];
   text: string | null;
   tex: string | null;
   mathFieldId: string;

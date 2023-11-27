@@ -1,5 +1,11 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
 
@@ -33,4 +39,10 @@ export class UpdateMathProblemInput extends IdentifierInput {
   @IsString()
   @IsNotEmpty()
   mathSubFieldId: string | null;
+
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  imageMediaIds: string[] | null;
 }

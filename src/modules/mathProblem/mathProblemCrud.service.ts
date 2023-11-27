@@ -9,6 +9,7 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from '@entities/mathProblem.entity';
+import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage, LastIdPageParams } from '@shared/type';
 
@@ -16,9 +17,16 @@ import { MathProblemRepository } from './mathProblem.repository';
 
 @Injectable()
 export class MathProblemCrudService {
-  constructor(private readonly mathProblemRepository: MathProblemRepository) {}
+  constructor(
+    private readonly mathProblemRepository: MathProblemRepository,
+    private readonly mediaFileValidatorService: MediaFileValidatorService,
+  ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
+    await this.mediaFileValidatorService.validateExistsMany(
+      values.imageMediaIds,
+    );
+
     const entity = await this.mathProblemRepository.create(values);
 
     if (!entity) {
@@ -34,6 +42,12 @@ export class MathProblemCrudService {
     id: string,
     values: MathProblemUpdate,
   ): Promise<SelectableMathProblem> {
+    if (values.imageMediaIds) {
+      await this.mediaFileValidatorService.validateExistsMany(
+        values.imageMediaIds,
+      );
+    }
+
     const entity = await this.mathProblemRepository.updateById(id, values);
 
     if (!entity) {

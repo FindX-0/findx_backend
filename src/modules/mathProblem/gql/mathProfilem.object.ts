@@ -1,5 +1,7 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
+import { MediaFileObject } from '@modules/mediaFile/gql/mediaFile.object';
+
 @ObjectType()
 export class MathProblemObject {
   @Field(() => ID)
@@ -22,4 +24,7 @@ export class MathProblemObject {
 
   @Field()
   mathSubFieldId: string;
+
+  @Field(() => [MediaFileObject])
+  images: MediaFileObject[];
 }
