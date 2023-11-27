@@ -47,6 +47,16 @@ export class MathProblemRepository {
     return entity ?? null;
   }
 
+  async getImageMediaIdsById(id: string): Promise<string[] | null> {
+    const entity = await this.db
+      .selectFrom('mathProblems')
+      .select(['id', 'imageMediaIds'])
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity?.imageMediaIds ?? null;
+  }
+
   async deleteById(id: string): Promise<boolean> {
     const deleteResults = await this.db
       .deleteFrom('mathProblems')

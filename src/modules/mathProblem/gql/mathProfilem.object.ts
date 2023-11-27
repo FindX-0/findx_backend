@@ -25,6 +25,6 @@ export class MathProblemObject {
   @Field()
   mathSubFieldId: string;
 
-  @Field(() => [MediaFileObject])
-  images: MediaFileObject[];
+  @Field(() => [MediaFileObject], { nullable: true })
+  images: MediaFileObject[] | null;
 }

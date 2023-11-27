@@ -35,6 +35,16 @@ export class MediaFileRepository {
     return Boolean(deleteResults.length);
   }
 
+  async getById(id: string): Promise<SelectableMediaFile | null> {
+    const entity = await this.db
+      .selectFrom('mediaFiles')
+      .where('id', '=', id)
+      .selectAll()
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
+
   async getByIds(ids: string[]): Promise<SelectableMediaFile[]> {
     return this.db
       .selectFrom('mediaFiles')

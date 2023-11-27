@@ -97,7 +97,7 @@ type MathProblemObject {
   createdAt: DateTime!
   difficulty: Int!
   id: ID!
-  images: [MediaFileObject!]!
+  images: [MediaFileObject!]
   mathFieldId: String!
   mathSubFieldId: String!
   tex: String

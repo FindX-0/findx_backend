@@ -9,6 +9,7 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from '@entities/mathProblem.entity';
+import { DeleteMediaFileUsecase } from '@modules/mediaFile';
 import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage, LastIdPageParams } from '@shared/type';
@@ -20,6 +21,7 @@ export class MathProblemCrudService {
   constructor(
     private readonly mathProblemRepository: MathProblemRepository,
     private readonly mediaFileValidatorService: MediaFileValidatorService,
+    private readonly deleteMediaFileUsecase: DeleteMediaFileUsecase,
   ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
@@ -42,9 +44,15 @@ export class MathProblemCrudService {
     id: string,
     values: MathProblemUpdate,
   ): Promise<SelectableMathProblem> {
+    let oldImageMediaIds: string[] | null = null;
+
     if (values.imageMediaIds) {
       await this.mediaFileValidatorService.validateExistsMany(
         values.imageMediaIds,
+      );
+
+      oldImageMediaIds = await this.mathProblemRepository.getImageMediaIdsById(
+        id,
       );
     }
 
@@ -52,6 +60,10 @@ export class MathProblemCrudService {
 
     if (!entity) {
       throw new NotFoundException(ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND);
+    }
+
+    if (oldImageMediaIds?.length) {
+      await this.deleteMediaFileUsecase.deleteManyByIds(oldImageMediaIds);
     }
 
     return entity;
@@ -68,10 +80,18 @@ export class MathProblemCrudService {
   }
 
   async deleteById(id: string): Promise<void> {
+    const imageMediaIds = await this.mathProblemRepository.getImageMediaIdsById(
+      id,
+    );
+
     const didDelete = await this.mathProblemRepository.deleteById(id);
 
     if (!didDelete) {
       throw new NotFoundException(ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND);
+    }
+
+    if (imageMediaIds?.length) {
+      await this.deleteMediaFileUsecase.deleteManyByIds(imageMediaIds);
     }
   }
 
