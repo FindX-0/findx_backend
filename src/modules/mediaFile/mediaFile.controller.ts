@@ -1,32 +1,50 @@
 import {
-  MemoryStorageFile,
   FileInterceptor,
   UploadedFile,
+  AnyFilesInterceptor,
+  DiskStorageFile,
 } from '@blazity/nest-file-fastify';
-import { Controller, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 
+import { Role } from '@entities/entityEnums';
+import { Roles } from '@modules/authentication/decorator/roles.decorator';
+import { plainArrayToInstance } from '@shared/util/plainArrayToInstance';
+
+import { MediaFileDto } from './dto/mediaFile.dto';
+import { RESOLVED_PATH_UPLOADS } from './mediaFile.constant';
+import { MediaFileCrudService } from './mediaFileCrud.service';
+import { diskStorageFileToNewMediaFileValues } from './util/disk_storage_file_to_new_media_file_values';
+
+@Roles(Role.SUPER_ADMIN)
 @Controller('mediaFile')
 export class MediaFileController {
-  @Post('/upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: MemoryStorageFile) {
-    console.log(file);
+  constructor(private readonly mediaFileCrudService: MediaFileCrudService) {}
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', { dest: RESOLVED_PATH_UPLOADS }))
+  async upload(@UploadedFile() file: DiskStorageFile): Promise<MediaFileDto> {
+    const values = diskStorageFileToNewMediaFileValues(file);
+
+    const mediaFile = await this.mediaFileCrudService.create(values);
+
+    return plainToInstance(MediaFileDto, mediaFile);
   }
 
-  // @Post('/upload')
-  // @UseInterceptors(
-  //   FileFieldsInterceptor([
-  //     { name: 'image', maxCount: 1 },
-  //     { name: 'imageTwo', maxCount: 1 },
-  //   ]),
-  // )
-  // async register(
-  //   @Body() data: Record<string, unknown>, // other data that you might want to pass along with the files
-  //   @UploadedFiles()
-  //   files: { image?: MemoryStorageFile[0]; imageTwo?: MemoryStorageFile[0] },
-  // ): Promise<void> {
-  //   Object.values(files).forEach((file) => {
-  //     this.s3Service.uploadFile(file[0]);
-  //   });
-  // }
+  @Post('uploadMany')
+  @UseInterceptors(AnyFilesInterceptor({ dest: RESOLVED_PATH_UPLOADS }))
+  async uploadMany(@UploadedFiles() files: DiskStorageFile[]) {
+    const values = files.map((file) =>
+      diskStorageFileToNewMediaFileValues(file),
+    );
+
+    const mediaFiles = await this.mediaFileCrudService.createMany(values);
+
+    return plainArrayToInstance(MediaFileDto, mediaFiles);
+  }
 }

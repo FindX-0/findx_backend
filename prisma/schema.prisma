@@ -42,9 +42,22 @@ enum Role {
   @@map("role")
 }
 
+model MediaFile {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  path     String @db.VarChar(255)
+  fileName String @db.VarChar(255)
+  mimetype String @db.VarChar(255)
+
+  @@index([mimetype])
+  @@map("mediaFiles")
+}
+
 model User {
-  id           BigInt       @id @default(autoincrement())
-  createdAt    DateTime     @default(now())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
   email        String       @unique @db.VarChar(255)
   userName     String?      @db.VarChar(255)
   passwordHash String       @db.VarChar(255)

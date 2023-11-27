@@ -55,6 +55,13 @@ export type MathSubField = {
   createdAt: Generated<Timestamp>;
   mathFieldId: string;
 };
+export type MediaFile = {
+  id: Generated<string>;
+  createdAt: Generated<Timestamp>;
+  path: string;
+  fileName: string;
+  mimetype: string;
+};
 export type RefreshToken = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
@@ -86,6 +93,7 @@ export type DB = {
   mathFields: MathField;
   mathProblems: MathProblem;
   mathSubFields: MathSubField;
+  mediaFiles: MediaFile;
   refreshTokens: RefreshToken;
   tickets: Ticket;
   users: User;
