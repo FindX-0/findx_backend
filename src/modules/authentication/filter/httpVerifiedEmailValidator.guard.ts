@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { AccountVerificationService } from '@modules/accountVerification';
 import { ExceptionMessageCode } from '@shared/constant';
+import { getContextRequest } from '@shared/util';
 
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { NO_EMAIL_VERIFICATION_VALIDATE } from '../decorator/noEmailVerificationValidate.decorator';
@@ -16,7 +16,7 @@ import { getBearerTokenFromRequest } from '../util';
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class GqlVerifiedEmailValidatorGuard implements CanActivate {
+export class HttpVerifiedEmailValidatorGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtHelper: JwtHelper,
@@ -42,9 +42,7 @@ export class GqlVerifiedEmailValidatorGuard implements CanActivate {
       return true;
     }
 
-    const gqlContext = GqlExecutionContext.create(context);
-
-    const { req } = gqlContext.getContext();
+    const req = getContextRequest(context);
 
     const accessToken = getBearerTokenFromRequest(req);
 

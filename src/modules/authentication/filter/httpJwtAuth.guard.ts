@@ -5,16 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { ExceptionMessageCode } from '@shared/constant';
+import { getContextRequest } from '@shared/util';
 
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
-import { getBearerTokenFromRequest } from '../util';
-import { JwtHelper } from '../util/jwt.helper';
+import { JwtHelper, getBearerTokenFromRequest } from '../util';
 
 @Injectable()
-export class GqlJwtAuthGuard implements CanActivate {
+export class HttpJwtAuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly jwtHelper: JwtHelper,
@@ -30,11 +29,11 @@ export class GqlJwtAuthGuard implements CanActivate {
       return true;
     }
 
-    const gqlContext = GqlExecutionContext.create(context);
-
-    const { req } = gqlContext.getContext();
+    const req = getContextRequest(context);
 
     const accessToken = getBearerTokenFromRequest(req);
+
+    console.log(accessToken);
 
     if (!accessToken) {
       throw new UnauthorizedException(ExceptionMessageCode.MISSING_TOKEN);

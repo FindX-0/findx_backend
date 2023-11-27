@@ -1,6 +1,6 @@
 import { Query, Resolver } from '@nestjs/graphql';
 
-import { GqlAuthPayload, UserAuthPayload } from '@modules/authentication';
+import { HttpAuthPayload, UserAuthPayload } from '@modules/authentication';
 
 import { UserObject } from './gql';
 import { UserService } from './user.service';
@@ -11,7 +11,7 @@ export class UserResolver {
 
   @Query(() => UserObject)
   async getAuthUser(
-    @GqlAuthPayload() authPayload: UserAuthPayload,
+    @HttpAuthPayload() authPayload: UserAuthPayload,
   ): Promise<UserObject> {
     return this.userService.getById(authPayload.userId);
   }

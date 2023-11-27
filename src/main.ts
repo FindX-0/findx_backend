@@ -1,3 +1,4 @@
+import multiPart from '@fastify/multipart';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -24,6 +25,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+  await app.register(multiPart);
 
   await app.listen(3000, '0.0.0.0');
 }

@@ -1,6 +1,6 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { GqlAuthPayload, UserAuthPayload } from '@modules/authentication';
+import { HttpAuthPayload, UserAuthPayload } from '@modules/authentication';
 import { SuccessObject } from '@shared/gql';
 
 import { EnqueueTicketInput } from './gql/enqueueTicket.input';
@@ -12,7 +12,7 @@ export class MatchmakingResolver {
 
   @Mutation(() => SuccessObject)
   async enqueueTicket(
-    @GqlAuthPayload() authPayload: UserAuthPayload,
+    @HttpAuthPayload() authPayload: UserAuthPayload,
     @Args('input') input: EnqueueTicketInput,
   ): Promise<SuccessObject> {
     await this.enqueueTicketUseCase.call({

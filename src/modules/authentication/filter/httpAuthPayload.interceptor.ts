@@ -7,20 +7,18 @@ import {
   InternalServerErrorException,
   NestInterceptor,
 } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { Observable } from 'rxjs';
 
 import { ExceptionMessageCode } from '@shared/constant';
+import { getContextRequest } from '@shared/util';
 
 import { UserAuthPayload } from '../type';
 import { getBearerTokenFromRequest } from '../util';
 import { JwtHelper } from '../util/jwt.helper';
 
-export const GqlAuthPayload = createParamDecorator(
+export const HttpAuthPayload = createParamDecorator(
   (_: never, context: ExecutionContext) => {
-    const gqlContext = GqlExecutionContext.create(context);
-
-    const { req } = gqlContext.getContext();
+    const req = getContextRequest(context);
 
     if (!req) {
       throw new InternalServerErrorException(
@@ -39,16 +37,14 @@ export const GqlAuthPayload = createParamDecorator(
 );
 
 @Injectable()
-export class GqlAuthPayloadInterceptor implements NestInterceptor {
+export class HttpAuthPayloadInterceptor implements NestInterceptor {
   constructor(private readonly jwtHelper: JwtHelper) {}
 
   async intercept(
     context: ExecutionContext,
     next: CallHandler,
   ): Promise<Observable<any>> {
-    const gqlContext = GqlExecutionContext.create(context);
-
-    const { req } = gqlContext.getContext();
+    const req = getContextRequest(context);
 
     const jwtToken = getBearerTokenFromRequest(req);
 

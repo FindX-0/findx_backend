@@ -6,17 +6,17 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { Role } from '@entities/entityEnums';
 import { AdminUserQueryService } from '@modules/adminUser';
 import { ExceptionMessageCode } from '@shared/constant';
+import { getContextRequest } from '@shared/util';
 
 import { ROLES_KEY } from '../decorator/roles.decorator';
 import { JwtHelper, getBearerTokenFromRequest } from '../util';
 
 @Injectable()
-export class GqlRolesGuard implements CanActivate {
+export class HttpRolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly jwtHelper: JwtHelper,
@@ -33,9 +33,7 @@ export class GqlRolesGuard implements CanActivate {
       return true;
     }
 
-    const gqlContext = GqlExecutionContext.create(context);
-
-    const { req } = gqlContext.getContext();
+    const req = getContextRequest(context);
 
     const accessToken = getBearerTokenFromRequest(req);
 

@@ -15,17 +15,18 @@ import { validationExceptionFactory } from '@config/validation';
 import { AccountVerificationModule } from '@modules/accountVerification';
 import { AdminUserModule } from '@modules/adminUser';
 import {
-  GqlAuthPayloadInterceptor,
-  GqlJwtAuthGuard,
-  GqlVerifiedEmailValidatorGuard,
+  HttpAuthPayloadInterceptor,
+  HttpJwtAuthGuard,
+  HttpVerifiedEmailValidatorGuard,
   JwtHelperModule,
   AuthenticationModule,
-  GqlRolesGuard,
+  HttpRolesGuard,
 } from '@modules/authentication';
 import { MatchmakingModule } from '@modules/matchmaking';
 import { MathFieldModule } from '@modules/mathField/mathField.module';
 import { MathProblemModule } from '@modules/mathProblem/mathProblem.module';
 import { MathSubFieldModule } from '@modules/mathSubField';
+import { MediaFileModule } from '@modules/mediaFile/mediaFile.module';
 import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { TransactionRunnerModule } from '@shared/util';
@@ -62,6 +63,7 @@ import { AppController } from './app.controller';
     MathFieldModule,
     MathSubFieldModule,
     MathProblemModule,
+    MediaFileModule,
   ],
   controllers: [AppController],
   providers: [
@@ -74,19 +76,19 @@ import { AppController } from './app.controller';
     },
     {
       provide: APP_GUARD,
-      useClass: GqlJwtAuthGuard,
+      useClass: HttpJwtAuthGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: GqlRolesGuard,
+      useClass: HttpRolesGuard,
     },
     {
       provide: APP_GUARD,
-      useClass: GqlVerifiedEmailValidatorGuard,
+      useClass: HttpVerifiedEmailValidatorGuard,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: GqlAuthPayloadInterceptor,
+      useClass: HttpAuthPayloadInterceptor,
     },
   ],
 })
