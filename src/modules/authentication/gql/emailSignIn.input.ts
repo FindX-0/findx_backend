@@ -1,11 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
+
+import { IsEmailCustom } from '@shared/validator';
 
 @InputType()
 export class EmailSignInInput {
   @Field()
   @IsString()
-  @IsEmail()
+  @IsEmailCustom()
   @MaxLength(255)
   readonly email: string;
 
