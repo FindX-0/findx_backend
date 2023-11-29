@@ -1,6 +1,6 @@
 import { Insertable, Selectable, Updateable } from 'kysely';
 
-import { MediaFile } from './entityTypes';
+import { MediaFile } from '@entities/entityTypes';
 
 export type SelectableMediaFile = Selectable<MediaFile>;
 export type NewMediaFile = Insertable<MediaFile>;

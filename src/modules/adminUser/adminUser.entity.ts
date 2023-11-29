@@ -1,6 +1,6 @@
 import { Insertable, Selectable, Updateable } from 'kysely';
 
-import { AdminUser } from './entityTypes';
+import { AdminUser } from '@entities/entityTypes';
 
 export type SelectableAdminUser = Selectable<AdminUser>;
 export type NewAdminUser = Insertable<AdminUser>;

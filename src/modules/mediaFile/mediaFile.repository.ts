@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
-import { NewMediaFile, SelectableMediaFile } from '@entities/mediaFile.entity';
+
+import { NewMediaFile, SelectableMediaFile } from './mediaFile.entity';
 
 @Injectable()
 export class MediaFileRepository {

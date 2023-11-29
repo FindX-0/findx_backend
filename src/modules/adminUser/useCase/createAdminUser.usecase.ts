@@ -4,9 +4,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { NewAdminUser, SelectableAdminUser } from '@entities/adminUser.entity';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { NewAdminUser, SelectableAdminUser } from '../adminUser.entity';
 import { AdminUserRepository } from '../adminUser.repository';
 
 @Injectable()

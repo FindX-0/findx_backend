@@ -5,11 +5,12 @@ import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB } from '@config/database';
 import { TicketState } from '@entities/entityEnums';
 import { DB } from '@entities/entityTypes';
+
 import {
   NewTicket,
   SelectableTicket,
   TicketUpdate,
-} from '@entities/ticket.entity';
+} from '../entity/ticket.entity';
 
 @Injectable()
 export class TicketRepository {

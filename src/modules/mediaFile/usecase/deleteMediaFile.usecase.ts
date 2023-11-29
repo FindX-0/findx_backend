@@ -2,9 +2,9 @@ import { unlink } from 'node:fs/promises';
 
 import { Injectable } from '@nestjs/common';
 
-import { SelectableMediaFile } from '@entities/mediaFile.entity';
 import { pathExists } from '@shared/util';
 
+import { SelectableMediaFile } from '../mediaFile.entity';
 import { MediaFileRepository } from '../mediaFile.repository';
 
 @Injectable()

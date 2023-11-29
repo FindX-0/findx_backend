@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { SelectableAdminUser } from '@entities/adminUser.entity';
 import { Role } from '@entities/entityEnums';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { SelectableAdminUser } from './adminUser.entity';
 import { AdminUserRepository } from './adminUser.repository';
 
 @Injectable()

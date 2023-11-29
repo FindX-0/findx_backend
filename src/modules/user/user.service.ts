@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { ExceptionMessageCode } from '@shared/constant';
+
 import {
   NewUser,
   SelectableUser,
   SelectableUserOmitPassword,
-} from '@entities/user.entity';
-import { ExceptionMessageCode } from '@shared/constant';
-
+} from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()

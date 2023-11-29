@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+import { LastIdPageParams } from '@shared/type';
+
 import {
   MathFieldUpdate,
   NewMathField,
   SelectableMathField,
-} from '@entities/mathField.entity';
-import { LastIdPageParams } from '@shared/type';
+} from './mathField.entity';
 
 @Injectable()
 export class MathFieldRepository {

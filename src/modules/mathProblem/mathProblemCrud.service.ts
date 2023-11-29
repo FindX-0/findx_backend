@@ -4,16 +4,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import {
-  MathProblemUpdate,
-  NewMathProblem,
-  SelectableMathProblem,
-} from '@entities/mathProblem.entity';
 import { DeleteMediaFileUsecase } from '@modules/mediaFile';
 import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage, LastIdPageParams } from '@shared/type';
 
+import {
+  MathProblemUpdate,
+  NewMathProblem,
+  SelectableMathProblem,
+} from './mathProblem.entity';
 import { MathProblemRepository } from './mathProblem.repository';
 
 @Injectable()

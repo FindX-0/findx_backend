@@ -2,9 +2,8 @@ import { join } from 'path';
 
 import { DiskStorageFile } from '@blazity/nest-file-fastify';
 
-import { NewMediaFile } from '@entities/mediaFile.entity';
-
 import { DIRECTORY_UPLOADS } from '../mediaFile.constant';
+import { NewMediaFile } from '../mediaFile.entity';
 
 export const diskStorageFileToNewMediaFileValues = (
   file: DiskStorageFile,

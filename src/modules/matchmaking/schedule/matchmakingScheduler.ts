@@ -3,7 +3,6 @@ import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env';
 import { TicketState } from '@entities/entityEnums';
-import { SelectableTicket } from '@entities/ticket.entity';
 import {
   TransactionProvider,
   TransactionRunner,
@@ -11,6 +10,7 @@ import {
 } from '@shared/util';
 import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 
+import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
 import { FinishMatchUseCase } from '../useCase/finishMatch.usecase';

@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+import { LastIdPageParams } from '@shared/type';
+
 import {
   MathProblemUpdate,
   NewMathProblem,
   SelectableMathProblem,
-} from '@entities/mathProblem.entity';
-import { LastIdPageParams } from '@shared/type';
+} from './mathProblem.entity';
 
 @Injectable()
 export class MathProblemRepository {

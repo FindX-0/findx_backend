@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
-import { NewAdminUser, SelectableAdminUser } from '@entities/adminUser.entity';
 import { Role } from '@entities/entityEnums';
+
+import { NewAdminUser, SelectableAdminUser } from './adminUser.entity';
 
 @Injectable()
 export class AdminUserRepository {

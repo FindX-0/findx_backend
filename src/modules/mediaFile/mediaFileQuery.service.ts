@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { SelectableMediaFile } from '@entities/mediaFile.entity';
-
+import { SelectableMediaFile } from './mediaFile.entity';
 import { MediaFileRepository } from './mediaFile.repository';
 
 @Injectable()

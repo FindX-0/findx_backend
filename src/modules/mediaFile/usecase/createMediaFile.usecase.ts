@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
-import { NewMediaFile, SelectableMediaFile } from '@entities/mediaFile.entity';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { NewMediaFile, SelectableMediaFile } from './mediaFile.entity';
 import { MediaFileRepository } from '../mediaFile.repository';
 
 @Injectable()

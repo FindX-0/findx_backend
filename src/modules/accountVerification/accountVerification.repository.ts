@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+
 import {
   NewAccountVerification,
   SelectableAccountVerification,
   UpdateAccountVerification,
-} from '@entities/accountVerification.entity';
+} from './accountVerification.entity';
 
 @Injectable()
 export class AccountVerificationRepository {

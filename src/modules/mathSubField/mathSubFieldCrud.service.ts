@@ -4,14 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { ExceptionMessageCode } from '@shared/constant';
+import { DataPage, LastIdPageParams } from '@shared/type';
+
 import {
   MathSubFieldUpdate,
   NewMathSubField,
   SelectableMathSubField,
-} from '@entities/mathSubField.entity';
-import { ExceptionMessageCode } from '@shared/constant';
-import { DataPage, LastIdPageParams } from '@shared/type';
-
+} from './mathSubField.entity';
 import { MathSubFieldRepository } from './mathSubField.repository';
 
 @Injectable()
