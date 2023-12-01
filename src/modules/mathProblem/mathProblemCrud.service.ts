@@ -8,6 +8,7 @@ import { DeleteMediaFileUsecase } from '@modules/mediaFile';
 import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage, LastIdPageParams } from '@shared/type';
+import { TransactionRunner } from '@shared/util';
 
 import {
   MathProblemUpdate,
@@ -22,6 +23,7 @@ export class MathProblemCrudService {
     private readonly mathProblemRepository: MathProblemRepository,
     private readonly mediaFileValidatorService: MediaFileValidatorService,
     private readonly deleteMediaFileUsecase: DeleteMediaFileUsecase,
+    private readonly transactionRunner: TransactionRunner,
   ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
@@ -56,17 +58,28 @@ export class MathProblemCrudService {
       );
     }
 
-    const entity = await this.mathProblemRepository.updateById(id, values);
+    return this.transactionRunner.runTransaction(async (txProvider) => {
+      const entity = await this.mathProblemRepository.updateById(
+        id,
+        values,
+        txProvider,
+      );
 
-    if (!entity) {
-      throw new NotFoundException(ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND);
-    }
+      if (!entity) {
+        throw new NotFoundException(
+          ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND,
+        );
+      }
 
-    if (oldImageMediaIds?.length) {
-      await this.deleteMediaFileUsecase.deleteManyByIds(oldImageMediaIds);
-    }
+      if (oldImageMediaIds?.length) {
+        await this.deleteMediaFileUsecase.deleteManyByIds(
+          oldImageMediaIds,
+          txProvider,
+        );
+      }
 
-    return entity;
+      return entity;
+    });
   }
 
   async getById(id: string): Promise<SelectableMathProblem> {
@@ -84,15 +97,25 @@ export class MathProblemCrudService {
       id,
     );
 
-    const didDelete = await this.mathProblemRepository.deleteById(id);
+    return this.transactionRunner.runTransaction(async (txProvider) => {
+      const didDelete = await this.mathProblemRepository.deleteById(
+        id,
+        txProvider,
+      );
 
-    if (!didDelete) {
-      throw new NotFoundException(ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND);
-    }
+      if (!didDelete) {
+        throw new NotFoundException(
+          ExceptionMessageCode.MATH_PROBLEM_NOT_FOUND,
+        );
+      }
 
-    if (imageMediaIds?.length) {
-      await this.deleteMediaFileUsecase.deleteManyByIds(imageMediaIds);
-    }
+      if (imageMediaIds?.length) {
+        await this.deleteMediaFileUsecase.deleteManyByIds(
+          imageMediaIds,
+          txProvider,
+        );
+      }
+    });
   }
 
   async filter(

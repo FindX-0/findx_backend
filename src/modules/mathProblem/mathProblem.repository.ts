@@ -3,6 +3,7 @@ import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import { LastIdPageParams } from '@shared/type';
+import { TransactionProvider } from '@shared/util';
 
 import {
   MathProblemUpdate,
@@ -27,8 +28,9 @@ export class MathProblemRepository {
   async updateById(
     id: string,
     values: MathProblemUpdate,
+    txProvider?: TransactionProvider,
   ): Promise<SelectableMathProblem | null> {
-    const updated = await this.db
+    const updated = await (txProvider?.get() ?? this.db)
       .updateTable('mathProblems')
       .where('id', '=', id)
       .set(values)
@@ -58,8 +60,11 @@ export class MathProblemRepository {
     return entity?.imageMediaIds ?? null;
   }
 
-  async deleteById(id: string): Promise<boolean> {
-    const deleteResults = await this.db
+  async deleteById(
+    id: string,
+    txProvider?: TransactionProvider,
+  ): Promise<boolean> {
+    const deleteResults = await (txProvider?.get() ?? this.db)
       .deleteFrom('mathProblems')
       .where('id', '=', id)
       .execute();

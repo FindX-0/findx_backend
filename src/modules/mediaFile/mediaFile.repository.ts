@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+import { TransactionProvider } from '@shared/util';
 
 import { NewMediaFile, SelectableMediaFile } from './mediaFile.entity';
 
@@ -27,13 +28,26 @@ export class MediaFileRepository {
       .execute();
   }
 
-  async deleteById(id: string): Promise<boolean> {
-    const deleteResults = await this.db
+  async deleteById(
+    id: string,
+    txProvider?: TransactionProvider,
+  ): Promise<boolean> {
+    const deleteResults = await (txProvider?.get() ?? this.db)
       .deleteFrom('mediaFiles')
       .where('id', '=', id)
       .execute();
 
     return Boolean(deleteResults.length);
+  }
+
+  async deleteManyByIds(
+    ids: string[],
+    txProvider?: TransactionProvider,
+  ): Promise<void> {
+    await (txProvider?.get() ?? this.db)
+      .deleteFrom('mediaFiles')
+      .where('id', 'in', ids)
+      .execute();
   }
 
   async getById(id: string): Promise<SelectableMediaFile | null> {

@@ -20,7 +20,7 @@ export class LastIdPageParamsObject {
   @Field(() => Int)
   @IsInt()
   @IsPositive()
-  @Max(100)
+  @Max(200)
   @Min(10)
   limit: number;
 }
