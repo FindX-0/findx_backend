@@ -12,6 +12,8 @@ import { EnvService } from './env.service';
 import { EnvModuleOptions } from './envVariables';
 import { validateEnvSchema } from './validateEnvSchema';
 
+const ENV = process.env['NODE_ENV'];
+
 @Global()
 @Module({
   providers: [EnvService],
@@ -26,7 +28,9 @@ export class EnvModule {
    * @returns {DynamicModule}
    */
   public static forRoot(options?: EnvModuleOptions): DynamicModule {
-    this.logger.verbose('Started initializing enviroment variables');
+    this.logger.verbose(
+      `Started initializing enviroment variables, env=${ENV}`,
+    );
 
     const provider: Provider = {
       provide: ENV_SERVICE_TOKEN,
@@ -41,7 +45,7 @@ export class EnvModule {
           // predefined/system environment variables will not be validated
           ignoreEnvVars: true,
           validate: validateEnvSchema,
-          envFilePath: ['.env.development.local', '.env.development'],
+          envFilePath: ['.env.development.local', `.env.${ENV}`],
           ...options,
         }),
       ],
