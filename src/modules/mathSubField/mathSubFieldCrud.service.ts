@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { ExceptionMessageCode } from '@shared/constant';
-import { DataPage, LastIdPageParams } from '@shared/type';
+import { DataPage } from '@shared/type';
 
 import {
   MathSubFieldUpdate,
@@ -13,6 +13,7 @@ import {
   SelectableMathSubField,
 } from './mathSubField.entity';
 import { MathSubFieldRepository } from './mathSubField.repository';
+import { FilterMathSubFieldParams } from './mathSubField.type';
 
 @Injectable()
 export class MathSubFieldCrudService {
@@ -70,7 +71,7 @@ export class MathSubFieldCrudService {
   }
 
   async filter(
-    filter: LastIdPageParams,
+    filter: FilterMathSubFieldParams,
   ): Promise<DataPage<SelectableMathSubField>> {
     const data = await this.mathSubFieldRepository.filter(filter);
 

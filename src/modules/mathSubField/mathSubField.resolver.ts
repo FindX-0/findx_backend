@@ -2,13 +2,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Role } from '@entities/entityEnums';
 import { Roles } from '@modules/authentication/decorator/roles.decorator';
-import {
-  IdentifierInput,
-  SuccessObject,
-  LastIdPageParamsObject,
-} from '@shared/gql';
+import { IdentifierInput, SuccessObject } from '@shared/gql';
 
 import { CreateMathSubFieldInput } from './gql/createMathSubField.input';
+import { FilterMathSubFieldsInput } from './gql/filterMathSubFields.input';
 import { MathSubFieldObject } from './gql/mathSubField.object';
 import { MathSubFieldPageObject } from './gql/mathSubFIeldPage.object';
 import { UpdateMathSubFieldInput } from './gql/updateMathSubField.input';
@@ -60,7 +57,7 @@ export class MathSubFieldResolver {
 
   @Query(() => MathSubFieldPageObject)
   async filterMathSubFields(
-    @Args('input') input: LastIdPageParamsObject,
+    @Args('input') input: FilterMathSubFieldsInput,
   ): Promise<MathSubFieldPageObject> {
     return this.mathSubFieldCrudService.filter(input);
   }

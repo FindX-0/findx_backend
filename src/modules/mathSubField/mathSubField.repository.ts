@@ -9,6 +9,7 @@ import {
   NewMathSubField,
   SelectableMathSubField,
 } from './mathSubField.entity';
+import { FilterMathSubFieldParams } from './mathSubField.type';
 
 @Injectable()
 export class MathSubFieldRepository {
@@ -62,11 +63,15 @@ export class MathSubFieldRepository {
   async filter({
     lastId,
     limit,
-  }: LastIdPageParams): Promise<SelectableMathSubField[]> {
+    mathFieldId,
+  }: FilterMathSubFieldParams): Promise<SelectableMathSubField[]> {
     return this.db
       .selectFrom('mathSubFields')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
+      .$if(Boolean(mathFieldId), (qb) =>
+        qb.where('mathFieldId', '=', mathFieldId as string),
+      )
       .orderBy('id desc')
       .limit(limit)
       .execute();
