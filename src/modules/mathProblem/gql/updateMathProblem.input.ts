@@ -40,9 +40,10 @@ export class UpdateMathProblemInput extends IdentifierInput {
   @IsNotEmpty()
   mathSubFieldId: string | null;
 
-  @Field(() => [String], { nullable: true })
+  @Field(() => [ID], { nullable: true })
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
+  @IsOptional()
   imageMediaIds: string[] | null;
 }

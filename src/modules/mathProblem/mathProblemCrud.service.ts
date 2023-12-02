@@ -27,9 +27,11 @@ export class MathProblemCrudService {
   ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
-    await this.mediaFileValidatorService.validateExistsMany(
-      values.imageMediaIds,
-    );
+    if (values.imageMediaIds.length) {
+      await this.mediaFileValidatorService.validateExistsMany(
+        values.imageMediaIds,
+      );
+    }
 
     const entity = await this.mathProblemRepository.create(values);
 

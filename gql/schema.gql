@@ -32,7 +32,7 @@ input CreateMathFieldInput {
 
 input CreateMathProblemInput {
   difficulty: Int!
-  imageMediaIds: [String!]!
+  imageMediaIds: [ID!]
   mathFieldId: ID!
   mathSubFieldId: ID!
   tex: String
@@ -186,7 +186,7 @@ input UpdateMathFieldInput {
 input UpdateMathProblemInput {
   difficulty: Float
   id: ID!
-  imageMediaIds: [String!]
+  imageMediaIds: [ID!]
   mathFieldId: ID
   mathSubFieldId: ID
   tex: String

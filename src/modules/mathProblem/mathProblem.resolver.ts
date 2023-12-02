@@ -27,10 +27,15 @@ export class MathProblemResolver {
   async createMathProblem(
     @Args('input') input: CreateMathProblemInput,
   ): Promise<MathProblemObject> {
-    const mathProblem = await this.mathProblemCrudService.create({ ...input });
+    const { imageMediaIds, ...restOfInput } = input;
 
-    const images = mathProblem.imageMediaIds.length
-      ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
+    const mathProblem = await this.mathProblemCrudService.create({
+      ...restOfInput,
+      imageMediaIds: imageMediaIds ?? [],
+    });
+
+    const images = imageMediaIds?.length
+      ? await this.mediaFileCrudService.getByIds(imageMediaIds)
       : [];
 
     return { ...mathProblem, images };

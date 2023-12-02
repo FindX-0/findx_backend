@@ -39,9 +39,10 @@ export class CreateMathProblemInput {
   @IsNotEmpty()
   mathSubFieldId: string;
 
-  @Field(() => [String])
+  @Field(() => [ID], { nullable: true })
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty({ each: true })
-  imageMediaIds: string[];
+  @IsOptional()
+  imageMediaIds: string[] | null;
 }
