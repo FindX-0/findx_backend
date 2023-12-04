@@ -20,14 +20,17 @@ export class AdminUserRepository {
     return entity ?? null;
   }
 
-  async existsByEmail(email: string) {
+  async existsByEmail(email: string): Promise<boolean> {
     const res = await this.db
       .selectFrom('adminUsers')
       .where('email', '=', email)
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return Boolean(res?.count && res.count > 0);
+    const countStr = res?.count ?? '0';
+    const count = parseInt(countStr as string);
+
+    return count > 0;
   }
 
   async getByEmail(email: string): Promise<SelectableAdminUser | null> {

@@ -75,6 +75,8 @@ export class MediaFileRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return countRes?.count ?? 0;
+    const count = countRes?.count ?? '0';
+
+    return parseInt(count as string);
   }
 }

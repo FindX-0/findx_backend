@@ -31,7 +31,10 @@ export class UserRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return Boolean(res?.count && res.count > 0);
+    const countStr = res?.count ?? '0';
+    const count = parseInt(countStr as string);
+
+    return count > 0;
   }
 
   async createUser(params: NewUser): Promise<SelectableUser | null> {
@@ -92,7 +95,10 @@ export class UserRepository {
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .executeTakeFirst();
 
-    return Boolean(res?.count && res.count > 0);
+    const countStr = res?.count ?? '0';
+    const count = parseInt(countStr as string);
+
+    return count > 0;
   }
 
   async updateById(
