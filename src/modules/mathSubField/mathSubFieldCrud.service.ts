@@ -75,7 +75,7 @@ export class MathSubFieldCrudService {
   ): Promise<DataPage<SelectableMathSubField>> {
     const data = await this.mathSubFieldRepository.filter(filter);
 
-    const count = await this.mathSubFieldRepository.count();
+    const count = await this.mathSubFieldRepository.count(filter);
 
     return { data, count };
   }

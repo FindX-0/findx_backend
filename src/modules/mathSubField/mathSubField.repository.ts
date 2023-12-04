@@ -76,10 +76,13 @@ export class MathSubFieldRepository {
       .execute();
   }
 
-  async count(): Promise<number> {
+  async count({ mathFieldId }: FilterMathSubFieldParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('mathSubFields')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .$if(Boolean(mathFieldId), (qb) =>
+        qb.where('mathFieldId', '=', mathFieldId as string),
+      )
       .executeTakeFirst();
 
     return countRes?.count ?? 0;
