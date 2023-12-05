@@ -2,26 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ExceptionMessageCode } from '@shared/constant';
 
-import {
-  NewUser,
-  SelectableUser,
-  SelectableUserOmitPassword,
-} from './user.entity';
+import { SelectableUser, PublicSelectableUser } from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
-export class UserService {
+export class UserQueryService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async getByEmail(email: string): Promise<SelectableUser | null> {
     return this.userRepository.getByEmail(email);
   }
 
-  async create(params: NewUser): Promise<SelectableUser | null> {
-    return this.userRepository.createUser(params);
-  }
-
-  async getById(id: string): Promise<SelectableUserOmitPassword> {
+  async getById(id: string): Promise<PublicSelectableUser> {
     const user = await this.userRepository.getById(id);
 
     if (!user) {
@@ -41,15 +33,13 @@ export class UserService {
     return userId;
   }
 
-  async updatePasswordById(id: string, newHashedPassword: string) {
-    return this.userRepository.updatePasswordById(id, newHashedPassword);
-  }
+  async getSocketIdById(id: string): Promise<string> {
+    const socketId = await this.userRepository.getSocketIdById(id);
 
-  async validateUserById(id: string): Promise<void> {
-    const userExists = await this.userRepository.existsById(id);
-
-    if (!userExists) {
+    if (!socketId) {
       throw new NotFoundException(ExceptionMessageCode.USER_NOT_FOUND);
     }
+
+    return socketId;
   }
 }

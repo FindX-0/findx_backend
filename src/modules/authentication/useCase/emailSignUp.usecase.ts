@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { RefreshTokenService } from '@modules/refreshToken';
-import { UserService, UserValidator } from '@modules/user';
+import { UserMutationService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import {
@@ -13,7 +13,7 @@ import { JwtHelper, PasswordEncoder } from '../util';
 @Injectable()
 export class EmailSignUpUseCase {
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UserMutationService,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly userValidator: UserValidator,

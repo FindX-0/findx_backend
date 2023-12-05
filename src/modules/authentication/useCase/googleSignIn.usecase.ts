@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { RefreshTokenService } from '@modules/refreshToken';
-import { UserService, UserValidator } from '@modules/user';
+import { UserMutationService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
 
@@ -17,7 +17,7 @@ import { GoogleOauthHelper } from '../util/googleOauth.helper';
 export class GoogleSignInUseCase {
   constructor(
     private readonly googleOauthHelper: GoogleOauthHelper,
-    private readonly userService: UserService,
+    private readonly userService: UserMutationService,
     private readonly userValidator: UserValidator,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly randomGenerator: RandomGenerator,

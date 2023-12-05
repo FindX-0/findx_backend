@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { RefreshTokenService } from '@modules/refreshToken';
-import { UserService } from '@modules/user';
+import { UserQueryService } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthenticationPayload } from '../authentication.type';
@@ -10,7 +10,7 @@ import { JwtHelper } from '../util';
 @Injectable()
 export class RefreshTokenUseCase {
   constructor(
-    private readonly userService: UserService,
+    private readonly userQueryService: UserQueryService,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
   ) {}
@@ -28,7 +28,7 @@ export class RefreshTokenUseCase {
     const userId = await this.refreshTokenService.getUserIdByValue(
       oldRefreshToken,
     );
-    const user = userId ? await this.userService.getById(userId) : null;
+    const user = userId ? await this.userQueryService.getById(userId) : null;
 
     if (!user) {
       const decodedPayload = this.jwtHelper.getUserPayload(oldRefreshToken);

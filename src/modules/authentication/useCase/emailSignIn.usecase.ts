@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { AccountVerificationService } from '@modules/accountVerification';
 import { RefreshTokenService } from '@modules/refreshToken';
-import { UserService } from '@modules/user';
+import { UserQueryService } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthenticationPayload, SignInParams } from '../authentication.type';
@@ -11,7 +11,7 @@ import { JwtHelper, PasswordEncoder } from '../util';
 @Injectable()
 export class EmailSignInUseCase {
   constructor(
-    private readonly userService: UserService,
+    private readonly userQueryService: UserQueryService,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly accountVerificationService: AccountVerificationService,
@@ -19,7 +19,7 @@ export class EmailSignInUseCase {
   ) {}
 
   async call(params: SignInParams): Promise<AuthenticationPayload> {
-    const user = await this.userService.getByEmail(params.email);
+    const user = await this.userQueryService.getByEmail(params.email);
 
     if (!user) {
       throw new UnauthorizedException(

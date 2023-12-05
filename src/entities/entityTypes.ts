@@ -85,6 +85,8 @@ export type User = {
   passwordHash: string;
   isCompleted: Generated<boolean>;
   authProvider: Generated<AuthProvider>;
+  isOnline: Generated<boolean>;
+  socketId: Generated<string>;
 };
 export type DB = {
   accountVerification: AccountVerification;

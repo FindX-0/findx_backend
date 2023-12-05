@@ -6,7 +6,7 @@ import { KyselyDB } from '@config/database';
 import {
   NewUser,
   SelectableUser,
-  SelectableUserOmitPassword,
+  PublicSelectableUser,
   UserUpdate,
 } from './user.entity';
 
@@ -47,7 +47,7 @@ export class UserRepository {
     return entity ?? null;
   }
 
-  async getById(id: string): Promise<SelectableUserOmitPassword | null> {
+  async getById(id: string): Promise<PublicSelectableUser | null> {
     const entity = await this.db
       .selectFrom('users')
       .where('id', '=', id)
@@ -58,6 +58,7 @@ export class UserRepository {
         'email',
         'isCompleted',
         'authProvider',
+        'isOnline',
       ])
       .executeTakeFirst();
 
@@ -67,7 +68,7 @@ export class UserRepository {
   async getIdByEmail(email: string): Promise<string | null> {
     const query = await this.db
       .selectFrom('users')
-      .select('id')
+      .select(['id'])
       .where('email', '=', email)
       .executeTakeFirst();
 
@@ -113,5 +114,23 @@ export class UserRepository {
       .executeTakeFirst();
 
     return entity ?? null;
+  }
+
+  async updateIsOnlineById(id: string, isOnline: boolean): Promise<void> {
+    await this.db
+      .updateTable('users')
+      .where('id', '=', id)
+      .set({ isOnline })
+      .execute();
+  }
+
+  async getSocketIdById(id: string): Promise<string | null> {
+    const entity = await this.db
+      .selectFrom('users')
+      .where('id', '=', id)
+      .select(['id', 'socketId'])
+      .executeTakeFirst();
+
+    return entity?.socketId ?? null;
   }
 }

@@ -63,6 +63,8 @@ model User {
   passwordHash String       @db.VarChar(255)
   isCompleted  Boolean      @default(true)
   authProvider AuthProvider @default(EMAIL)
+  isOnline     Boolean
+  socketId     String       @db.VarChar(255)
 
   refreshTokens       RefreshToken[]
   accountVerification AccountVerification?
