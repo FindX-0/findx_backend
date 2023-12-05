@@ -1,6 +1,7 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Role } from '@entities/entityEnums';
+import { SuccessObject } from '@shared/gql';
 
 import { NoAuth } from './decorator/noAuth.decorator';
 import { Roles } from './decorator/roles.decorator';
@@ -33,6 +34,11 @@ export class AuthenticationResolver {
     private readonly adminUserSignUpUseCase: AdminUserSignUpUseCase,
     private readonly adminRefreshTokenUseCase: AdminRefreshTokenUseCase,
   ) {}
+
+  @Query(() => SuccessObject)
+  async authenticationStatus(): Promise<SuccessObject> {
+    return { success: true };
+  }
 
   @NoAuth()
   @Mutation(() => AuthPayloadObject)
