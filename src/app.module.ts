@@ -5,7 +5,6 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
@@ -27,7 +26,7 @@ import { MatchmakingModule } from '@modules/matchmaking';
 import { MathFieldModule } from '@modules/mathField';
 import { MathProblemModule } from '@modules/mathProblem';
 import { MathSubFieldModule } from '@modules/mathSubField';
-import { MediaFileModule, DIRECTORY_UPLOADS } from '@modules/mediaFile';
+import { MediaFileModule } from '@modules/mediaFile';
 import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { TransactionRunnerModule } from '@shared/util';
@@ -39,10 +38,6 @@ import { AppController } from './app.controller';
     ScheduleModule.forRoot(),
     EnvModule.forRoot(),
 
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', DIRECTORY_UPLOADS),
-      serveRoot: '/' + DIRECTORY_UPLOADS,
-    }),
     KyselyModule.forRoot({
       dialect: new PostgresDialect({
         pool: createPostgresPool(),

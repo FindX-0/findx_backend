@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import multiPart from '@fastify/multipart';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -6,6 +8,7 @@ import {
 } from '@nestjs/platform-fastify';
 
 import { registerGqlEnums } from '@config/gql';
+import { DIRECTORY_UPLOADS } from '@modules/mediaFile';
 
 import { AppModule } from './app.module';
 
@@ -18,6 +21,12 @@ async function bootstrap() {
       bodyLimit: _100Mb,
     }),
   );
+
+  app.useStaticAssets({
+    root: join(__dirname, '..', DIRECTORY_UPLOADS),
+    index: false,
+    prefix: `/${DIRECTORY_UPLOADS}`,
+  });
 
   registerGqlEnums();
 
