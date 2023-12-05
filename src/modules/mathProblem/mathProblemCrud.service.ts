@@ -4,7 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { DeleteMediaFileUsecase } from '@modules/mediaFile';
+import {
+  DeleteMediaFileUsecase,
+  MediaFileQueryService,
+} from '@modules/mediaFile';
 import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage, LastIdPageParams } from '@shared/type';
@@ -14,6 +17,7 @@ import {
   MathProblemUpdate,
   NewMathProblem,
   SelectableMathProblem,
+  SelectableMathProblemWithRelations,
 } from './mathProblem.entity';
 import { MathProblemRepository } from './mathProblem.repository';
 
@@ -24,6 +28,7 @@ export class MathProblemCrudService {
     private readonly mediaFileValidatorService: MediaFileValidatorService,
     private readonly deleteMediaFileUsecase: DeleteMediaFileUsecase,
     private readonly transactionRunner: TransactionRunner,
+    private readonly mediaFileQueryService: MediaFileQueryService,
   ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
@@ -122,11 +127,24 @@ export class MathProblemCrudService {
 
   async filter(
     filter: LastIdPageParams,
-  ): Promise<DataPage<SelectableMathProblem>> {
+  ): Promise<DataPage<SelectableMathProblemWithRelations>> {
     const data = await this.mathProblemRepository.filter(filter);
+
+    const imageMediaIds = data.map((e) => e.imageMediaIds).flat(1);
+    const imageMediaFiles = await this.mediaFileQueryService.getByIds(
+      imageMediaIds,
+    );
+
+    const joinedDataWithMediaFiles = data.map((e) => {
+      const images = imageMediaFiles.filter((mediaFile) =>
+        e.imageMediaIds?.includes(mediaFile.id),
+      );
+
+      return { ...e, images };
+    });
 
     const count = await this.mathProblemRepository.count();
 
-    return { data, count };
+    return { data: joinedDataWithMediaFiles, count };
   }
 }

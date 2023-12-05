@@ -57,7 +57,7 @@ export class MathProblemResolver {
       ...(values.imageMediaIds && { imageMediaIds: values.imageMediaIds }),
     });
 
-    const images = mathProblem.imageMediaIds.length
+    const images = mathProblem.imageMediaIds?.length
       ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
       : [];
 
@@ -80,7 +80,7 @@ export class MathProblemResolver {
   ): Promise<MathProblemObject> {
     const mathProblem = await this.mathProblemCrudService.getById(input.id);
 
-    const images = mathProblem.imageMediaIds.length
+    const images = mathProblem.imageMediaIds?.length
       ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
       : [];
 

@@ -1,19 +1,23 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
   IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Max,
+  Min,
 } from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
 
 @InputType()
 export class UpdateMathProblemInput extends IdentifierInput {
-  @Field(() => Number, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @IsOptional()
   @IsInt()
+  @Min(0)
+  @Max(100)
   difficulty: number | null;
 
   @Field(() => String, { nullable: true })

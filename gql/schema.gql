@@ -184,7 +184,7 @@ input UpdateMathFieldInput {
 }
 
 input UpdateMathProblemInput {
-  difficulty: Float
+  difficulty: Int
   id: ID!
   imageMediaIds: [ID!]
   mathFieldId: ID

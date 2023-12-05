@@ -8,6 +8,8 @@ export class ValidationException extends BadRequestException {
 }
 
 const formatError = (errors: ValidationError[]) => {
+  console.log(errors);
+
   const errMsg: Record<string, unknown> = {};
 
   errors.forEach((error: ValidationError) => {
