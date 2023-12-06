@@ -13,6 +13,7 @@ import {
   SelectableMathField,
 } from './mathField.entity';
 import { MathFieldRepository } from './mathField.repository';
+import { FilterAllMathFieldParams } from './mathField.type';
 
 @Injectable()
 export class MathFieldCrudService {
@@ -69,5 +70,11 @@ export class MathFieldCrudService {
     const count = await this.mathFieldRepository.count();
 
     return { data, count };
+  }
+
+  async getAll(
+    params: FilterAllMathFieldParams,
+  ): Promise<SelectableMathField[]> {
+    return this.mathFieldRepository.getAll(params);
   }
 }

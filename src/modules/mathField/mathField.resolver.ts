@@ -9,6 +9,7 @@ import {
 } from '@shared/gql';
 
 import { CreateMathFieldInput } from './gql/createMathField.input';
+import { GetAllMathFieldsInput } from './gql/getAllMathFields.input';
 import { MathFieldObject } from './gql/mathField.object';
 import { MathFieldPageObject } from './gql/mathFIeldPage.object';
 import { UpdateMathFieldInput } from './gql/updateMathField.input';
@@ -60,5 +61,12 @@ export class MathFieldResolver {
     @Args('input') input: LastIdPageParamsObject,
   ): Promise<MathFieldPageObject> {
     return this.mathFieldCrudService.filter(input);
+  }
+
+  @Query(() => [MathFieldObject])
+  async getAllMathFields(
+    @Args('input') input: GetAllMathFieldsInput,
+  ): Promise<MathFieldObject[]> {
+    return this.mathFieldCrudService.getAll(input);
   }
 }

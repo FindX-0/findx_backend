@@ -9,6 +9,7 @@ import {
   NewMathField,
   SelectableMathField,
 } from './mathField.entity';
+import { FilterAllMathFieldParams } from './mathField.type';
 
 @Injectable()
 export class MathFieldRepository {
@@ -79,5 +80,15 @@ export class MathFieldRepository {
     const count = countRes?.count ?? '0';
 
     return parseInt(count as string);
+  }
+
+  async getAll({
+    onlyPublic,
+  }: FilterAllMathFieldParams): Promise<SelectableMathField[]> {
+    return this.db
+      .selectFrom('mathFields')
+      .where('isPublic', '=', onlyPublic)
+      .selectAll()
+      .execute();
   }
 }

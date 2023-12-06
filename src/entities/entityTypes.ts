@@ -14,7 +14,7 @@ import type {
 export type AccountVerification = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
-  isVerified: Generated<boolean>;
+  isVerified: boolean;
   oneTimeCode: number;
   userId: string;
 };
@@ -38,6 +38,7 @@ export type MathField = {
   id: Generated<string>;
   name: string;
   createdAt: Generated<Timestamp>;
+  isPublic: Generated<boolean>;
 };
 export type MathProblem = {
   id: Generated<string>;
@@ -51,8 +52,8 @@ export type MathProblem = {
 };
 export type MathSubField = {
   id: Generated<string>;
-  name: string;
   createdAt: Generated<Timestamp>;
+  name: string;
   mathFieldId: string;
 };
 export type MediaFile = {
@@ -83,10 +84,10 @@ export type User = {
   email: string;
   userName: string | null;
   passwordHash: string;
-  isCompleted: Generated<boolean>;
+  isCompleted: boolean;
   authProvider: Generated<AuthProvider>;
-  isOnline: Generated<boolean>;
-  socketId: Generated<string>;
+  isOnline: boolean;
+  socketId: string;
 };
 export type DB = {
   accountVerification: AccountVerification;

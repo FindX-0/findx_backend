@@ -61,7 +61,7 @@ model User {
   email        String       @unique @db.VarChar(255)
   userName     String?      @db.VarChar(255)
   passwordHash String       @db.VarChar(255)
-  isCompleted  Boolean      @default(true)
+  isCompleted  Boolean
   authProvider AuthProvider @default(EMAIL)
   isOnline     Boolean
   socketId     String       @db.VarChar(255)
@@ -104,7 +104,7 @@ model RefreshToken {
 model AccountVerification {
   id          BigInt   @id @default(autoincrement())
   createdAt   DateTime @default(now())
-  isVerified  Boolean  @default(false)
+  isVerified  Boolean
   oneTimeCode Int
   userId      BigInt   @unique
 
@@ -117,6 +117,7 @@ model MathField {
   id        BigInt   @id @default(autoincrement())
   name      String
   createdAt DateTime @default(now())
+  isPublic  Boolean  @default(true)
 
   mathProblems  MathProblem[]
   mathSubFields MathSubField[]
@@ -128,9 +129,9 @@ model MathField {
 
 model MathSubField {
   id        BigInt   @id @default(autoincrement())
-  name      String
   createdAt DateTime @default(now())
 
+  name        String
   mathFieldId BigInt
 
   mathField    MathField     @relation(fields: [mathFieldId], references: [id])
@@ -140,8 +141,9 @@ model MathSubField {
 }
 
 model Ticket {
-  id          BigInt      @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
   mathFieldId BigInt
   userId      BigInt
   state       TicketState
@@ -153,8 +155,9 @@ model Ticket {
 }
 
 model Match {
-  id          BigInt     @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
   startAt     DateTime
   endAt       DateTime
   state       MatchState
