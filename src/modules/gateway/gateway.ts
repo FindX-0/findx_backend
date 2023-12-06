@@ -11,9 +11,9 @@ import { JwtHelper, UserAuthPayload } from '@modules/authentication';
 import { UserMutationService } from '@modules/user';
 import { UserQueryService } from '@modules/user/userQuery.service';
 
-import { GatewayAuthGuard } from './gateway-auth.guard';
+import { GatewayJwtAuthGuard } from './gatewayJwtAuth.guard';
 
-@UseGuards(GatewayAuthGuard)
+@UseGuards(GatewayJwtAuthGuard)
 @WebSocketGateway({ namespace: 'app' })
 export class SocketGateway implements OnGatewayConnection {
   @WebSocketServer() public wss: Server;

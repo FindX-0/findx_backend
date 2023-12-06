@@ -1,6 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Role } from '@entities/entityEnums';
+import { NoAuth } from '@modules/authentication';
 import { Roles } from '@modules/authentication/decorator/roles.decorator';
 import {
   IdentifierInput,
@@ -63,6 +64,7 @@ export class MathFieldResolver {
     return this.mathFieldCrudService.filter(input);
   }
 
+  @NoAuth()
   @Query(() => [MathFieldObject])
   async getAllMathFields(
     @Args('input') input: GetAllMathFieldsInput,

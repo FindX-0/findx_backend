@@ -10,7 +10,7 @@ import { JwtHelper } from '@modules/authentication';
 import { ExceptionMessageCode } from '@shared/constant';
 
 @Injectable()
-export class GatewayAuthGuard implements CanActivate {
+export class GatewayJwtAuthGuard implements CanActivate {
   constructor(private readonly jwtHelper: JwtHelper) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

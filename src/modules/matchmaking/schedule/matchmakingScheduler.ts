@@ -14,6 +14,7 @@ import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
 import { FinishMatchUseCase } from '../useCase/finishMatch.usecase';
+import { UpdateTicketAndPublishUsecase } from '../useCase/updateTicketAndPublish.usecase';
 
 @Injectable()
 export class MatchmakingScheduler {
@@ -24,6 +25,7 @@ export class MatchmakingScheduler {
     private readonly transactionRunner: TransactionRunner,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
+    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
   ) {}
 
   private readonly logger = new Logger(MatchmakingScheduler.name);
@@ -95,22 +97,22 @@ export class MatchmakingScheduler {
     }
 
     await Promise.all([
-      this.ticketRepository.updateById(
-        ticketA.id,
-        {
+      this.updateTicketAndPublishUsecase.call({
+        ticketId: ticketA.id,
+        payload: {
           state: TicketState.COMPLETED,
           matchId: match.id,
         },
-        txProvider.get(),
-      ),
-      this.ticketRepository.updateById(
-        ticketB.id,
-        {
+        txProvider,
+      }),
+      this.updateTicketAndPublishUsecase.call({
+        ticketId: ticketB.id,
+        payload: {
           state: TicketState.COMPLETED,
           matchId: match.id,
         },
-        txProvider.get(),
-      ),
+        txProvider,
+      }),
     ]);
 
     const timePassed = Date.now() - match.createdAt.getTime();
