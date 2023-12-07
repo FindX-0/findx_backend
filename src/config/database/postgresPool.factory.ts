@@ -1,13 +1,14 @@
 import { Pool } from 'pg';
 
-export type PostgresPoolFactory = () => Pool;
+import { EnvService } from '@config/env';
 
-// TODO get from env
-export const createPostgresPool: PostgresPoolFactory = () => {
+export type PostgresPoolFactory = (envService: EnvService) => Pool;
+
+export const createPostgresPool: PostgresPoolFactory = (envService) => {
   return new Pool({
-    host: '127.0.0.1',
-    user: 'postgres',
-    password: '12345',
-    database: 'math',
+    host: envService.get('DATABASE_HOST'),
+    user: envService.get('DATABASE_USER'),
+    password: envService.get('DATABASE_PASSWORD'),
+    database: envService.get('DATABASE_NAME'),
   });
 };

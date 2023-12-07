@@ -22,6 +22,9 @@ export class EnvironmentVariables {
   DATABASE_USER: string;
 
   @IsString()
+  DATABASE_HOST: string;
+
+  @IsString()
   DATABASE_PASSWORD: string;
 
   @IsString()

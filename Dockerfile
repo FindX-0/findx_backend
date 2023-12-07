@@ -1,8 +1,8 @@
-ARG NODE_VERSION=16.15.1
+ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-bullseye as build
 WORKDIR /app
-COPY ./package.json ./package-lock.json tsconfig.json tsconfig.build.json nest-cli.json ./
+COPY ./package.json ./package-lock.json tsconfig.json tsconfig.build.json nest-cli.json ./.env.production ./
 COPY ./prisma/ ./prisma/
 RUN set -ex; npm ci
 COPY ./src ./src/
@@ -21,6 +21,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=build /app/package.json ./
+COPY --from=build /app/.env.production ./
 
 RUN apt-get -y update && apt-get install -y openssl
 

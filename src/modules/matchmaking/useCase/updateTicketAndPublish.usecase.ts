@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Ticket } from '@entities/entityTypes';
 import { PublishTicketChangedUsecase } from '@modules/gateway';
 import { ExceptionMessageCode } from '@shared/constant';
 import { TransactionProvider } from '@shared/util';

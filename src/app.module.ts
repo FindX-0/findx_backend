@@ -10,7 +10,7 @@ import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
 
 import { createPostgresPool } from '@config/database';
-import { EnvModule } from '@config/env';
+import { EnvModule, EnvService } from '@config/env';
 import { validationExceptionFactory } from '@config/validation';
 import { AccountVerificationModule } from '@modules/accountVerification';
 import { AdminUserModule } from '@modules/adminUser';
@@ -38,10 +38,16 @@ import { AppController } from './app.controller';
     ScheduleModule.forRoot(),
     EnvModule.forRoot(),
 
-    KyselyModule.forRoot({
-      dialect: new PostgresDialect({
-        pool: createPostgresPool(),
-      }),
+    KyselyModule.forRootAsync({
+      imports: [EnvModule.forRoot()],
+      inject: [EnvService],
+      useFactory: (envService: EnvService) => {
+        return {
+          dialect: new PostgresDialect({
+            pool: createPostgresPool(envService),
+          }),
+        };
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

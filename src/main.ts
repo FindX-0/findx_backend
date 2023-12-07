@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 import multiPart from '@fastify/multipart';
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -47,6 +48,10 @@ async function bootstrap() {
   });
 
   await app.listen(3000, '0.0.0.0');
+
+  const url = await app.getUrl();
+
+  new Logger().log('Started running on ' + url);
 }
 
 bootstrap();
