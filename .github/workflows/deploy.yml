@@ -81,7 +81,8 @@ jobs:
 
             docker pull ghcr.io/findx-0/findx_backend:main
 
-            docker run -t -d --net=host --name findx_backend ghcr.io/findx-0/findx_backend:main
-
-      #         volumes:
-      # - ~/action-runners/MathUpload:/app/upload
+            docker run -t -d \
+              --net=host \
+              --name findx_backend \
+              --volume /app/uploads=/root/findx_backend_uploads
+              ghcr.io/findx-0/findx_backend:main
