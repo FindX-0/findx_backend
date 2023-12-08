@@ -84,5 +84,5 @@ jobs:
             docker run -t -d \
               --net=host \
               --name findx_backend \
-              --volume /app/uploads=/root/findx_backend_uploads
+              --volume /app/uploads=/root/findx_backend_uploads \
               ghcr.io/findx-0/findx_backend:main
