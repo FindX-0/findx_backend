@@ -60,9 +60,8 @@ export class MathProblemCrudService {
         values.imageMediaIds,
       );
 
-      oldImageMediaIds = await this.mathProblemRepository.getImageMediaIdsById(
-        id,
-      );
+      oldImageMediaIds =
+        await this.mathProblemRepository.getImageMediaIdsById(id);
     }
 
     return this.transactionRunner.runTransaction(async (txProvider) => {
@@ -100,9 +99,8 @@ export class MathProblemCrudService {
   }
 
   async deleteById(id: string): Promise<void> {
-    const imageMediaIds = await this.mathProblemRepository.getImageMediaIdsById(
-      id,
-    );
+    const imageMediaIds =
+      await this.mathProblemRepository.getImageMediaIdsById(id);
 
     return this.transactionRunner.runTransaction(async (txProvider) => {
       const didDelete = await this.mathProblemRepository.deleteById(
@@ -128,22 +126,25 @@ export class MathProblemCrudService {
   async filter(
     filter: LastIdPageParams,
   ): Promise<DataPage<SelectableMathProblemWithRelations>> {
+    const count = await this.mathProblemRepository.count();
+
+    if (count == 0) {
+      return { data: [], count };
+    }
+
     const data = await this.mathProblemRepository.filter(filter);
 
     const imageMediaIds = data.map((e) => e.imageMediaIds).flat(1);
-    const imageMediaFiles = await this.mediaFileQueryService.getByIds(
-      imageMediaIds,
-    );
+    const imageMediaFiles =
+      await this.mediaFileQueryService.getByIds(imageMediaIds);
 
     const joinedDataWithMediaFiles = data.map((e) => {
-      const images = imageMediaFiles.filter((mediaFile) =>
-        e.imageMediaIds?.includes(mediaFile.id),
+      const images = imageMediaFiles.filter(
+        (mediaFile) => e.imageMediaIds?.includes(mediaFile.id),
       );
 
       return { ...e, images };
     });
-
-    const count = await this.mathProblemRepository.count();
 
     return { data: joinedDataWithMediaFiles, count };
   }
