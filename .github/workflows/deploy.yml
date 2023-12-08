@@ -74,9 +74,11 @@ jobs:
           password: ${{ secrets.LINODE_PASSWORD }}
           port: ${{ secrets.LINODE_PORT }}
           script: |
-            docker ps -q --filter "name=findx_backend" | grep -q . && docker stop findx_backend && docker rm -fv findx_backend
-            
-            docker rmi ghcr.io/findx-0/findx_backend:main
+            docker ps -q --filter "name=findx_backend" | grep -q . && \
+              docker stop findx_backend && \
+              docker rm -fv findx_backend && \
+              docker rmi ghcr.io/findx-0/findx_backend:main  
+
             docker pull ghcr.io/findx-0/findx_backend:main
 
             docker run -t -d -p 3000:3000 --name findx_backend ghcr.io/findx-0/findx_backend:main
