@@ -2,19 +2,86 @@ name: CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_TAG: v-${{ github.run_number }}
 
 jobs:
-  build:
-    runs-on: self-hosted
+  build-push-docker:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
 
     steps:
-      - uses: actions/checkout@v3
-      - name: shut down the image
-        run: docker-compose down
-      - name: remove dangling images
-        run: docker image prune --all --force
-      - name: rebuild the image
-        run: docker-compose build --no-cache
-      - name: run the image
-        run: docker-compose up -d
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
+        with:
+          cosign-release: 'v2.1.1'
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: setup docker buildx
+        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
+        with:
+          driver-opts: image=moby/buildkit:master
+
+      # Login against a Docker registry except on PR
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  upload-to-server:
+    name: pull image to server and run it
+    needs: 'build-push-docker'
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.LINODE_HOST }}
+          username: ${{ secrets.LINODE_USERNAME }}
+          password: ${{ secrets.LINODE_PASSWORD }}
+          port: ${{ secrets.LINODE_PORT }}
+          script: |
+            docker stop finx_backend
+            docker rm findx_backend
+
+            docker rmi ghcr.io/findx-0/findx_backend:main
+            docker pull ghcr.io/findx-0/findx_backend:main
+
+            docker run -t -d -p 3000:3000 --name findx_backend ghcr.io/findx-0/findx_backend:main
+
+
+      #         volumes:
+      # - ~/action-runners/MathUpload:/app/upload
