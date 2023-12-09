@@ -1,5 +1,8 @@
 import { LastIdPageParams } from '@shared/type';
 
-export type FilterMathSubFieldParams = LastIdPageParams & {
+export type CountMathSubFieldParams = {
   mathFieldId?: string | null;
 };
+
+export type FilterMathSubFieldParams = LastIdPageParams &
+  CountMathSubFieldParams;

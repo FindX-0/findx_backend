@@ -61,7 +61,7 @@ input EmailSignUpInput {
 }
 
 input EnqueueTicketInput {
-  mathFieldId: String!
+  mathFieldId: ID!
 }
 
 input FilterMathSubFieldsInput {

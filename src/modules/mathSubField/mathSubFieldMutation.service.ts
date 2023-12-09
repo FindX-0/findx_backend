@@ -1,11 +1,12 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 
+import { MathProblemQueryService } from '@modules/mathProblem';
 import { ExceptionMessageCode } from '@shared/constant';
-import { DataPage } from '@shared/type';
 
 import {
   MathSubFieldUpdate,
@@ -13,12 +14,12 @@ import {
   SelectableMathSubField,
 } from './mathSubField.entity';
 import { MathSubFieldRepository } from './mathSubField.repository';
-import { FilterMathSubFieldParams } from './mathSubField.type';
 
 @Injectable()
-export class MathSubFieldCrudService {
+export class MathSubFieldMutationService {
   constructor(
     private readonly mathSubFieldRepository: MathSubFieldRepository,
+    private readonly mathProblemQueryService: MathProblemQueryService,
   ) {}
 
   async create(values: NewMathSubField): Promise<SelectableMathSubField> {
@@ -48,19 +49,17 @@ export class MathSubFieldCrudService {
     return entity;
   }
 
-  async getById(id: string): Promise<SelectableMathSubField> {
-    const entity = await this.mathSubFieldRepository.getById(id);
+  async deleteById(id: string): Promise<void> {
+    const mathProblemCount = await this.mathProblemQueryService.countBy({
+      mathSubFieldId: id,
+    });
 
-    if (!entity) {
-      throw new NotFoundException(
-        ExceptionMessageCode.MATH_SUB_FIELD_NOT_FOUND,
+    if (mathProblemCount > 0) {
+      throw new ConflictException(
+        ExceptionMessageCode.MATH_SUB_FIELD_HAS_RELATIONS,
       );
     }
 
-    return entity;
-  }
-
-  async deleteById(id: string): Promise<void> {
     const didDelete = await this.mathSubFieldRepository.deleteById(id);
 
     if (!didDelete) {
@@ -68,15 +67,5 @@ export class MathSubFieldCrudService {
         ExceptionMessageCode.MATH_SUB_FIELD_NOT_FOUND,
       );
     }
-  }
-
-  async filter(
-    filter: FilterMathSubFieldParams,
-  ): Promise<DataPage<SelectableMathSubField>> {
-    const data = await this.mathSubFieldRepository.filter(filter);
-
-    const count = await this.mathSubFieldRepository.count(filter);
-
-    return { data, count };
   }
 }

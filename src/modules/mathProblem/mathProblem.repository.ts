@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
-import { LastIdPageParams } from '@shared/type';
 import { TransactionProvider } from '@shared/util';
 
 import {
@@ -10,6 +9,10 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from './mathProblem.entity';
+import {
+  CountMathProblemParams,
+  FilterMathProblemParams,
+} from './mathProblem.type';
 
 @Injectable()
 export class MathProblemRepository {
@@ -75,20 +78,37 @@ export class MathProblemRepository {
   async filter({
     lastId,
     limit,
-  }: LastIdPageParams): Promise<SelectableMathProblem[]> {
+    mathFieldId,
+    mathSubFieldId,
+  }: FilterMathProblemParams): Promise<SelectableMathProblem[]> {
     return this.db
       .selectFrom('mathProblems')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
+      .$if(Boolean(mathFieldId), (qb) =>
+        qb.where('mathFieldId', '=', mathFieldId as string),
+      )
+      .$if(Boolean(mathSubFieldId), (qb) =>
+        qb.where('mathSubFieldId', '=', mathSubFieldId as string),
+      )
       .orderBy('id desc')
       .limit(limit)
       .execute();
   }
 
-  async count(): Promise<number> {
+  async count({
+    mathFieldId,
+    mathSubFieldId,
+  }: CountMathProblemParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('mathProblems')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .$if(Boolean(mathFieldId), (qb) =>
+        qb.where('mathFieldId', '=', mathFieldId as string),
+      )
+      .$if(Boolean(mathSubFieldId), (qb) =>
+        qb.where('mathSubFieldId', '=', mathSubFieldId as string),
+      )
       .executeTakeFirst();
 
     const count = countRes?.count ?? '0';

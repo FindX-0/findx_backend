@@ -8,7 +8,10 @@ import {
   NewMathSubField,
   SelectableMathSubField,
 } from './mathSubField.entity';
-import { FilterMathSubFieldParams } from './mathSubField.type';
+import {
+  CountMathSubFieldParams,
+  FilterMathSubFieldParams,
+} from './mathSubField.type';
 
 @Injectable()
 export class MathSubFieldRepository {
@@ -76,7 +79,7 @@ export class MathSubFieldRepository {
       .execute();
   }
 
-  async count({ mathFieldId }: FilterMathSubFieldParams): Promise<number> {
+  async count({ mathFieldId }: CountMathSubFieldParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('mathSubFields')
       .select(({ fn }) => [fn.count<number>('id').as('count')])

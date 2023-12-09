@@ -14,18 +14,22 @@ import { GetAllMathFieldsInput } from './gql/getAllMathFields.input';
 import { MathFieldObject } from './gql/mathField.object';
 import { MathFieldPageObject } from './gql/mathFIeldPage.object';
 import { UpdateMathFieldInput } from './gql/updateMathField.input';
-import { MathFieldCrudService } from './mathFieldCrud.service';
+import { MathFieldMutationService } from './mathFieldMutation.service';
+import { MathFieldQueryService } from './mathFieldQuery.service';
 
 @Resolver()
 export class MathFieldResolver {
-  constructor(private readonly mathFieldCrudService: MathFieldCrudService) {}
+  constructor(
+    private readonly mathFieldMutationService: MathFieldMutationService,
+    private readonly mathFieldQueryService: MathFieldQueryService,
+  ) {}
 
   @Roles(Role.SUPER_ADMIN)
   @Mutation(() => MathFieldObject)
   async createMathField(
     @Args('input') input: CreateMathFieldInput,
   ): Promise<MathFieldObject> {
-    return this.mathFieldCrudService.create(input);
+    return this.mathFieldMutationService.create(input);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -35,7 +39,7 @@ export class MathFieldResolver {
   ): Promise<MathFieldObject> {
     const { id, ...values } = input;
 
-    return this.mathFieldCrudService.updateById(id, {
+    return this.mathFieldMutationService.updateById(id, {
       ...(values.name && { name: values.name }),
     });
   }
@@ -45,7 +49,7 @@ export class MathFieldResolver {
   async deleteMathField(
     @Args('input') input: IdentifierInput,
   ): Promise<SuccessObject> {
-    await this.mathFieldCrudService.deleteById(input.id);
+    await this.mathFieldMutationService.deleteById(input.id);
 
     return { success: true };
   }
@@ -54,14 +58,14 @@ export class MathFieldResolver {
   async getMathFieldById(
     @Args('input') input: IdentifierInput,
   ): Promise<MathFieldObject> {
-    return this.mathFieldCrudService.getById(input.id);
+    return this.mathFieldQueryService.getById(input.id);
   }
 
   @Query(() => MathFieldPageObject)
   async filterMathFields(
     @Args('input') input: LastIdPageParamsObject,
   ): Promise<MathFieldPageObject> {
-    return this.mathFieldCrudService.filter(input);
+    return this.mathFieldQueryService.filter(input);
   }
 
   @NoAuth()
@@ -69,6 +73,6 @@ export class MathFieldResolver {
   async getAllMathFields(
     @Args('input') input: GetAllMathFieldsInput,
   ): Promise<MathFieldObject[]> {
-    return this.mathFieldCrudService.getAll(input);
+    return this.mathFieldQueryService.getAll(input);
   }
 }

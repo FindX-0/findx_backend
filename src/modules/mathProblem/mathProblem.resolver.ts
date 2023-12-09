@@ -13,12 +13,14 @@ import { CreateMathProblemInput } from './gql/createMathProblem.input';
 import { MathProblemPageObject } from './gql/mathProblemPage.object';
 import { MathProblemObject } from './gql/mathProfilem.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
-import { MathProblemCrudService } from './mathProblemCrud.service';
+import { MathProblemMutationService } from './mathProblemMutation.service';
+import { MathProblemQueryService } from './mathProblemQuery.service';
 
 @Resolver()
 export class MathProblemResolver {
   constructor(
-    private readonly mathProblemCrudService: MathProblemCrudService,
+    private readonly mathProblemQueryService: MathProblemQueryService,
+    private readonly mathProblemMutationService: MathProblemMutationService,
     private readonly mediaFileCrudService: MediaFileQueryService,
   ) {}
 
@@ -29,7 +31,7 @@ export class MathProblemResolver {
   ): Promise<MathProblemObject> {
     const { imageMediaIds, ...restOfInput } = input;
 
-    const mathProblem = await this.mathProblemCrudService.create({
+    const mathProblem = await this.mathProblemMutationService.create({
       ...restOfInput,
       imageMediaIds: imageMediaIds ?? [],
     });
@@ -48,7 +50,7 @@ export class MathProblemResolver {
   ): Promise<MathProblemObject> {
     const { id, ...values } = input;
 
-    const mathProblem = await this.mathProblemCrudService.updateById(id, {
+    const mathProblem = await this.mathProblemMutationService.updateById(id, {
       ...(values.difficulty && { difficulty: values.difficulty }),
       ...(values.text && { text: values.text }),
       ...(values.tex && { tex: values.tex }),
@@ -69,7 +71,7 @@ export class MathProblemResolver {
   async deleteMathProblem(
     @Args('input') input: IdentifierInput,
   ): Promise<SuccessObject> {
-    await this.mathProblemCrudService.deleteById(input.id);
+    await this.mathProblemMutationService.deleteById(input.id);
 
     return { success: true };
   }
@@ -78,7 +80,7 @@ export class MathProblemResolver {
   async getMathProblemById(
     @Args('input') input: IdentifierInput,
   ): Promise<MathProblemObject> {
-    const mathProblem = await this.mathProblemCrudService.getById(input.id);
+    const mathProblem = await this.mathProblemQueryService.getById(input.id);
 
     const images = mathProblem.imageMediaIds?.length
       ? await this.mediaFileCrudService.getByIds(mathProblem.imageMediaIds)
@@ -91,6 +93,6 @@ export class MathProblemResolver {
   async filterMathProblems(
     @Args('input') input: LastIdPageParamsObject,
   ): Promise<MathProblemPageObject> {
-    return this.mathProblemCrudService.filter(input);
+    return this.mathProblemQueryService.filter(input);
   }
 }

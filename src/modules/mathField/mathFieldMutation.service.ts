@@ -1,11 +1,12 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 
+import { MathSubFieldQueryService } from '@modules/mathSubField';
 import { ExceptionMessageCode } from '@shared/constant';
-import { DataPage, LastIdPageParams } from '@shared/type';
 
 import {
   MathFieldUpdate,
@@ -13,11 +14,13 @@ import {
   SelectableMathField,
 } from './mathField.entity';
 import { MathFieldRepository } from './mathField.repository';
-import { FilterAllMathFieldParams } from './mathField.type';
 
 @Injectable()
-export class MathFieldCrudService {
-  constructor(private readonly mathFieldRepository: MathFieldRepository) {}
+export class MathFieldMutationService {
+  constructor(
+    private readonly mathFieldRepository: MathFieldRepository,
+    private readonly mathSubFieldQueryService: MathSubFieldQueryService,
+  ) {}
 
   async create(values: NewMathField): Promise<SelectableMathField> {
     const entity = await this.mathFieldRepository.create(values);
@@ -44,37 +47,21 @@ export class MathFieldCrudService {
     return entity;
   }
 
-  async getById(id: string): Promise<SelectableMathField> {
-    const entity = await this.mathFieldRepository.getById(id);
+  async deleteById(id: string): Promise<void> {
+    const mathSubFieldCount = await this.mathSubFieldQueryService.countBy({
+      mathFieldId: id,
+    });
 
-    if (!entity) {
-      throw new NotFoundException(ExceptionMessageCode.MATH_FIELD_NOT_FOUND);
+    if (mathSubFieldCount > 0) {
+      throw new ConflictException(
+        ExceptionMessageCode.MATH_FIELD_HAS_RELATIONS,
+      );
     }
 
-    return entity;
-  }
-
-  async deleteById(id: string): Promise<void> {
     const didDelete = await this.mathFieldRepository.deleteById(id);
 
     if (!didDelete) {
       throw new NotFoundException(ExceptionMessageCode.MATH_FIELD_NOT_FOUND);
     }
-  }
-
-  async filter(
-    filter: LastIdPageParams,
-  ): Promise<DataPage<SelectableMathField>> {
-    const data = await this.mathFieldRepository.filter(filter);
-
-    const count = await this.mathFieldRepository.count();
-
-    return { data, count };
-  }
-
-  async getAll(
-    params: FilterAllMathFieldParams,
-  ): Promise<SelectableMathField[]> {
-    return this.mathFieldRepository.getAll(params);
   }
 }

@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
 
+import { MathSubFieldModule } from '@modules/mathSubField';
+
 import { MathFieldRepository } from './mathField.repository';
 import { MathFieldResolver } from './mathField.resolver';
-import { MathFieldCrudService } from './mathFieldCrud.service';
+import { MathFieldMutationService } from './mathFieldMutation.service';
+import { MathFieldQueryService } from './mathFieldQuery.service';
 
 @Module({
-  providers: [MathFieldRepository, MathFieldCrudService, MathFieldResolver],
+  imports: [MathSubFieldModule],
+  providers: [
+    MathFieldRepository,
+    MathFieldQueryService,
+    MathFieldMutationService,
+    MathFieldResolver,
+  ],
+  exports: [MathFieldMutationService, MathFieldQueryService],
 })
 export class MathFieldModule {}

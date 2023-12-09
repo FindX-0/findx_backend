@@ -9,12 +9,14 @@ import { FilterMathSubFieldsInput } from './gql/filterMathSubFields.input';
 import { MathSubFieldObject } from './gql/mathSubField.object';
 import { MathSubFieldPageObject } from './gql/mathSubFIeldPage.object';
 import { UpdateMathSubFieldInput } from './gql/updateMathSubField.input';
-import { MathSubFieldCrudService } from './mathSubFieldCrud.service';
+import { MathSubFieldMutationService } from './mathSubFieldMutation.service';
+import { MathSubFieldQueryService } from './mathSubFieldQuery.service';
 
 @Resolver()
 export class MathSubFieldResolver {
   constructor(
-    private readonly mathSubFieldCrudService: MathSubFieldCrudService,
+    private readonly mathSubFieldMutationService: MathSubFieldMutationService,
+    private readonly mathSubFielQueryService: MathSubFieldQueryService,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -22,7 +24,7 @@ export class MathSubFieldResolver {
   async createMathSubField(
     @Args('input') input: CreateMathSubFieldInput,
   ): Promise<MathSubFieldObject> {
-    return this.mathSubFieldCrudService.create(input);
+    return this.mathSubFieldMutationService.create(input);
   }
 
   @Roles(Role.SUPER_ADMIN)
@@ -32,7 +34,7 @@ export class MathSubFieldResolver {
   ): Promise<MathSubFieldObject> {
     const { id, ...values } = input;
 
-    return this.mathSubFieldCrudService.updateById(id, {
+    return this.mathSubFieldMutationService.updateById(id, {
       ...(values.name && { name: values.name }),
       ...(values.mathFieldId && { mathFieldId: values.mathFieldId }),
     });
@@ -43,7 +45,7 @@ export class MathSubFieldResolver {
   async deleteMathSubField(
     @Args('input') input: IdentifierInput,
   ): Promise<SuccessObject> {
-    await this.mathSubFieldCrudService.deleteById(input.id);
+    await this.mathSubFieldMutationService.deleteById(input.id);
 
     return { success: true };
   }
@@ -52,13 +54,13 @@ export class MathSubFieldResolver {
   async getMathSubFieldById(
     @Args('input') input: IdentifierInput,
   ): Promise<MathSubFieldObject> {
-    return this.mathSubFieldCrudService.getById(input.id);
+    return this.mathSubFielQueryService.getById(input.id);
   }
 
   @Query(() => MathSubFieldPageObject)
   async filterMathSubFields(
     @Args('input') input: FilterMathSubFieldsInput,
   ): Promise<MathSubFieldPageObject> {
-    return this.mathSubFieldCrudService.filter(input);
+    return this.mathSubFielQueryService.filter(input);
   }
 }
