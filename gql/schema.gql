@@ -24,6 +24,7 @@ enum AuthProvider {
   EMAIL
   FACEBOOK
   GOOGLE
+  NONE
 }
 
 input CreateMathFieldInput {
@@ -48,6 +49,10 @@ input CreateMathSubFieldInput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input DeviceSignInInput {
+  deviceId: String!
+}
 
 input EmailSignInInput {
   email: String!
@@ -149,6 +154,7 @@ type Mutation {
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
   deleteMathSubField(input: IdentifierInput!): SuccessObject!
+  deviceSignIn(input: DeviceSignInInput!): AuthPayloadObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
@@ -208,7 +214,7 @@ input UpdateMathSubFieldInput {
 type UserObject {
   authProvider: AuthProvider!
   createdAt: DateTime!
-  email: String!
+  email: String
   id: ID!
   isCompleted: Boolean!
   userName: String

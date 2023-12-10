@@ -16,6 +16,7 @@ import {
   RefreshTokenUseCase,
 } from '../useCase';
 import { AdminUserSignInUseCase } from '../useCase/adminUserSignIn.usecase';
+import { DeviceSignInUseCase } from '../useCase/deviceSignIn.usecase';
 import { EmailSignUpUseCase } from '../useCase/emailSignUp.usecase';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { PasswordEncoder } from '../util/password.encoder';
@@ -43,6 +44,7 @@ import { PasswordEncoder } from '../util/password.encoder';
     AdminUserSignInUseCase,
     AdminUserSignUpUseCase,
     AdminRefreshTokenUseCase,
+    DeviceSignInUseCase,
   ],
 })
 export class AuthenticationModule {}

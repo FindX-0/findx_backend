@@ -81,13 +81,14 @@ export type Ticket = {
 export type User = {
   id: Generated<string>;
   createdAt: Generated<Timestamp>;
-  email: string;
+  email: string | null;
   userName: string | null;
-  passwordHash: string;
+  passwordHash: string | null;
   isCompleted: boolean;
-  authProvider: Generated<AuthProvider>;
+  authProvider: AuthProvider;
   isOnline: boolean;
   socketId: string;
+  deviceId: string | null;
 };
 export type DB = {
   accountVerification: AccountVerification;

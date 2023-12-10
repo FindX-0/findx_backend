@@ -4,9 +4,13 @@ export type SignUpWithTokenParams = {
   readonly password: string;
 };
 
-export type SignInParams = {
+export type EmailSignInParams = {
   readonly email: string;
   readonly password: string;
+};
+
+export type DeviceSignInParams = {
+  readonly deviceId: string;
 };
 
 export type RecoverPasswordConfirmCodeParams = {

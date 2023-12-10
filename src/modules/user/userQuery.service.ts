@@ -13,6 +13,10 @@ export class UserQueryService {
     return this.userRepository.getByEmail(email);
   }
 
+  async getByDeviceId(deviceId: string): Promise<SelectableUser | null> {
+    return this.userRepository.getByDeviceId(deviceId);
+  }
+
   async getById(id: string): Promise<PublicSelectableUser> {
     const user = await this.userRepository.getById(id);
 

@@ -8,6 +8,7 @@ import { Roles } from './decorator/roles.decorator';
 import { AdminSignInInput } from './gql/adminSignIn.input';
 import { AdminSignUpInput } from './gql/adminSignUp.input';
 import { AuthPayloadObject } from './gql/authPayload.object';
+import { DeviceSignInInput } from './gql/deviceSignIn.input';
 import { EmailSignInInput } from './gql/emailSignIn.input';
 import { EmailSignUpInput } from './gql/emailSignUp.input';
 import { GoogleSignInInput } from './gql/googleSignIn.input';
@@ -21,6 +22,7 @@ import {
   GoogleSignInUseCase,
   RefreshTokenUseCase,
 } from './useCase';
+import { DeviceSignInUseCase } from './useCase/deviceSignIn.usecase';
 import { EmailSignUpUseCase } from './useCase/emailSignUp.usecase';
 
 @Resolver('authentication')
@@ -33,6 +35,7 @@ export class AuthenticationResolver {
     private readonly adminUserSignInUseCase: AdminUserSignInUseCase,
     private readonly adminUserSignUpUseCase: AdminUserSignUpUseCase,
     private readonly adminRefreshTokenUseCase: AdminRefreshTokenUseCase,
+    private readonly deviceSignInUsecase: DeviceSignInUseCase,
   ) {}
 
   @Query(() => SuccessObject)
@@ -62,6 +65,14 @@ export class AuthenticationResolver {
     @Args('input') input: EmailSignInInput,
   ): Promise<AuthPayloadObject> {
     return this.emailSignInUseCase.call(input);
+  }
+
+  @NoAuth()
+  @Mutation(() => AuthPayloadObject)
+  async deviceSignIn(
+    @Args('input') input: DeviceSignInInput,
+  ): Promise<AuthPayloadObject> {
+    return this.deviceSignInUsecase.call(input);
   }
 
   @NoAuth()

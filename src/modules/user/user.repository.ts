@@ -24,6 +24,16 @@ export class UserRepository {
     return entity ?? null;
   }
 
+  async getByDeviceId(deviceId: string): Promise<SelectableUser | null> {
+    const entity = await this.db
+      .selectFrom('users')
+      .selectAll()
+      .where('deviceId', '=', deviceId)
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
+
   async existsByEmail(email: string): Promise<boolean> {
     const res = await this.db
       .selectFrom('users')
@@ -59,6 +69,7 @@ export class UserRepository {
         'isCompleted',
         'authProvider',
         'isOnline',
+        'deviceId',
       ])
       .executeTakeFirst();
 

@@ -3,6 +3,7 @@ export const AuthProvider = {
   GOOGLE: 'GOOGLE',
   APPLE: 'APPLE',
   FACEBOOK: 'FACEBOOK',
+  NONE: 'NONE',
 } as const;
 export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider];
 export const TicketState = {

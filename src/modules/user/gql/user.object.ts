@@ -7,8 +7,8 @@ export class UserObject {
   @Field(() => ID)
   id: string;
 
-  @Field()
-  email: string;
+  @Field(() => String, { nullable: true })
+  email: string | null;
 
   @Field(() => String, { nullable: true })
   userName: string | null;

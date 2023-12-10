@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
+import { AuthProvider } from '@entities/entityEnums';
 import { RefreshTokenService } from '@modules/refreshToken';
 import { UserMutationService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
@@ -26,9 +27,8 @@ export class GoogleSignInUseCase {
   ) {}
 
   async call(googleAccessToken: string): Promise<AuthPayloadObject> {
-    const { email } = await this.googleOauthHelper.getGoogleUserInfo(
-      googleAccessToken,
-    );
+    const { email } =
+      await this.googleOauthHelper.getGoogleUserInfo(googleAccessToken);
 
     if (!email) {
       throw new ForbiddenException(
@@ -45,8 +45,10 @@ export class GoogleSignInUseCase {
     const user = await this.userService.create({
       email,
       userName: null,
+      deviceId: null,
       passwordHash: hashedPassword,
       isCompleted: false,
+      authProvider: AuthProvider.GOOGLE,
     });
 
     if (!user) {

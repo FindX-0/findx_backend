@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
+import { AuthProvider } from '@entities/entityEnums';
 import { RefreshTokenService } from '@modules/refreshToken';
 import { UserMutationService, UserValidator } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
@@ -34,6 +35,8 @@ export class EmailSignUpUseCase {
       userName,
       passwordHash: hashedPassword,
       isCompleted: true,
+      authProvider: AuthProvider.EMAIL,
+      deviceId: null,
     });
 
     if (!user) {
