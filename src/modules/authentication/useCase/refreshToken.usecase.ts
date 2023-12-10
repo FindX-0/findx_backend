@@ -25,9 +25,9 @@ export class RefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
     }
 
-    const userId = await this.refreshTokenService.getUserIdByValue(
-      oldRefreshToken,
-    );
+    const userId =
+      await this.refreshTokenService.getUserIdByValue(oldRefreshToken);
+
     const user = userId ? await this.userQueryService.getById(userId) : null;
 
     if (!user) {

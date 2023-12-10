@@ -30,11 +30,15 @@ export class MatchmakingScheduler {
 
   private readonly logger = new Logger(MatchmakingScheduler.name);
 
-  @Interval(8000)
+  @Interval(4000)
   async handleTickets(): Promise<void> {
     const processingTickets = await this.ticketRepository.getAll({
       state: TicketState.PROCESSING,
     });
+
+    if (!processingTickets.length) {
+      return;
+    }
 
     const ticketsGroupedByMatchFieldId = groupByToMap(
       processingTickets,

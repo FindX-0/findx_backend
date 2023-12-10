@@ -5,6 +5,7 @@ import { InjectKysely } from 'nestjs-kysely';
 import { KyselyDB } from '@config/database';
 import { TicketState } from '@entities/entityEnums';
 import { DB } from '@entities/entityTypes';
+import { TransactionProvider } from '@shared/util';
 
 import {
   NewTicket,
@@ -16,8 +17,11 @@ import {
 export class TicketRepository {
   constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
-  async create(params: NewTicket): Promise<SelectableTicket | null> {
-    const entity = await this.db
+  async create(
+    params: NewTicket,
+    txProvider?: TransactionProvider,
+  ): Promise<SelectableTicket | null> {
+    const entity = await (txProvider?.get() ?? this.db)
       .insertInto('tickets')
       .values(params)
       .returningAll()
@@ -26,14 +30,17 @@ export class TicketRepository {
     return entity ?? null;
   }
 
-  async updateAllProcessing({
-    userId,
-    payload,
-  }: {
-    userId: string;
-    payload: TicketUpdate;
-  }) {
-    return this.db
+  async updateAllProcessing(
+    {
+      userId,
+      payload,
+    }: {
+      userId: string;
+      payload: TicketUpdate;
+    },
+    txProvider?: TransactionProvider,
+  ) {
+    return (txProvider?.get() ?? this.db)
       .updateTable('tickets')
       .set(payload)
       .where((eb) =>

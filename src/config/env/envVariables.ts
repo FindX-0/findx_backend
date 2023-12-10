@@ -25,6 +25,7 @@ export class EnvironmentVariables {
   DATABASE_HOST: string;
 
   @IsInt()
+  @Type(() => Number)
   DATABASE_PORT: number;
 
   @IsString()

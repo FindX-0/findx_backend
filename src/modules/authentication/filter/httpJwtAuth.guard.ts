@@ -1,6 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
+  ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -19,7 +20,7 @@ export class HttpJwtAuthGuard implements CanActivate {
     private readonly jwtHelper: JwtHelper,
   ) {}
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext) {
     const noAuth = this.reflector.getAllAndOverride<boolean>(NO_AUTH_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -44,9 +45,23 @@ export class HttpJwtAuthGuard implements CanActivate {
     }
 
     if (payload.isAdmin) {
-      return this.jwtHelper.isAdminAccessTokenValid(accessToken);
+      const isAccessTokenValid =
+        await this.jwtHelper.isAdminAccessTokenValid(accessToken);
+
+      if (!isAccessTokenValid) {
+        throw new ForbiddenException(ExceptionMessageCode.EXPIRED_TOKEN);
+      }
+
+      return true;
     }
 
-    return this.jwtHelper.isAccessTokenValid(accessToken);
+    const isAccessTokenValid =
+      await this.jwtHelper.isAccessTokenValid(accessToken);
+
+    if (!isAccessTokenValid) {
+      throw new ForbiddenException(ExceptionMessageCode.EXPIRED_TOKEN);
+    }
+
+    return true;
   }
 }
