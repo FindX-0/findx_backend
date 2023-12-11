@@ -64,6 +64,10 @@ export class EnvironmentVariables {
   @IsString()
   GOOGLE_OAUTH_CLIENT_ID: string;
 
+  @Type(() => Number)
+  @IsInt()
+  TICKET_LIFETIME_MILLIS: number;
+
   @IsInt()
   @Type(() => Number)
   MATCH_LIFETIME_MILLIS: number;

@@ -7,3 +7,17 @@ export const groupByToMap = <T, Q>(
     map.get(key)?.push(value) ?? map.set(key, [value]);
     return map;
   }, new Map<Q, T[]>());
+
+export const partition = <T>(
+  array: T[],
+  predicate: (t: T, index: number, array: T[]) => boolean,
+): [T[], T[]] => {
+  const pass: T[] = [];
+  const fail: T[] = [];
+
+  array.forEach((e, idx, arr) =>
+    (predicate(e, idx, arr) ? pass : fail).push(e),
+  );
+
+  return [pass, fail];
+};

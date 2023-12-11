@@ -71,4 +71,16 @@ export class TicketRepository {
 
     return entity ?? null;
   }
+
+  async updateAllByIds(
+    ids: string[],
+    payload: TicketUpdate,
+    txProvider?: TransactionProvider,
+  ) {
+    await (txProvider?.get() ?? this.db)
+      .updateTable('tickets')
+      .where('id', 'in', ids)
+      .set(payload)
+      .execute();
+  }
 }

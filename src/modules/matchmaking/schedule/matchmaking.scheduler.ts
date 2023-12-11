@@ -3,10 +3,12 @@ import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env';
 import { TicketState } from '@entities/entityEnums';
+import { PublishTicketChangedUsecase } from '@modules/gateway';
 import {
   TransactionProvider,
   TransactionRunner,
   groupByToMap,
+  partition,
 } from '@shared/util';
 import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 
@@ -26,6 +28,7 @@ export class MatchmakingScheduler {
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
     private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
+    private readonly publishTicketChangesUsecase: PublishTicketChangedUsecase,
   ) {}
 
   private readonly logger = new Logger(MatchmakingScheduler.name);
@@ -40,13 +43,33 @@ export class MatchmakingScheduler {
       return;
     }
 
-    const ticketsGroupedByMatchFieldId = groupByToMap(
+    const now = new Date();
+
+    const [expiredTickets, nonExpiredTickets] = partition(
       processingTickets,
+      (e) => {
+        const expiryTime =
+          e.createdAt.getTime() + this.envService.get('TICKET_LIFETIME_MILLIS');
+
+        return expiryTime >= now.getTime();
+      },
+    );
+
+    const nonExpiredTicketsGroupedByMatchFieldId = groupByToMap(
+      nonExpiredTickets,
       (ticket) => ticket.mathFieldId,
     );
 
     await this.transactionRunner.runTransaction(async (txProvider) => {
-      for (const [mathFieldId, tickets] of ticketsGroupedByMatchFieldId) {
+      await this.ticketRepository.updateAllByIds(
+        expiredTickets.map((e) => e.id),
+        { state: TicketState.EXPIRED },
+      );
+
+      for (const [
+        mathFieldId,
+        tickets,
+      ] of nonExpiredTicketsGroupedByMatchFieldId) {
         for (let i = 0; i < tickets.length - 1; i += 2) {
           const ticketA = tickets[i];
           const ticketB = tickets[i + 1];
@@ -64,6 +87,15 @@ export class MatchmakingScheduler {
         }
       }
     });
+
+    await Promise.all(
+      expiredTickets.map((ticket) => {
+        return this.publishTicketChangesUsecase.call({
+          userId: ticket.userId,
+          ticket,
+        });
+      }),
+    );
   }
 
   private async createMatch({
