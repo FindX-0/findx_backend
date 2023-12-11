@@ -14,8 +14,8 @@ export class EnvironmentVariables {
   @IsEnum(Environment)
   NODE_ENV: Environment;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   PORT: number;
 
   @IsString()
@@ -24,8 +24,8 @@ export class EnvironmentVariables {
   @IsString()
   DATABASE_HOST: string;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   DATABASE_PORT: number;
 
   @IsString()
@@ -43,8 +43,8 @@ export class EnvironmentVariables {
   @IsString()
   ADMIN_ACCESS_TOKEN_SECRET: string;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   ACCESS_TOKEN_EXPIRATION: number;
 
   @IsString()
@@ -53,12 +53,12 @@ export class EnvironmentVariables {
   @IsString()
   ADMIN_REFRESH_TOKEN_SECRET: string;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   REFRESH_TOKEN_EXPIRATION: number;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   RECOVER_PASSWORD_REQUEST_TIMEOUT_IN_MILLIS: number;
 
   @IsString()
@@ -68,15 +68,19 @@ export class EnvironmentVariables {
   @IsInt()
   TICKET_LIFETIME_MILLIS: number;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   MATCH_LIFETIME_MILLIS: number;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
   MATCH_START_DELAY: number;
 
-  @IsInt()
   @Type(() => Number)
+  @IsInt()
+  MATCH_CLOSE_DELAY: number;
+
+  @Type(() => Number)
+  @IsInt()
   MATCHMAKING_INTERVAL_MILLIS: number;
 }

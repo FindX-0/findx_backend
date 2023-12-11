@@ -46,4 +46,8 @@ export class UserQueryService {
 
     return socketId;
   }
+
+  async getSocketIds(userIds: string[]): Promise<string[]> {
+    return this.userRepository.getSocketIds(userIds);
+  }
 }

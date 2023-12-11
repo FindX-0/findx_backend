@@ -31,8 +31,10 @@ export type Match = {
   createdAt: Generated<Timestamp>;
   startAt: Timestamp;
   endAt: Timestamp;
+  closeAt: Timestamp;
   state: MatchState;
   mathFieldId: string;
+  userIds: string[];
 };
 export type MathField = {
   id: Generated<string>;

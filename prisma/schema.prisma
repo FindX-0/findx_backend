@@ -162,8 +162,10 @@ model Match {
 
   startAt     DateTime
   endAt       DateTime
+  closeAt     DateTime
   state       MatchState
   mathFieldId BigInt
+  userIds     String[]
 
   mathField MathField @relation(fields: [mathFieldId], references: [id])
 

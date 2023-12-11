@@ -8,7 +8,7 @@ import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
 import { CreateMatchUseCase } from './useCase/createMatch.usecase';
 import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
-import { FinishMatchUseCase } from './useCase/finishMatch.usecase';
+import { FinishMatchAndPublishUseCase } from './useCase/finishMatchAndPublish.usecase';
 import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.usecase';
 
 @Module({
@@ -20,7 +20,7 @@ import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.
     // usecases
     EnqueueTicketUseCase,
     CreateMatchUseCase,
-    FinishMatchUseCase,
+    FinishMatchAndPublishUseCase,
     UpdateTicketAndPublishUsecase,
     // resolver/scheduler
     MatchmakingResolver,

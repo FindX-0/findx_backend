@@ -144,4 +144,14 @@ export class UserRepository {
 
     return entity?.socketId ?? null;
   }
+
+  async getSocketIds(userIds: string[]): Promise<string[]> {
+    const entities = await this.db
+      .selectFrom('users')
+      .where('id', 'in', userIds)
+      .select(['id', 'socketId'])
+      .execute();
+
+    return entities.map((e) => e.socketId);
+  }
 }

@@ -15,7 +15,7 @@ import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
-import { FinishMatchUseCase } from '../useCase/finishMatch.usecase';
+import { FinishMatchAndPublishUseCase } from '../useCase/finishMatchAndPublish.usecase';
 import { UpdateTicketAndPublishUsecase } from '../useCase/updateTicketAndPublish.usecase';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class MatchmakingScheduler {
   constructor(
     private readonly ticketRepository: TicketRepository,
     private readonly createMatchUseCase: CreateMatchUseCase,
-    private readonly finishMatchUseCase: FinishMatchUseCase,
+    private readonly finishMatchUseCase: FinishMatchAndPublishUseCase,
     private readonly transactionRunner: TransactionRunner,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
@@ -116,6 +116,9 @@ export class MatchmakingScheduler {
     const matchEndAt = new Date(
       matchStartAt.getTime() + this.envService.get('MATCH_LIFETIME_MILLIS'),
     );
+    const matchCloseAt = new Date(
+      matchEndAt.getTime() + this.envService.get('MATCH_CLOSE_DELAY'),
+    );
 
     const match = await this.createMatchUseCase.call(
       {
@@ -123,6 +126,8 @@ export class MatchmakingScheduler {
         createdAt: matchCreatedAt,
         startAt: matchStartAt,
         endAt: matchEndAt,
+        closeAt: matchCloseAt,
+        userIds: [ticketA.userId, ticketB.userId],
       },
       txProvider,
     );
@@ -158,7 +163,7 @@ export class MatchmakingScheduler {
       timePassed;
 
     const timeout = setTimeout(
-      () => this.finishMatchUseCase.call(match.id, txProvider),
+      () => this.finishMatchUseCase.call(match),
       matchTimeout,
     );
 

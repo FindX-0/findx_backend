@@ -4,11 +4,18 @@ import { JwtHelperModule } from '@modules/authentication';
 import { UserModule } from '@modules/user';
 
 import { SocketGateway } from './gateway';
-import { PublishTicketChangedUsecase } from './usecase';
+import {
+  PublishMatchChangedUsecase,
+  PublishTicketChangedUsecase,
+} from './usecase';
 
 @Module({
   imports: [UserModule, JwtHelperModule],
-  providers: [SocketGateway, PublishTicketChangedUsecase],
-  exports: [PublishTicketChangedUsecase],
+  providers: [
+    SocketGateway,
+    PublishTicketChangedUsecase,
+    PublishMatchChangedUsecase,
+  ],
+  exports: [PublishTicketChangedUsecase, PublishMatchChangedUsecase],
 })
 export class GatewayModule {}
