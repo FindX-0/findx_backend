@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { TicketDto } from '@modules/matchmaking';
@@ -6,6 +7,7 @@ import { UserQueryService } from '@modules/user';
 import { SocketGateway } from '../gateway';
 import { GatewayEvent } from '../gatewayEvent.enum';
 
+@Injectable()
 export class PublishTicketChangedUsecase {
   constructor(
     private readonly gateway: SocketGateway,

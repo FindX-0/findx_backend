@@ -5,7 +5,7 @@ import { GatewayModule } from '@modules/gateway';
 import { MatchmakingResolver } from './matchmaking.resolver';
 import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
-import { MatchmakingScheduler } from './schedule/matchmakingScheduler';
+import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
 import { CreateMatchUseCase } from './useCase/createMatch.usecase';
 import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
 import { FinishMatchUseCase } from './useCase/finishMatch.usecase';

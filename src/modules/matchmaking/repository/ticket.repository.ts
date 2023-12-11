@@ -39,13 +39,14 @@ export class TicketRepository {
       payload: TicketUpdate;
     },
     txProvider?: TransactionProvider,
-  ) {
-    return (txProvider?.get() ?? this.db)
+  ): Promise<void> {
+    await (txProvider?.get() ?? this.db)
       .updateTable('tickets')
       .set(payload)
       .where((eb) =>
         eb('userId', '=', userId).and('state', '=', TicketState.PROCESSING),
-      );
+      )
+      .execute();
   }
 
   async getAll({ state }: { state: TicketState }): Promise<SelectableTicket[]> {

@@ -17,7 +17,6 @@ import { AdminUserModule } from '@modules/adminUser';
 import {
   HttpAuthPayloadInterceptor,
   HttpJwtAuthGuard,
-  HttpVerifiedEmailValidatorGuard,
   JwtHelperModule,
   AuthenticationModule,
   HttpRolesGuard,
@@ -88,10 +87,10 @@ import { AppController } from './app.controller';
       provide: APP_GUARD,
       useClass: HttpRolesGuard,
     },
-    {
-      provide: APP_GUARD,
-      useClass: HttpVerifiedEmailValidatorGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: HttpVerifiedEmailValidatorGuard,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpAuthPayloadInterceptor,
