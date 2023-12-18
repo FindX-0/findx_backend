@@ -21,12 +21,12 @@ export class UpdateTicketAndPublishUsecase {
   }: {
     ticketId: string;
     payload: TicketUpdate;
-    txProvider: TransactionProvider;
+    txProvider?: TransactionProvider | undefined;
   }): Promise<void> {
     const newTicket = await this.ticketRepository.updateById(
       ticketId,
       payload,
-      txProvider.get(),
+      txProvider,
     );
 
     if (!newTicket) {

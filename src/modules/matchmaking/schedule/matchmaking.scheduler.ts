@@ -17,7 +17,6 @@ import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
 import { ExpireTicketsAndNotifyUsecase } from '../useCase/expireTIcketsAndNotify.usecase';
 import { FinishMatchAndPublishUseCase } from '../useCase/finishMatchAndPublish.usecase';
-import { UpdateTicketAndPublishUsecase } from '../useCase/updateTicketAndPublish.usecase';
 
 @Injectable()
 export class MatchmakingScheduler {
@@ -28,7 +27,6 @@ export class MatchmakingScheduler {
     private readonly transactionRunner: TransactionRunner,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
-    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
     private readonly publishTicketChangesUsecase: PublishTicketChangedUsecase,
     private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotifyUsecase,
   ) {}
@@ -111,52 +109,17 @@ export class MatchmakingScheduler {
     txProvider: TransactionProvider;
     mathFieldId: string;
   }) {
-    const matchCreatedAt = new Date();
-    const matchStartAt = new Date(
-      matchCreatedAt.getTime() + this.envService.get('MATCH_START_DELAY'),
-    );
-    const matchEndAt = new Date(
-      matchStartAt.getTime() + this.envService.get('MATCH_LIFETIME_MILLIS'),
-    );
-    const matchCloseAt = new Date(
-      matchEndAt.getTime() + this.envService.get('MATCH_CLOSE_DELAY'),
-    );
-
-    const match = await this.createMatchUseCase.call(
-      {
-        mathFieldId,
-        createdAt: matchCreatedAt,
-        startAt: matchStartAt,
-        endAt: matchEndAt,
-        closeAt: matchCloseAt,
-        userIds: [ticketA.userId, ticketB.userId],
-      },
+    const match = await this.createMatchUseCase.call({
+      ticketA,
+      ticketB,
+      mathFieldId,
       txProvider,
-    );
+    });
 
     if (!match) {
       this.logger.error('Create match returned null');
       return;
     }
-
-    await Promise.all([
-      this.updateTicketAndPublishUsecase.call({
-        ticketId: ticketA.id,
-        payload: {
-          state: TicketState.COMPLETED,
-          matchId: match.id,
-        },
-        txProvider,
-      }),
-      this.updateTicketAndPublishUsecase.call({
-        ticketId: ticketB.id,
-        payload: {
-          state: TicketState.COMPLETED,
-          matchId: match.id,
-        },
-        txProvider,
-      }),
-    ]);
 
     const timePassed = Date.now() - match.createdAt.getTime();
     const matchTimeout =

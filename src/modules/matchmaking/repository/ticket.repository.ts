@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Transaction } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
 import { TicketState } from '@entities/entityEnums';
-import { DB } from '@entities/entityTypes';
 import { TransactionProvider } from '@shared/util';
 
 import {
@@ -60,9 +58,9 @@ export class TicketRepository {
   async updateById(
     id: string,
     params: TicketUpdate,
-    tx?: Transaction<DB>,
+    txProvider?: TransactionProvider,
   ): Promise<SelectableTicket | null> {
-    const entity = await (tx ?? this.db)
+    const entity = await (txProvider?.get() ?? this.db)
       .updateTable('tickets')
       .where('id', '=', id)
       .set(params)
