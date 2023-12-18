@@ -8,6 +8,7 @@ import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
 import { CreateMatchUseCase } from './useCase/createMatch.usecase';
 import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
+import { ExpireTicketsAndNotifyUsecase } from './useCase/expireTIcketsAndNotify.usecase';
 import { FinishMatchAndPublishUseCase } from './useCase/finishMatchAndPublish.usecase';
 import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.usecase';
 
@@ -22,6 +23,7 @@ import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.
     CreateMatchUseCase,
     FinishMatchAndPublishUseCase,
     UpdateTicketAndPublishUsecase,
+    ExpireTicketsAndNotifyUsecase,
     // resolver/scheduler
     MatchmakingResolver,
     MatchmakingScheduler,

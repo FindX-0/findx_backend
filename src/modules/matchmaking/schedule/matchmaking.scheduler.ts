@@ -15,6 +15,7 @@ import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
+import { ExpireTicketsAndNotifyUsecase } from '../useCase/expireTIcketsAndNotify.usecase';
 import { FinishMatchAndPublishUseCase } from '../useCase/finishMatchAndPublish.usecase';
 import { UpdateTicketAndPublishUsecase } from '../useCase/updateTicketAndPublish.usecase';
 
@@ -29,6 +30,7 @@ export class MatchmakingScheduler {
     private readonly envService: EnvService,
     private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
     private readonly publishTicketChangesUsecase: PublishTicketChangedUsecase,
+    private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotifyUsecase,
   ) {}
 
   private readonly logger = new Logger(MatchmakingScheduler.name);
@@ -51,7 +53,7 @@ export class MatchmakingScheduler {
         const expiryTime =
           e.createdAt.getTime() + this.envService.get('TICKET_LIFETIME_MILLIS');
 
-        return expiryTime >= now.getTime();
+        return now.getTime() >= expiryTime;
       },
     );
 
@@ -61,10 +63,10 @@ export class MatchmakingScheduler {
     );
 
     await this.transactionRunner.runTransaction(async (txProvider) => {
-      await this.ticketRepository.updateAllByIds(
-        expiredTickets.map((e) => e.id),
-        { state: TicketState.EXPIRED },
-      );
+      await this.expireTicketsAndNotifyUsecase.call({
+        tickets: expiredTickets,
+        txProvider,
+      });
 
       for (const [
         mathFieldId,
