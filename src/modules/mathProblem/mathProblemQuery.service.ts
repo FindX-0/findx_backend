@@ -43,6 +43,7 @@ export class MathProblemQueryService {
     const data = await this.mathProblemRepository.filter(filter);
 
     const imageMediaIds = data.map((e) => e.imageMediaIds).flat(1);
+
     const imageMediaFiles =
       await this.mediaFileQueryService.getByIds(imageMediaIds);
 

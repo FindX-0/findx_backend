@@ -77,6 +77,10 @@ export class TicketRepository {
     payload: TicketUpdate,
     txProvider?: TransactionProvider,
   ) {
+    if (!ids.length) {
+      return;
+    }
+
     await (txProvider?.get() ?? this.db)
       .updateTable('tickets')
       .where('id', 'in', ids)

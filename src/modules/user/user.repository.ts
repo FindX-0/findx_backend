@@ -37,8 +37,8 @@ export class UserRepository {
   async existsByEmail(email: string): Promise<boolean> {
     const res = await this.db
       .selectFrom('users')
-      .where('email', '=', email)
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .where('email', '=', email)
       .executeTakeFirst();
 
     const countStr = res?.count ?? '0';
@@ -60,7 +60,6 @@ export class UserRepository {
   async getById(id: string): Promise<PublicSelectableUser | null> {
     const entity = await this.db
       .selectFrom('users')
-      .where('id', '=', id)
       .select([
         'id',
         'createdAt',
@@ -71,6 +70,7 @@ export class UserRepository {
         'isOnline',
         'deviceId',
       ])
+      .where('id', '=', id)
       .executeTakeFirst();
 
     return entity ?? null;
@@ -103,8 +103,8 @@ export class UserRepository {
   async existsById(id: string): Promise<boolean> {
     const res = await this.db
       .selectFrom('users')
-      .where('id', '=', id)
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .where('id', '=', id)
       .executeTakeFirst();
 
     const countStr = res?.count ?? '0';
@@ -119,8 +119,8 @@ export class UserRepository {
   ): Promise<SelectableUser | null> {
     const entity = await this.db
       .updateTable('users')
-      .where('id', '=', id)
       .set(params)
+      .where('id', '=', id)
       .returningAll()
       .executeTakeFirst();
 
@@ -130,22 +130,26 @@ export class UserRepository {
   async updateIsOnlineById(id: string, isOnline: boolean): Promise<void> {
     await this.db
       .updateTable('users')
-      .where('id', '=', id)
       .set({ isOnline })
+      .where('id', '=', id)
       .execute();
   }
 
   async getSocketIdById(id: string): Promise<string | null> {
     const entity = await this.db
       .selectFrom('users')
-      .where('id', '=', id)
       .select(['id', 'socketId'])
+      .where('id', '=', id)
       .executeTakeFirst();
 
     return entity?.socketId ?? null;
   }
 
   async getSocketIds(userIds: string[]): Promise<string[]> {
+    if (!userIds.length) {
+      return [];
+    }
+
     const entities = await this.db
       .selectFrom('users')
       .where('id', 'in', userIds)

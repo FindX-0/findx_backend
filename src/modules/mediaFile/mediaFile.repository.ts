@@ -44,6 +44,10 @@ export class MediaFileRepository {
     ids: string[],
     txProvider?: TransactionProvider,
   ): Promise<void> {
+    if (!ids.length) {
+      return;
+    }
+
     await (txProvider?.get() ?? this.db)
       .deleteFrom('mediaFiles')
       .where('id', 'in', ids)
@@ -53,26 +57,34 @@ export class MediaFileRepository {
   async getById(id: string): Promise<SelectableMediaFile | null> {
     const entity = await this.db
       .selectFrom('mediaFiles')
-      .where('id', '=', id)
       .selectAll()
+      .where('id', '=', id)
       .executeTakeFirst();
 
     return entity ?? null;
   }
 
   async getByIds(ids: string[]): Promise<SelectableMediaFile[]> {
+    if (!ids.length) {
+      return [];
+    }
+
     return this.db
       .selectFrom('mediaFiles')
-      .where('id', 'in', ids)
       .selectAll()
+      .where('id', 'in', ids)
       .execute();
   }
 
   async countByIds(ids: string[]): Promise<number> {
+    if (!ids.length) {
+      return 0;
+    }
+
     const countRes = await this.db
       .selectFrom('mediaFiles')
-      .where('id', 'in', ids)
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .where('id', 'in', ids)
       .executeTakeFirst();
 
     const count = countRes?.count ?? '0';
