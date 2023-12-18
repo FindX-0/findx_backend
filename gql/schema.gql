@@ -183,7 +183,7 @@ input RefreshTokenInput {
 }
 
 type ServerTimeObject {
-  serverTime: Float!
+  serverTime: DateTime!
 }
 
 type SuccessObject {
