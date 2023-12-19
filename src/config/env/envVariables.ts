@@ -38,6 +38,16 @@ export class EnvironmentVariables {
   DATABASE_URL: string;
 
   @IsString()
+  REDIS_HOST: string;
+
+  @Type(() => Number)
+  @IsInt()
+  REDIS_PORT: number;
+
+  @IsString()
+  REDIS_PASSWORD: string;
+
+  @IsString()
   ACCESS_TOKEN_SECRET: string;
 
   @IsString()

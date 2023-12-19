@@ -9,7 +9,7 @@ import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
 
-import { createPostgresPool } from '@config/database';
+import { RedisModule, createPostgresPool } from '@config/database';
 import { EnvModule, EnvService } from '@config/env';
 import { validationExceptionFactory } from '@config/validation';
 import { AccountVerificationModule } from '@modules/accountVerification';
@@ -30,7 +30,7 @@ import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { TransactionRunnerModule } from '@shared/util';
 
-import { AppController } from './app.controller';
+import { AppController, AppService } from './app.controller';
 
 @Module({
   imports: [
@@ -56,6 +56,7 @@ import { AppController } from './app.controller';
         message: formattedError.message,
       }),
     }),
+    RedisModule,
     TransactionRunnerModule,
 
     JwtHelperModule,
@@ -72,6 +73,7 @@ import { AppController } from './app.controller';
   ],
   controllers: [AppController],
   providers: [
+    AppService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({

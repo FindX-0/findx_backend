@@ -30,16 +30,12 @@ export class CreateMatchUseCase {
     ticketB: SelectableTicket;
     txProvider?: TransactionProvider;
   }): Promise<SelectableMatch | null> {
-    const matchCreatedAt = new Date();
-    const matchStartAt = new Date(
-      matchCreatedAt.getTime() + this.envService.get('MATCH_START_DELAY'),
-    );
-    const matchEndAt = new Date(
-      matchStartAt.getTime() + this.envService.get('MATCH_LIFETIME_MILLIS'),
-    );
-    const matchCloseAt = new Date(
-      matchEndAt.getTime() + this.envService.get('MATCH_CLOSE_DELAY'),
-    );
+    const {
+      createdAt: matchCreatedAt,
+      startAt: matchStartAt,
+      endAt: matchEndAt,
+      closeAt: matchCloseAt,
+    } = this.resolveMatchTimes();
 
     const match = await this.matchRepository.create(
       {
@@ -79,5 +75,25 @@ export class CreateMatchUseCase {
     ]);
 
     return match;
+  }
+
+  private resolveMatchTimes(): {
+    createdAt: Date;
+    startAt: Date;
+    endAt: Date;
+    closeAt: Date;
+  } {
+    const createdAt = new Date();
+    const startAt = new Date(
+      createdAt.getTime() + this.envService.get('MATCH_START_DELAY'),
+    );
+    const endAt = new Date(
+      startAt.getTime() + this.envService.get('MATCH_LIFETIME_MILLIS'),
+    );
+    const closeAt = new Date(
+      endAt.getTime() + this.envService.get('MATCH_CLOSE_DELAY'),
+    );
+
+    return { createdAt, startAt, endAt, closeAt };
   }
 }
