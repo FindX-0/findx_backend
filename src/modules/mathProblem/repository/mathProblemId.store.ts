@@ -1,27 +1,28 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
 import { MathProblemRepository } from './mathProblem.repository';
+import { GetAllMathSubFieldIds } from '../../mathSubField/usecase';
 
 @Injectable()
-export class MathProblemIdStore implements OnModuleInit {
+export class MathProblemIdStore {
   constructor(
     private readonly redis: Redis,
     private readonly mathProblemRepository: MathProblemRepository,
-    // private readonly mathSubFieldQueryService: MathSubFieldQueryService,
+    private readonly getAllMathSubFields: GetAllMathSubFieldIds,
   ) {}
 
-  async onModuleInit() {
-    // const mathSubFieldIds = await this.mathSubFieldQueryService.getAllIds();
-    // console.log({ mathSubFieldIds });
-    // if (!mathSubFieldIds.length) {
-    //   return;
-    // }
+  async onModuleInit1() {
+    const mathSubFieldIds = await this.getAllMathSubFields.getAllIds();
+    console.log({ mathSubFieldIds });
+    if (!mathSubFieldIds.length) {
+      return;
+    }
 
-    // const mathProblemIdCollectionNames = mathSubFieldIds.map((id) =>
-    //   this.getCollectionName(id),
-    // );
-    // await this.redis.del(...mathProblemIdCollectionNames);
+    const mathProblemIdCollectionNames = mathSubFieldIds.map((id) =>
+      this.getCollectionName(id),
+    );
+    await this.redis.del(...mathProblemIdCollectionNames);
 
     const count = await this.mathProblemRepository.count({});
     if (!count) {

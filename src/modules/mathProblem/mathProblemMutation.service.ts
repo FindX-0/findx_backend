@@ -14,7 +14,7 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from './mathProblem.entity';
-import { MathProblemRepository } from './mathProblem.repository';
+import { MathProblemRepository } from './repository';
 
 @Injectable()
 export class MathProblemMutationService {

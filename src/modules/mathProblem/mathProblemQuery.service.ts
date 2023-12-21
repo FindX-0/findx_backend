@@ -8,11 +8,11 @@ import {
   SelectableMathProblem,
   SelectableMathProblemWithRelations,
 } from './mathProblem.entity';
-import { MathProblemRepository } from './mathProblem.repository';
 import {
   CountMathProblemParams,
   FilterMathProblemParams,
 } from './mathProblem.type';
+import { MathProblemRepository } from './repository';
 
 @Injectable()
 export class MathProblemQueryService {
