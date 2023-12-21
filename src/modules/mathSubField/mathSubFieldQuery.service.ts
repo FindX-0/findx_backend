@@ -41,4 +41,8 @@ export class MathSubFieldQueryService {
   async countBy(params: CountMathSubFieldParams): Promise<number> {
     return this.mathSubFieldRepository.count(params);
   }
+
+  async getAllIds(): Promise<string[]> {
+    return this.mathSubFieldRepository.getAllIds();
+  }
 }

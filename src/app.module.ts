@@ -30,7 +30,7 @@ import { ServerTimeModule } from '@modules/serverTime';
 import { UserModule } from '@modules/user';
 import { TransactionRunnerModule } from '@shared/util';
 
-import { AppController, AppService } from './app.controller';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -73,7 +73,6 @@ import { AppController, AppService } from './app.controller';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({

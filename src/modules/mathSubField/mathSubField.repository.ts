@@ -92,4 +92,13 @@ export class MathSubFieldRepository {
 
     return parseInt(count as string);
   }
+
+  async getAllIds(): Promise<string[]> {
+    const res = await this.db
+      .selectFrom('mathSubFields')
+      .select(['id'])
+      .execute();
+
+    return res.map((e) => e.id);
+  }
 }
