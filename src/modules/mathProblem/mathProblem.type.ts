@@ -5,4 +5,8 @@ export type CountMathProblemParams = {
   mathFieldId?: string | null;
 };
 
-export type FilterMathProblemParams = LastIdPageParams & CountMathProblemParams;
+export type FilterMathProblemParams = LastIdPageParams &
+  CountMathProblemParams & {
+    includeMathField?: boolean;
+    includeMathSubField?: boolean;
+  };

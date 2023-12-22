@@ -93,6 +93,10 @@ export class MathProblemResolver {
   async filterMathProblems(
     @Args('input') input: LastIdPageParamsObject,
   ): Promise<MathProblemPageObject> {
-    return this.mathProblemQueryService.filter(input);
+    return this.mathProblemQueryService.filter({
+      ...input,
+      includeMathField: true,
+      includeMathSubField: true,
+    });
   }
 }

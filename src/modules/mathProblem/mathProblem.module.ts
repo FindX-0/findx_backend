@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { MathProblemIdsInit } from './bootstrap/mathProblemIds.init';
 import { MathProblemResolver } from './mathProblem.resolver';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
@@ -16,6 +17,7 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     MathProblemQueryService,
     MathProblemMutationService,
     MathProblemIdStore,
+    MathProblemIdsInit,
   ],
   exports: [MathProblemQueryService, MathProblemMutationService],
 })

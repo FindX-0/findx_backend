@@ -83,11 +83,16 @@ export class MathProblemRepository {
     limit,
     mathFieldId,
     mathSubFieldId,
+    includeMathField,
+    includeMathSubField,
   }: FilterMathProblemParams): Promise<SelectableMathProblem[]> {
     const mathProblems = await this.db
       .selectFrom('mathProblems')
       .selectAll('mathProblems')
-      .select((eb) => [this.withMathField(eb), this.withMathSubField(eb)])
+      .$if(Boolean(includeMathField), (eb) => eb.select(this.withMathField))
+      .$if(Boolean(includeMathSubField), (eb) =>
+        eb.select(this.withMathSubField),
+      )
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
       .$if(Boolean(mathFieldId), (qb) =>
         qb.where('mathFieldId', '=', mathFieldId as string),
