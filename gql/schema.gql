@@ -113,7 +113,9 @@ type MathProblemObject {
   difficulty: Int!
   id: ID!
   images: [MediaFileObject!]
+  mathField: MathFieldObject
   mathFieldId: String!
+  mathSubField: MathSubFieldObject
   mathSubFieldId: String!
   tex: String
   text: String
@@ -127,7 +129,7 @@ type MathProblemPageObject {
 type MathSubFieldObject {
   createdAt: DateTime!
   id: ID!
-  mathField: MathFieldObject!
+  mathField: MathFieldObject
   mathFieldId: String!
   name: String!
 }

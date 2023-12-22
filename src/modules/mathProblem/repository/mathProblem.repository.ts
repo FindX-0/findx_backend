@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { ExpressionBuilder } from 'kysely';
+import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+import { DB } from '@entities/entityTypes';
 import { TransactionProvider } from '@shared/util';
 
 import {
@@ -81,9 +84,10 @@ export class MathProblemRepository {
     mathFieldId,
     mathSubFieldId,
   }: FilterMathProblemParams): Promise<SelectableMathProblem[]> {
-    return this.db
+    const mathProblems = await this.db
       .selectFrom('mathProblems')
-      .selectAll()
+      .selectAll('mathProblems')
+      .select((eb) => [this.withMathField(eb), this.withMathSubField(eb)])
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
       .$if(Boolean(mathFieldId), (qb) =>
         qb.where('mathFieldId', '=', mathFieldId as string),
@@ -94,6 +98,24 @@ export class MathProblemRepository {
       .orderBy('id desc')
       .limit(limit)
       .execute();
+
+    return mathProblems.map((mathProblem) => {
+      return {
+        ...mathProblem,
+        mathField: mathProblem.mathField
+          ? {
+              ...mathProblem.mathField,
+              createdAt: new Date(mathProblem.mathField.createdAt),
+            }
+          : null,
+        mathSubField: mathProblem.mathSubField
+          ? {
+              ...mathProblem.mathSubField,
+              createdAt: new Date(mathProblem.mathSubField.createdAt),
+            }
+          : null,
+      };
+    });
   }
 
   async count({
@@ -114,5 +136,23 @@ export class MathProblemRepository {
     const count = countRes?.count ?? '0';
 
     return parseInt(count as string);
+  }
+
+  private withMathField(eb: ExpressionBuilder<DB, 'mathProblems'>) {
+    return jsonObjectFrom(
+      eb
+        .selectFrom('mathFields')
+        .selectAll()
+        .whereRef('mathFields.id', '=', 'mathProblems.mathFieldId'),
+    ).as('mathField');
+  }
+
+  private withMathSubField(eb: ExpressionBuilder<DB, 'mathProblems'>) {
+    return jsonObjectFrom(
+      eb
+        .selectFrom('mathSubFields')
+        .selectAll()
+        .whereRef('mathSubFields.id', '=', 'mathProblems.mathSubFieldId'),
+    ).as('mathSubField');
   }
 }

@@ -16,6 +16,6 @@ export class MathSubFieldObject {
   @Field()
   mathFieldId: string;
 
-  @Field(() => MathFieldObject)
-  mathField?: MathFieldObject;
+  @Field(() => MathFieldObject, { nullable: true })
+  mathField?: MathFieldObject | null;
 }

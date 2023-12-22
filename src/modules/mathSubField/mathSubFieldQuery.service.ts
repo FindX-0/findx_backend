@@ -34,9 +34,13 @@ export class MathSubFieldQueryService {
   async filter(
     filter: FilterMathSubFieldParams,
   ): Promise<DataPage<SelectableMathSubFieldWithRelations>> {
-    const data = await this.mathSubFieldRepository.filter(filter);
-
     const count = await this.mathSubFieldRepository.count(filter);
+
+    if (!count) {
+      return { data: [], count: 0 };
+    }
+
+    const data = await this.mathSubFieldRepository.filter(filter);
 
     return { data, count };
   }
