@@ -42,6 +42,12 @@ import { AppController } from './app.controller';
       inject: [EnvService],
       useFactory: (envService: EnvService) => {
         return {
+          // log: (event) => {
+          //   if (event.level === 'query') {
+          //     console.log(event.query.sql);
+          //     console.log(event.query.parameters);
+          //   }
+          // },
           dialect: new PostgresDialect({
             pool: createPostgresPool(envService),
           }),

@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { ExpressionBuilder } from 'kysely';
+import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
+import { DB } from '@entities/index';
 
 import {
   MathSubFieldUpdate,
   NewMathSubField,
   SelectableMathSubField,
+  SelectableMathSubFieldWithRelations,
 } from './mathSubField.entity';
 import {
   CountMathSubFieldParams,
@@ -66,17 +70,30 @@ export class MathSubFieldRepository {
     lastId,
     limit,
     mathFieldId,
-  }: FilterMathSubFieldParams): Promise<SelectableMathSubField[]> {
-    return this.db
+  }: FilterMathSubFieldParams): Promise<SelectableMathSubFieldWithRelations[]> {
+    const mathSubFields = await this.db
       .selectFrom('mathSubFields')
-      .selectAll()
+      .selectAll('mathSubFields')
+      .select((eb) => [this.withMathField(eb)])
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
       .$if(Boolean(mathFieldId), (qb) =>
         qb.where('mathFieldId', '=', mathFieldId as string),
       )
-      .orderBy('id desc')
+      .orderBy('mathSubFields.id desc')
       .limit(limit)
       .execute();
+
+    return mathSubFields.map((mathSubField) => {
+      return {
+        ...mathSubField,
+        mathField: mathSubField.mathField
+          ? {
+              ...mathSubField.mathField,
+              createdAt: new Date(mathSubField.mathField.createdAt),
+            }
+          : null,
+      };
+    });
   }
 
   async count({ mathFieldId }: CountMathSubFieldParams): Promise<number> {
@@ -100,5 +117,14 @@ export class MathSubFieldRepository {
       .execute();
 
     return res.map((e) => e.id);
+  }
+
+  private withMathField(eb: ExpressionBuilder<DB, 'mathSubFields'>) {
+    return jsonObjectFrom(
+      eb
+        .selectFrom('mathFields')
+        .selectAll()
+        .whereRef('mathFields.id', '=', 'mathSubFields.mathFieldId'),
+    ).as('mathField');
   }
 }

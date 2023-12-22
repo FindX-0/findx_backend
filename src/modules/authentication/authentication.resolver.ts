@@ -53,14 +53,6 @@ export class AuthenticationResolver {
 
   @NoAuth()
   @Mutation(() => AuthPayloadObject)
-  async googleSignIn(
-    @Args('input') input: GoogleSignInInput,
-  ): Promise<AuthPayloadObject> {
-    return this.googleSignInUseCase.call(input.accessToken);
-  }
-
-  @NoAuth()
-  @Mutation(() => AuthPayloadObject)
   async emailSignIn(
     @Args('input') input: EmailSignInInput,
   ): Promise<AuthPayloadObject> {
@@ -68,18 +60,26 @@ export class AuthenticationResolver {
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadObject)
+  @Mutation(() => JwtTokenPayloadObject)
+  async googleSignIn(
+    @Args('input') input: GoogleSignInInput,
+  ): Promise<JwtTokenPayloadObject> {
+    return this.googleSignInUseCase.call(input.accessToken);
+  }
+
+  @NoAuth()
+  @Mutation(() => JwtTokenPayloadObject)
   async deviceSignIn(
     @Args('input') input: DeviceSignInInput,
-  ): Promise<AuthPayloadObject> {
+  ): Promise<JwtTokenPayloadObject> {
     return this.deviceSignInUsecase.call(input);
   }
 
   @NoAuth()
-  @Mutation(() => AuthPayloadObject)
+  @Mutation(() => JwtTokenPayloadObject)
   async refreshToken(
     @Args('input') input: RefreshTokenInput,
-  ): Promise<AuthPayloadObject> {
+  ): Promise<JwtTokenPayloadObject> {
     return this.refreshTokenUseCase.call(input.refreshToken);
   }
 

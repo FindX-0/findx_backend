@@ -3,7 +3,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage } from '@shared/type';
 
-import { SelectableMathSubField } from './mathSubField.entity';
+import {
+  SelectableMathSubField,
+  SelectableMathSubFieldWithRelations,
+} from './mathSubField.entity';
 import { MathSubFieldRepository } from './mathSubField.repository';
 import {
   CountMathSubFieldParams,
@@ -30,7 +33,7 @@ export class MathSubFieldQueryService {
 
   async filter(
     filter: FilterMathSubFieldParams,
-  ): Promise<DataPage<SelectableMathSubField>> {
+  ): Promise<DataPage<SelectableMathSubFieldWithRelations>> {
     const data = await this.mathSubFieldRepository.filter(filter);
 
     const count = await this.mathSubFieldRepository.count(filter);

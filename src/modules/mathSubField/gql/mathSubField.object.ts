@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
+import { MathFieldObject } from '@modules/mathField/gql/mathField.object';
+
 @ObjectType()
 export class MathSubFieldObject {
   @Field(() => ID)
@@ -13,4 +15,7 @@ export class MathSubFieldObject {
 
   @Field()
   mathFieldId: string;
+
+  @Field(() => MathFieldObject)
+  mathField?: MathFieldObject;
 }

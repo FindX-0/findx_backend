@@ -66,6 +66,6 @@ export class GoogleSignInUseCase {
       value: refreshToken,
     });
 
-    return { accessToken, refreshToken, hasEmailVerified: true };
+    return { accessToken, refreshToken };
   }
 }

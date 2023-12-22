@@ -127,6 +127,7 @@ type MathProblemPageObject {
 type MathSubFieldObject {
   createdAt: DateTime!
   id: ID!
+  mathField: MathFieldObject!
   mathFieldId: String!
   name: String!
 }
@@ -154,12 +155,12 @@ type Mutation {
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
   deleteMathSubField(input: IdentifierInput!): SuccessObject!
-  deviceSignIn(input: DeviceSignInInput!): AuthPayloadObject!
+  deviceSignIn(input: DeviceSignInInput!): JwtTokenPayloadObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
-  googleSignIn(input: GoogleSignInInput!): AuthPayloadObject!
-  refreshToken(input: RefreshTokenInput!): AuthPayloadObject!
+  googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
+  refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
