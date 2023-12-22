@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { MediaFileQueryService } from '@modules/mediaFile';
 import { ExceptionMessageCode } from '@shared/constant';
 import { DataPage } from '@shared/type';
 
@@ -12,7 +11,8 @@ import {
   CountMathProblemParams,
   FilterMathProblemParams,
 } from './mathProblem.type';
-import { MathProblemRepository } from './repository';
+import { MathProblemRepository } from './repository/mathProblem.repository';
+import { MediaFileQueryService } from '../mediaFile/mediaFileQuery.service';
 
 @Injectable()
 export class MathProblemQueryService {

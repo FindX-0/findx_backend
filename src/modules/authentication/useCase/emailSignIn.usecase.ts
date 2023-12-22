@@ -4,16 +4,17 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { AccountVerificationService } from '@modules/accountVerification';
-import { RefreshTokenService } from '@modules/refreshToken';
-import { UserQueryService } from '@modules/user';
 import { ExceptionMessageCode } from '@shared/constant';
+import { AccountVerificationService } from '@modules/accountVerification/accountVerification.service';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
+import { UserQueryService } from '@modules/user/userQuery.service';
 
 import {
   AuthenticationPayload,
   EmailSignInParams,
 } from '../authentication.type';
-import { JwtHelper, PasswordEncoder } from '../util';
+import { JwtHelper } from '../util/jwt.helper';
+import { PasswordEncoder } from '../util/password.encoder';
 
 @Injectable()
 export class EmailSignInUseCase {

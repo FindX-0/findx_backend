@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 
-import { TicketState } from '@entities/entityEnums';
+import { TicketState } from '@entities/index';
 
 @Exclude()
 export class TicketDto {

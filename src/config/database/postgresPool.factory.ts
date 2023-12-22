@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-import { EnvService } from '@config/env';
+import { EnvService } from '../env';
 
 export type PostgresPoolFactory = (envService: EnvService) => Pool;
 

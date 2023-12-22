@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 
-import { MatchState } from '@entities/entityEnums';
+import { MatchState } from '@entities/index';
 
 @Exclude()
 export class MatchDto {

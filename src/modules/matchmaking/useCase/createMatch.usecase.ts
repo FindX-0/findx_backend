@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EnvService } from '@config/env';
-import { MatchState, TicketState } from '@entities/entityEnums';
+import { MatchState, TicketState } from '@entities/index';
 import { TransactionProvider } from '@shared/util';
 
 import { UpdateTicketAndPublishUsecase } from './updateTicketAndPublish.usecase';
-import { SelectableTicket } from '../entity';
 import { SelectableMatch } from '../entity/match.entity';
+import { SelectableTicket } from '../entity/ticket.entity';
 import { MatchRepository } from '../repository/match.repository';
 
 @Injectable()

@@ -7,11 +7,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { JwtHelper, UserAuthPayload } from '@modules/authentication';
-import { UserMutationService } from '@modules/user';
-import { UserQueryService } from '@modules/user/userQuery.service';
-
 import { GatewayJwtAuthGuard } from './gatewayJwtAuth.guard';
+import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
+import { JwtHelper } from '../authentication/util/jwt.helper';
+import { UserMutationService } from '../user/userMutation.service';
+import { UserQueryService } from '../user/userQuery.service';
 
 @UseGuards(GatewayJwtAuthGuard)
 @WebSocketGateway({ namespace: 'app' })

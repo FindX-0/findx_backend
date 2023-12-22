@@ -1,6 +1,6 @@
 import { Insertable, Selectable, Updateable } from 'kysely';
 
-import { RefreshToken } from '@entities/entityTypes';
+import { RefreshToken } from '@entities/index';
 
 export type SelectableRefreshToken = Selectable<RefreshToken>;
 export type NewRefreshToken = Insertable<RefreshToken>;

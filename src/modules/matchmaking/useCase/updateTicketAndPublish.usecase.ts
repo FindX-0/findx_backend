@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PublishTicketChangedUsecase } from '@modules/gateway';
+import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import { ExceptionMessageCode } from '@shared/constant';
 import { TransactionProvider } from '@shared/util';
 
-import { TicketUpdate } from '../entity';
+import { TicketUpdate } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 
 @Injectable()

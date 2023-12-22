@@ -1,11 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Role } from '@entities/entityEnums';
-import { Roles } from '@modules/authentication/decorator/roles.decorator';
-import { MediaFileQueryService } from '@modules/mediaFile';
+import { Role } from '@entities/index';
 import {
-  IdentifierInput,
   SuccessObject,
+  IdentifierInput,
   LastIdPageParamsObject,
 } from '@shared/gql';
 
@@ -15,6 +13,8 @@ import { MathProblemObject } from './gql/mathProfilem.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
+import { Roles } from '../authentication/decorator/roles.decorator';
+import { MediaFileQueryService } from '../mediaFile/mediaFileQuery.service';
 
 @Resolver()
 export class MathProblemResolver {

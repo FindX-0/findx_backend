@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { GatewayModule } from '@modules/gateway';
-
 import { MatchmakingResolver } from './matchmaking.resolver';
 import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
@@ -11,6 +9,7 @@ import { EnqueueTicketUseCase } from './useCase/enqueueTicket.usecase';
 import { ExpireTicketsAndNotifyUsecase } from './useCase/expireTIcketsAndNotify.usecase';
 import { FinishMatchAndPublishUseCase } from './useCase/finishMatchAndPublish.usecase';
 import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.usecase';
+import { GatewayModule } from '../gateway/gateway.module';
 
 @Module({
   imports: [GatewayModule],

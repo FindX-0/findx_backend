@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
+import { GetAllMathSubFieldIds } from '@modules/mathSubField/usecase/getAllMathSubFieldIds';
+
 import { MathProblemRepository } from './mathProblem.repository';
-import { GetAllMathSubFieldIds } from '../../mathSubField/usecase';
 
 @Injectable()
 export class MathProblemIdStore {

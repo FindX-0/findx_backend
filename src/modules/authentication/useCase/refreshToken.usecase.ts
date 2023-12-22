@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { RefreshTokenService } from '@modules/refreshToken';
-import { UserQueryService } from '@modules/user';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
+import { UserQueryService } from '@modules/user/userQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthenticationPayload } from '../authentication.type';
-import { JwtHelper } from '../util';
+import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
 export class RefreshTokenUseCase {

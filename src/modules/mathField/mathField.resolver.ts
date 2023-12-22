@@ -1,11 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Role } from '@entities/entityEnums';
-import { NoAuth } from '@modules/authentication';
-import { Roles } from '@modules/authentication/decorator/roles.decorator';
+import { Role } from '@entities/index';
 import {
-  IdentifierInput,
   SuccessObject,
+  IdentifierInput,
   LastIdPageParamsObject,
 } from '@shared/gql';
 
@@ -16,6 +14,8 @@ import { MathFieldPageObject } from './gql/mathFIeldPage.object';
 import { UpdateMathFieldInput } from './gql/updateMathField.input';
 import { MathFieldMutationService } from './mathFieldMutation.service';
 import { MathFieldQueryService } from './mathFieldQuery.service';
+import { NoAuth } from '../authentication/decorator/noAuth.decorator';
+import { Roles } from '../authentication/decorator/roles.decorator';
 
 @Resolver()
 export class MathFieldResolver {

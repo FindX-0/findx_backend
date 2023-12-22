@@ -4,15 +4,17 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
-import { AuthProvider } from '@entities/entityEnums';
-import { RefreshTokenService } from '@modules/refreshToken';
-import { UserMutationService, UserValidator } from '@modules/user';
+import { AuthProvider } from '@entities/index';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
+import { UserValidator } from '@modules/user/user.validator';
+import { UserMutationService } from '@modules/user/userMutation.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { RandomGenerator } from '@shared/util';
 
 import { AuthPayloadObject } from '../gql/authPayload.object';
-import { JwtHelper, PasswordEncoder } from '../util';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
+import { JwtHelper } from '../util/jwt.helper';
+import { PasswordEncoder } from '../util/password.encoder';
 
 @Injectable()
 export class GoogleSignInUseCase {

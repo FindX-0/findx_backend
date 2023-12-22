@@ -1,12 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
-import { Role } from '@entities/entityEnums';
-import { CreateAdminUserUseCase } from '@modules/adminUser';
-import { RefreshTokenService } from '@modules/refreshToken';
+import { Role } from '@entities/index';
+import { CreateAdminUserUseCase } from '@modules/adminUser/useCase/createAdminUser.usecase';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthTokenPayload } from '../authentication.type';
-import { JwtHelper, PasswordEncoder } from '../util';
+import { JwtHelper } from '../util/jwt.helper';
+import { PasswordEncoder } from '../util/password.encoder';
 
 type Values = {
   email: string;

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import { TicketDto } from '@modules/matchmaking';
-import { UserQueryService } from '@modules/user';
+import { TicketDto } from '@modules/matchmaking/dto/ticket.dto';
+import { UserQueryService } from '@modules/user/userQuery.service';
 
 import { SocketGateway } from '../gateway';
 import { GatewayEvent } from '../gatewayEvent.enum';

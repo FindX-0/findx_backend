@@ -7,13 +7,14 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { Role } from '@entities/entityEnums';
-import { AdminUserQueryService } from '@modules/adminUser';
+import { Role } from '@entities/index';
+import { AdminUserQueryService } from '@modules/adminUser/adminUserQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { getContextRequest } from '@shared/util';
 
 import { ROLES_KEY } from '../decorator/roles.decorator';
-import { JwtHelper, getBearerTokenFromRequest } from '../util';
+import { getBearerTokenFromRequest } from '../util/getBearerTokenFromRequest';
+import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
 export class HttpRolesGuard implements CanActivate {

@@ -8,10 +8,9 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 
-import { registerGqlEnums } from '@config/gql';
-import { DIRECTORY_UPLOADS } from '@modules/mediaFile';
-
 import { AppModule } from './app.module';
+import { registerGqlEnums } from './config/gql';
+import { DIRECTORY_UPLOADS } from './modules/mediaFile/mediaFile.constant';
 
 async function bootstrap() {
   const _100Mb = 1024 * 1024 * 100;

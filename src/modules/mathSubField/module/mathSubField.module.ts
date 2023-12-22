@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { MathProblemModule } from '@modules/mathProblem';
+import { MathProblemModule } from '@modules/mathProblem/mathProblem.module';
 
 import { MathSubFieldRepository } from '../mathSubField.repository';
 import { MathSubFieldResolver } from '../mathSubField.resolver';

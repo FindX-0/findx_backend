@@ -4,8 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { DeleteMediaFileUsecase } from '@modules/mediaFile';
-import { MediaFileValidatorService } from '@modules/mediaFile/mediaFileValidator.service';
 import { ExceptionMessageCode } from '@shared/constant';
 import { TransactionRunner } from '@shared/util';
 
@@ -14,7 +12,9 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from './mathProblem.entity';
-import { MathProblemRepository } from './repository';
+import { MathProblemRepository } from './repository/mathProblem.repository';
+import { MediaFileValidatorService } from '../mediaFile/mediaFileValidator.service';
+import { DeleteMediaFileUsecase } from '../mediaFile/usecase/deleteMediaFile.usecase';
 
 @Injectable()
 export class MathProblemMutationService {

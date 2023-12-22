@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { MathSubFieldModule } from '@modules/mathSubField';
-
 import { MathFieldRepository } from './mathField.repository';
 import { MathFieldResolver } from './mathField.resolver';
 import { MathFieldMutationService } from './mathFieldMutation.service';
 import { MathFieldQueryService } from './mathFieldQuery.service';
+import { MathSubFieldModule } from '../mathSubField/module/mathSubField.module';
 
 @Module({
   imports: [MathSubFieldModule],

@@ -9,28 +9,25 @@ import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
 
-import { RedisModule, createPostgresPool } from '@config/database';
-import { EnvModule, EnvService } from '@config/env';
-import { validationExceptionFactory } from '@config/validation';
-import { AccountVerificationModule } from '@modules/accountVerification';
-import { AdminUserModule } from '@modules/adminUser';
-import {
-  HttpAuthPayloadInterceptor,
-  HttpJwtAuthGuard,
-  JwtHelperModule,
-  AuthenticationModule,
-  HttpRolesGuard,
-} from '@modules/authentication';
-import { MatchmakingModule } from '@modules/matchmaking';
-import { MathFieldModule } from '@modules/mathField';
-import { MathProblemModule } from '@modules/mathProblem';
-import { MathSubFieldModule } from '@modules/mathSubField';
-import { MediaFileModule } from '@modules/mediaFile';
-import { ServerTimeModule } from '@modules/serverTime';
-import { UserModule } from '@modules/user';
-import { TransactionRunnerModule } from '@shared/util';
-
-import { AppController } from './app.controller';
+import { AppController } from './AppController';
+import { createPostgresPool, RedisModule } from './config/database';
+import { EnvModule, EnvService } from './config/env';
+import { validationExceptionFactory } from './config/validation';
+import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
+import { AdminUserModule } from './modules/adminUser/adminUser.module';
+import { HttpAuthPayloadInterceptor } from './modules/authentication/filter/httpAuthPayload.interceptor';
+import { HttpJwtAuthGuard } from './modules/authentication/filter/httpJwtAuth.guard';
+import { HttpRolesGuard } from './modules/authentication/filter/httpRoles.guard';
+import { AuthenticationModule } from './modules/authentication/module/authentication.module';
+import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
+import { MatchmakingModule } from './modules/matchmaking/matchmaking.module';
+import { MathFieldModule } from './modules/mathField/mathField.module';
+import { MathProblemModule } from './modules/mathProblem/mathProblem.module';
+import { MathSubFieldModule } from './modules/mathSubField/module/mathSubField.module';
+import { MediaFileModule } from './modules/mediaFile/mediaFile.module';
+import { ServerTimeModule } from './modules/serverTime/serverTime.module';
+import { UserModule } from './modules/user/user.module';
+import { TransactionRunnerModule } from './shared/util';
 
 @Module({
   imports: [

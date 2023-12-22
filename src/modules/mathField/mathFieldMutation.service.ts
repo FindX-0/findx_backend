@@ -1,11 +1,10 @@
 import {
-  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 
-import { MathSubFieldQueryService } from '@modules/mathSubField';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import {
@@ -14,6 +13,7 @@ import {
   SelectableMathField,
 } from './mathField.entity';
 import { MathFieldRepository } from './mathField.repository';
+import { MathSubFieldQueryService } from '../mathSubField/mathSubFieldQuery.service';
 
 @Injectable()
 export class MathFieldMutationService {

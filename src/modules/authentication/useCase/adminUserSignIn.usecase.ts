@@ -1,11 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { AdminUserQueryService } from '@modules/adminUser';
-import { RefreshTokenService } from '@modules/refreshToken';
+import { AdminUserQueryService } from '@modules/adminUser/adminUserQuery.service';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthTokenPayload } from '../authentication.type';
-import { JwtHelper, PasswordEncoder } from '../util';
+import { JwtHelper } from '../util/jwt.helper';
+import { PasswordEncoder } from '../util/password.encoder';
 
 type Values = {
   email: string;

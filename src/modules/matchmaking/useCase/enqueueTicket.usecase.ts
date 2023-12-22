@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { TicketState } from '@entities/entityEnums';
-import { TransactionRunner } from '@shared/util';
+import { TransactionRunner } from '@shared/util/transactionRunner';
+import { TicketState } from '@entities/index';
 
 import { TicketRepository } from '../repository/ticket.repository';
 

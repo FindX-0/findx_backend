@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database';
-import { MatchState } from '@entities/entityEnums';
+import { MatchState } from '@entities/index';
 import { TransactionProvider } from '@shared/util';
 
 import { NewMatch, SelectableMatch } from '../entity/match.entity';

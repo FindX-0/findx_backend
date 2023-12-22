@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { Role } from '@entities/entityEnums';
-import { ExceptionMessageCode } from '@shared/constant';
-
 import { SelectableAdminUser } from './adminUser.entity';
 import { AdminUserRepository } from './adminUser.repository';
+import { Role } from '../../entities';
+import { ExceptionMessageCode } from '../../shared/constant';
 
 @Injectable()
 export class AdminUserQueryService {

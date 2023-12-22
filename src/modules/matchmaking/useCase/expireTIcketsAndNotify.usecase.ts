@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { TicketState } from '@entities/entityEnums';
-import { PublishTicketChangedUsecase } from '@modules/gateway';
+import { TicketState } from '@entities/index';
+import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import { TransactionProvider } from '@shared/util';
 
-import { SelectableTicket } from '../entity';
+import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 
 @Injectable()

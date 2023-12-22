@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Role } from '@entities/entityEnums';
+import { Role } from '@entities/index';
 import { SuccessObject } from '@shared/gql';
 
 import { NoAuth } from './decorator/noAuth.decorator';
@@ -14,16 +14,14 @@ import { EmailSignUpInput } from './gql/emailSignUp.input';
 import { GoogleSignInInput } from './gql/googleSignIn.input';
 import { JwtTokenPayloadObject } from './gql/jwtTokenPayload.object';
 import { RefreshTokenInput } from './gql/refreshToken.input';
-import {
-  AdminRefreshTokenUseCase,
-  AdminUserSignInUseCase,
-  AdminUserSignUpUseCase,
-  EmailSignInUseCase,
-  GoogleSignInUseCase,
-  RefreshTokenUseCase,
-} from './useCase';
+import { AdminRefreshTokenUseCase } from './useCase/adminRefreshToken.usecase';
+import { AdminUserSignInUseCase } from './useCase/adminUserSignIn.usecase';
+import { AdminUserSignUpUseCase } from './useCase/adminUserSignUp.usecase';
 import { DeviceSignInUseCase } from './useCase/deviceSignIn.usecase';
+import { EmailSignInUseCase } from './useCase/emailSignIn.usecase';
 import { EmailSignUpUseCase } from './useCase/emailSignUp.usecase';
+import { GoogleSignInUseCase } from './useCase/googleSignIn.usecase';
+import { RefreshTokenUseCase } from './useCase/refreshToken.usecase';
 
 @Resolver('authentication')
 export class AuthenticationResolver {

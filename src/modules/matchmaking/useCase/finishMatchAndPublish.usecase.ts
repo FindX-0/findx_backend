@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { MatchState } from '@entities/entityEnums';
-import { PublishMatchChangedUsecase } from '@modules/gateway';
+import { MatchState } from '@entities/index';
+import { PublishMatchChangedUsecase } from '@modules/gateway/usecase/publishMatchChanged.usecase';
 
-import { SelectableMatch } from '../entity';
+import { SelectableMatch } from '../entity/match.entity';
 import { MatchRepository } from '../repository/match.repository';
 
 @Injectable()

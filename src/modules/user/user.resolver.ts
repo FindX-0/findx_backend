@@ -1,9 +1,9 @@
 import { Query, Resolver } from '@nestjs/graphql';
 
-import { HttpAuthPayload, UserAuthPayload } from '@modules/authentication';
-
 import { UserObject } from './gql';
 import { UserQueryService } from './userQuery.service';
+import { HttpAuthPayload } from '../authentication/filter/httpAuthPayload.interceptor';
+import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
 
 @Resolver()
 export class UserResolver {

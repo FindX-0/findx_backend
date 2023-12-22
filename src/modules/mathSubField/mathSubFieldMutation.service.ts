@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { MathProblemQueryService } from '@modules/mathProblem';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import {
@@ -14,6 +13,7 @@ import {
   SelectableMathSubField,
 } from './mathSubField.entity';
 import { MathSubFieldRepository } from './mathSubField.repository';
+import { MathProblemQueryService } from '../mathProblem/mathProblemQuery.service';
 
 @Injectable()
 export class MathSubFieldMutationService {

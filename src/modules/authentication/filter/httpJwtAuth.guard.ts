@@ -11,7 +11,8 @@ import { ExceptionMessageCode } from '@shared/constant';
 import { getContextRequest } from '@shared/util';
 
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
-import { JwtHelper, getBearerTokenFromRequest } from '../util';
+import { getBearerTokenFromRequest } from '../util/getBearerTokenFromRequest';
+import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
 export class HttpJwtAuthGuard implements CanActivate {

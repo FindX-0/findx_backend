@@ -6,8 +6,9 @@ import {
 } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
-import { JwtHelper } from '@modules/authentication';
 import { ExceptionMessageCode } from '@shared/constant';
+
+import { JwtHelper } from '../authentication/util/jwt.helper';
 
 @Injectable()
 export class GatewayJwtAuthGuard implements CanActivate {

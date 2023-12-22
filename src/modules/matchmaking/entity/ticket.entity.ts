@@ -1,6 +1,6 @@
 import { Insertable, Selectable, Updateable } from 'kysely';
 
-import { Ticket } from '@entities/entityTypes';
+import { Ticket } from '@entities/index';
 
 export type SelectableTicket = Selectable<Ticket>;
 export type NewTicket = Insertable<Ticket>;

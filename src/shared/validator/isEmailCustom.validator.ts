@@ -1,6 +1,6 @@
 import { ValidationOptions, registerDecorator } from 'class-validator';
 
-import { RegexConstant } from '@shared/constant/regex.constant';
+import { RegexConstant } from '../constant';
 
 export const IsEmailCustom = (validationOptions?: ValidationOptions) => {
   return function (object: object, propertyName: string) {

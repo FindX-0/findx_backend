@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { AdminUserQueryService } from '@modules/adminUser';
-import { RefreshTokenService } from '@modules/refreshToken';
+import { AdminUserQueryService } from '@modules/adminUser/adminUserQuery.service';
+import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { AuthenticationPayload } from '../authentication.type';
-import { JwtHelper } from '../util';
+import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
 export class AdminRefreshTokenUseCase {
@@ -25,9 +25,8 @@ export class AdminRefreshTokenUseCase {
       throw new UnauthorizedException(ExceptionMessageCode.INVALID_TOKEN);
     }
 
-    const adminUserId = await this.refreshTokenService.getAdminUserIdByValue(
-      oldRefreshToken,
-    );
+    const adminUserId =
+      await this.refreshTokenService.getAdminUserIdByValue(oldRefreshToken);
 
     const adminUser = adminUserId
       ? await this.adminUserQueryService.getById(adminUserId)

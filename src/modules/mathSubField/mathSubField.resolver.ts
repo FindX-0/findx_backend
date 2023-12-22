@@ -1,8 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
-import { Role } from '@entities/entityEnums';
-import { Roles } from '@modules/authentication/decorator/roles.decorator';
-import { IdentifierInput, SuccessObject } from '@shared/gql';
+import { Role } from '@entities/index';
+import { SuccessObject, IdentifierInput } from '@shared/gql';
 
 import { CreateMathSubFieldInput } from './gql/createMathSubField.input';
 import { FilterMathSubFieldsInput } from './gql/filterMathSubFields.input';
@@ -11,6 +10,7 @@ import { MathSubFieldPageObject } from './gql/mathSubFIeldPage.object';
 import { UpdateMathSubFieldInput } from './gql/updateMathSubField.input';
 import { MathSubFieldMutationService } from './mathSubFieldMutation.service';
 import { MathSubFieldQueryService } from './mathSubFieldQuery.service';
+import { Roles } from '../authentication/decorator/roles.decorator';
 
 @Resolver()
 export class MathSubFieldResolver {

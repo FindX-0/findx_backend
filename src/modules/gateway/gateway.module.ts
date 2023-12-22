@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { JwtHelperModule } from '@modules/authentication';
-import { UserModule } from '@modules/user';
-
 import { SocketGateway } from './gateway';
-import {
-  PublishMatchChangedUsecase,
-  PublishTicketChangedUsecase,
-} from './usecase';
+import { PublishMatchChangedUsecase } from './usecase/publishMatchChanged.usecase';
+import { PublishTicketChangedUsecase } from './usecase/publishTicketChanged.usecase';
+import { JwtHelperModule } from '../authentication/module/jwtHelper.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [UserModule, JwtHelperModule],

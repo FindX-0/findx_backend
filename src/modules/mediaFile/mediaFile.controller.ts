@@ -8,14 +8,14 @@ import {
 import { Controller, Post, UseInterceptors } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import { Role } from '@entities/entityEnums';
-import { Roles } from '@modules/authentication/decorator/roles.decorator';
 import { plainArrayToInstance } from '@shared/util/plainArrayToInstance';
+import { Role } from '@entities/index';
 
 import { MediaFileDto } from './dto/mediaFile.dto';
 import { PATH_UPLOADS } from './mediaFile.constant';
 import { CreateMediaFileUsecase } from './usecase/createMediaFile.usecase';
 import { diskStorageFileToNewMediaFileValues } from './util/disk_storage_file_to_new_media_file_values';
+import { Roles } from '../authentication/decorator/roles.decorator';
 
 @Roles(Role.SUPER_ADMIN)
 @Controller('mediaFile')

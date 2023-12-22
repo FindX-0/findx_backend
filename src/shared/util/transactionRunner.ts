@@ -2,8 +2,9 @@ import { Global, Injectable, Module } from '@nestjs/common';
 import { Transaction } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
-import { DB } from '@entities/entityTypes';
+import { DB } from '@entities/index';
+
+import { KyselyDB } from '../../config/database';
 
 export interface TransactionProvider {
   get(): Transaction<DB>;

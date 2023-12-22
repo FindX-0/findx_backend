@@ -3,10 +3,10 @@ import { ExpressionBuilder } from 'kysely';
 import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
-import { DB } from '@entities/entityTypes';
 import { TransactionProvider } from '@shared/util';
 
+import { KyselyDB } from '../../../config/database';
+import { DB } from '../../../entities';
 import {
   MathProblemUpdate,
   NewMathProblem,

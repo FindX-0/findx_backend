@@ -2,12 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env';
-import { TicketState } from '@entities/entityEnums';
-import { PublishTicketChangedUsecase } from '@modules/gateway';
+import { TicketState } from '@entities/index';
+import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import {
-  TransactionProvider,
   TransactionRunner,
   groupByToMap,
+  TransactionProvider,
   partition,
 } from '@shared/util';
 import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';

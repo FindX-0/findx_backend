@@ -12,8 +12,8 @@ import { Observable } from 'rxjs';
 import { ExceptionMessageCode } from '@shared/constant';
 import { getContextRequest } from '@shared/util';
 
-import { UserAuthPayload } from '../type';
-import { getBearerTokenFromRequest } from '../util';
+import { UserAuthPayload } from '../type/userAuthPayload.type';
+import { getBearerTokenFromRequest } from '../util/getBearerTokenFromRequest';
 import { JwtHelper } from '../util/jwt.helper';
 
 export const HttpAuthPayload = createParamDecorator(

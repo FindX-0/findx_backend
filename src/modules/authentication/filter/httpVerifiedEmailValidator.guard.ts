@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { AccountVerificationService } from '@modules/accountVerification';
 import { ExceptionMessageCode } from '@shared/constant';
 import { getContextRequest } from '@shared/util';
+import { AccountVerificationService } from '@modules/accountVerification/accountVerification.service';
 
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { NO_EMAIL_VERIFICATION_VALIDATE } from '../decorator/noEmailVerificationValidate.decorator';
-import { getBearerTokenFromRequest } from '../util';
+import { getBearerTokenFromRequest } from '../util/getBearerTokenFromRequest';
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
