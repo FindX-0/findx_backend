@@ -6,12 +6,22 @@ import { SelectableMathField } from '../mathField/mathField.entity';
 import { SelectableMathSubField } from '../mathSubField/mathSubField.entity';
 import { SelectableMediaFile } from '../mediaFile/mediaFile.entity';
 
-export type SelectableMathProblem = Selectable<MathProblem>;
-export type SelectableMathProblemWithRelations = Selectable<MathProblem> & {
+export type MathProblemAnswer = {
+  tex: string;
+  isCorrect: boolean;
+};
+
+type MathProblemAnswersField = { answers: MathProblemAnswer[] };
+
+export type SelectableMathProblem = Selectable<MathProblem> &
+  MathProblemAnswersField;
+
+export type SelectableMathProblemWithRelations = SelectableMathProblem & {
   images: SelectableMediaFile[];
   mathField?: Partial<SelectableMathField> | null;
   mathSubField?: Partial<SelectableMathSubField> | null;
 };
 
-export type NewMathProblem = Insertable<MathProblem>;
-export type MathProblemUpdate = Updateable<MathProblem>;
+export type NewMathProblem = Insertable<MathProblem> & MathProblemAnswersField;
+export type MathProblemUpdate = Updateable<MathProblem> &
+  Partial<MathProblemAnswersField>;

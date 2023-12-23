@@ -31,7 +31,13 @@ input CreateMathFieldInput {
   name: String!
 }
 
+input CreateMathProblemAnswerInput {
+  isCorrect: Boolean!
+  tex: String!
+}
+
 input CreateMathProblemInput {
+  answers: [CreateMathProblemAnswerInput!]!
   difficulty: Int!
   imageMediaIds: [ID!]
   mathFieldId: ID!
@@ -108,7 +114,13 @@ type MathFieldPageObject {
   data: [MathFieldObject!]!
 }
 
+type MathProblemAnswerObject {
+  isCorrect: Boolean!
+  tex: String!
+}
+
 type MathProblemObject {
+  answers: [MathProblemAnswerObject!]!
   createdAt: DateTime!
   difficulty: Int!
   id: ID!
@@ -199,6 +211,7 @@ input UpdateMathFieldInput {
 }
 
 input UpdateMathProblemInput {
+  answers: [CreateMathProblemAnswerInput!]
   difficulty: Int
   id: ID!
   imageMediaIds: [ID!]

@@ -45,7 +45,7 @@ export type MathProblem = {
     imageMediaIds: string[];
     text: string | null;
     tex: string | null;
-    answers: unknown | null;
+    answers: unknown[];
     mathFieldId: string;
     mathSubFieldId: string;
 };

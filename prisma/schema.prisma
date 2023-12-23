@@ -181,7 +181,7 @@ model MathProblem {
   imageMediaIds String[]
   text          String?
   tex           String?
-  answers       Json?
+  answers       Json[]   @db.JsonB
 
   mathFieldId    BigInt
   mathSubFieldId BigInt

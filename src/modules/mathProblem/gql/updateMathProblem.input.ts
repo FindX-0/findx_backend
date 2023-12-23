@@ -1,5 +1,8 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
 import {
+  ArrayMaxSize,
+  ArrayMinSize,
   IsArray,
   IsInt,
   IsNotEmpty,
@@ -10,6 +13,8 @@ import {
 } from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
+
+import { CreateMathProblemAnswerInput } from './createMathProblemAnswer.input';
 
 @InputType()
 export class UpdateMathProblemInput extends IdentifierInput {
@@ -50,4 +55,11 @@ export class UpdateMathProblemInput extends IdentifierInput {
   @IsNotEmpty({ each: true })
   @IsOptional()
   imageMediaIds: string[] | null;
+
+  @Field(() => [CreateMathProblemAnswerInput], { nullable: true })
+  @Type(() => CreateMathProblemAnswerInput)
+  @IsArray()
+  @ArrayMinSize(4)
+  @ArrayMaxSize(4)
+  answers: CreateMathProblemAnswerInput[] | null;
 }

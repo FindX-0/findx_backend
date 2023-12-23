@@ -57,6 +57,7 @@ export class MathProblemResolver {
       ...(values.mathFieldId && { mathFieldId: values.mathFieldId }),
       ...(values.mathSubFieldId && { mathSubFieldId: values.mathSubFieldId }),
       ...(values.imageMediaIds && { imageMediaIds: values.imageMediaIds }),
+      ...(values.answers && { answers: values.answers }),
     });
 
     const images = mathProblem.imageMediaIds?.length
