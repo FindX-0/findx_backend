@@ -4,6 +4,8 @@ import { MathFieldObject } from '@modules/mathField/gql/mathField.object';
 import { MathSubFieldObject } from '@modules/mathSubField/gql/mathSubField.object';
 import { MediaFileObject } from '@modules/mediaFile/gql/mediaFile.object';
 
+import { MathProblemAnswerObject } from './mathProblemAnswer.object';
+
 @ObjectType()
 export class MathProblemObject {
   @Field(() => ID)
@@ -35,4 +37,7 @@ export class MathProblemObject {
 
   @Field(() => MathSubFieldObject, { nullable: true })
   mathSubField?: MathSubFieldObject | null;
+
+  @Field(() => [MathProblemAnswerObject])
+  answers: MathProblemAnswerObject[];
 }

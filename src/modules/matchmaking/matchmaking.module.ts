@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 
+import { MathProblemModule } from '@modules/mathProblem/mathProblem.module';
+import { MathSubFieldModule } from '@modules/mathSubField/module/mathSubField.module';
+
 import { MatchmakingResolver } from './matchmaking.resolver';
 import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
@@ -12,7 +15,7 @@ import { UpdateTicketAndPublishUsecase } from './useCase/updateTicketAndPublish.
 import { GatewayModule } from '../gateway/gateway.module';
 
 @Module({
-  imports: [GatewayModule],
+  imports: [GatewayModule, MathProblemModule, MathSubFieldModule],
   providers: [
     // repository
     TicketRepository,

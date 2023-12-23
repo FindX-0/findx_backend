@@ -8,6 +8,7 @@ import { TransactionProvider } from '@shared/util';
 import { KyselyDB } from '../../../config/database';
 import { DB } from '../../../entities';
 import {
+  MathProblemAnswer,
   MathProblemUpdate,
   NewMathProblem,
   SelectableMathProblem,
@@ -28,7 +29,7 @@ export class MathProblemRepository {
       .returningAll()
       .executeTakeFirst();
 
-    return created ?? null;
+    return (created as SelectableMathProblem) ?? null;
   }
 
   async updateById(
@@ -43,7 +44,7 @@ export class MathProblemRepository {
       .returningAll()
       .executeTakeFirst();
 
-    return updated ?? null;
+    return (updated as SelectableMathProblem) ?? null;
   }
 
   async getById(id: string): Promise<SelectableMathProblem | null> {
@@ -53,7 +54,7 @@ export class MathProblemRepository {
       .selectAll()
       .executeTakeFirst();
 
-    return entity ?? null;
+    return (entity as SelectableMathProblem) ?? null;
   }
 
   async getImageMediaIdsById(id: string): Promise<string[] | null> {
@@ -107,6 +108,7 @@ export class MathProblemRepository {
     return mathProblems.map((mathProblem) => {
       return {
         ...mathProblem,
+        answers: mathProblem.answers as MathProblemAnswer[],
         mathField: mathProblem.mathField
           ? {
               ...mathProblem.mathField,

@@ -57,6 +57,7 @@ export class MathProblemResolver {
       ...(values.mathFieldId && { mathFieldId: values.mathFieldId }),
       ...(values.mathSubFieldId && { mathSubFieldId: values.mathSubFieldId }),
       ...(values.imageMediaIds && { imageMediaIds: values.imageMediaIds }),
+      ...(values.answers && { answers: values.answers }),
     });
 
     const images = mathProblem.imageMediaIds?.length
@@ -76,6 +77,7 @@ export class MathProblemResolver {
     return { success: true };
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Query(() => MathProblemObject)
   async getMathProblemById(
     @Args('input') input: IdentifierInput,
@@ -89,6 +91,7 @@ export class MathProblemResolver {
     return { ...mathProblem, images };
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Query(() => MathProblemPageObject)
   async filterMathProblems(
     @Args('input') input: LastIdPageParamsObject,
