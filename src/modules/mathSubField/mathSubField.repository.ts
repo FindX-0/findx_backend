@@ -119,6 +119,16 @@ export class MathSubFieldRepository {
     return res.map((e) => e.id);
   }
 
+  async getAllIdsByMathFieldId(mathFieldId: string): Promise<string[]> {
+    const res = await this.db
+      .selectFrom('mathSubFields')
+      .select(['id'])
+      .where('mathFieldId', '=', mathFieldId)
+      .execute();
+
+    return res.map((e) => e.id);
+  }
+
   private withMathField(eb: ExpressionBuilder<DB, 'mathSubFields'>) {
     return jsonObjectFrom(
       eb

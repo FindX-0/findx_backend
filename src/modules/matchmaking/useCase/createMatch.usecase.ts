@@ -1,8 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 
 import { EnvService } from '@config/env';
 import { MatchState, TicketState } from '@entities/index';
-import { TransactionProvider } from '@shared/util';
+import { MathProblemIdStore } from '@modules/mathProblem/repository/mathProblemId.store';
+import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuery.service';
+import { TransactionProvider, splitNumIntoChunks } from '@shared/util';
 
 import { UpdateTicketAndPublishUsecase } from './updateTicketAndPublish.usecase';
 import { SelectableMatch } from '../entity/match.entity';
@@ -15,6 +21,8 @@ export class CreateMatchUseCase {
     private readonly matchRepository: MatchRepository,
     private readonly envService: EnvService,
     private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
+    private readonly mathProblemIdStore: MathProblemIdStore,
+    private readonly mathSubFieldQueryService: MathSubFieldQueryService,
   ) {}
 
   private readonly logger = new Logger(CreateMatchUseCase.name);
@@ -46,6 +54,7 @@ export class CreateMatchUseCase {
         closeAt: matchCloseAt,
         userIds: [ticketA.userId, ticketB.userId],
         state: MatchState.PENDING,
+        mathProblemIds: await this.resolveMathProblemIds(mathFieldId),
       },
       txProvider,
     );
@@ -95,5 +104,36 @@ export class CreateMatchUseCase {
     );
 
     return { createdAt, startAt, endAt, closeAt };
+  }
+
+  private async resolveMathProblemIds(mathFieldId: string): Promise<string[]> {
+    const mathSubFieldIds =
+      await this.mathSubFieldQueryService.getAllIdsByMathFieldId(mathFieldId);
+
+    if (!mathSubFieldIds.length) {
+      return [];
+    }
+
+    const mathProblemCount = 200;
+
+    const randomMathProblemIds = await Promise.all(
+      splitNumIntoChunks(
+        mathProblemCount,
+        Math.ceil(mathProblemCount / mathSubFieldIds.length),
+      ).map((count, index) => {
+        const mathSubFieldId = mathSubFieldIds[index];
+
+        if (!mathSubFieldId) {
+          throw new InternalServerErrorException();
+        }
+
+        return this.mathProblemIdStore.getRandomByMathSubFieldId(
+          mathSubFieldId,
+          count,
+        );
+      }),
+    );
+
+    return randomMathProblemIds.flat(1);
   }
 }

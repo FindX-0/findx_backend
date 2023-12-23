@@ -48,4 +48,8 @@ export class MathSubFieldQueryService {
   async countBy(params: CountMathSubFieldParams): Promise<number> {
     return this.mathSubFieldRepository.count(params);
   }
+
+  async getAllIdsByMathFieldId(mathFieldId: string): Promise<string[]> {
+    return this.mathSubFieldRepository.getAllIdsByMathFieldId(mathFieldId);
+  }
 }

@@ -19,6 +19,10 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     MathProblemIdStore,
     MathProblemIdsInit,
   ],
-  exports: [MathProblemQueryService, MathProblemMutationService],
+  exports: [
+    MathProblemQueryService,
+    MathProblemMutationService,
+    MathProblemIdStore,
+  ],
 })
 export class MathProblemModule {}
