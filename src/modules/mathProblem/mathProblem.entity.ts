@@ -22,6 +22,8 @@ export type SelectableMathProblemWithRelations = SelectableMathProblem & {
   mathSubField?: Partial<SelectableMathSubField> | null;
 };
 
-export type NewMathProblem = Insertable<MathProblem> & MathProblemAnswersField;
-export type MathProblemUpdate = Updateable<MathProblem> &
+export type NewMathProblem = Omit<Insertable<MathProblem>, 'answers'> &
+  MathProblemAnswersField;
+
+export type MathProblemUpdate = Omit<Updateable<MathProblem>, 'answers'> &
   Partial<MathProblemAnswersField>;
