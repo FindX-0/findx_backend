@@ -77,6 +77,7 @@ export class MathProblemResolver {
     return { success: true };
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Query(() => MathProblemObject)
   async getMathProblemById(
     @Args('input') input: IdentifierInput,
@@ -90,6 +91,7 @@ export class MathProblemResolver {
     return { ...mathProblem, images };
   }
 
+  @Roles(Role.SUPER_ADMIN)
   @Query(() => MathProblemPageObject)
   async filterMathProblems(
     @Args('input') input: LastIdPageParamsObject,
