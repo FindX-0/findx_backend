@@ -1,4 +1,0 @@
--- AlterTable
-ALTER TABLE "users" ADD COLUMN     "isCompleted" BOOLEAN NOT NULL DEFAULT true,
-ALTER COLUMN "gender" DROP NOT NULL,
-ALTER COLUMN "userName" DROP NOT NULL;
