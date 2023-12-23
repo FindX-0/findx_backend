@@ -5,18 +5,18 @@ FROM node:${NODE_VERSION}-bullseye as build
 ENV NODE_OPTIONS=--max_old_space_size=4096
 WORKDIR /app
 
-COPY ./package.json ./package-lock.json tsconfig.json tsconfig.build.json nest-cli.json ./.env.production ./
+COPY ./package.json ./yarn.lock tsconfig.json tsconfig.build.json nest-cli.json ./.env.production ./
 COPY ./prisma/ ./prisma/
 COPY ./src ./src/
 
-RUN set -ex; npm ci
-RUN set -ex; npm run build
+RUN set -ex; yarn install --pure-lockfile
+RUN set -ex; yarn build
 
 FROM node:${NODE_VERSION}-bullseye as deps
 WORKDIR /app
 COPY --from=build /root/.npm /root/.npm
-COPY ./package.json ./package-lock.json ./
-RUN set -ex; npm ci --production
+COPY ./package.json ./yarn.lock ./
+RUN set -ex; yarn install --pure-lockfile --production
 
 FROM node:${NODE_VERSION}-bullseye-slim
 
@@ -33,4 +33,4 @@ RUN apt-get -y update && apt-get install -y openssl
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:migrate:prod"]
+CMD ["yarn", "start:migrate:prod"]
