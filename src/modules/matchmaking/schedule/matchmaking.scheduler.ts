@@ -3,7 +3,7 @@ import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env';
 import { TicketState } from '@entities/index';
-import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
+import { PublishTicketChanged } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import {
   TransactionRunner,
   groupByToMap,
@@ -27,7 +27,7 @@ export class MatchmakingScheduler {
     private readonly transactionRunner: TransactionRunner,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
-    private readonly publishTicketChangesUsecase: PublishTicketChangedUsecase,
+    private readonly publishTicketChangesUsecase: PublishTicketChanged,
     private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotify,
   ) {}
 

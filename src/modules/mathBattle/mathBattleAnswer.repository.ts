@@ -47,4 +47,14 @@ export class MathBattleAnswerRepository {
 
     return Boolean(deleteResults.length);
   }
+
+  async getAllByMatchId(
+    matchId: string,
+  ): Promise<SelectableMathBattleAnswer[]> {
+    return this.db
+      .selectFrom('MathBattleAnswer')
+      .selectAll()
+      .where('matchId', '=', matchId)
+      .execute();
+  }
 }

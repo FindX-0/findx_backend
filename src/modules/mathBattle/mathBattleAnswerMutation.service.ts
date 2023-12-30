@@ -1,6 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
-import { NewMathBattleAnswer } from './mathBattleAnswer.entity';
+import { ExceptionMessageCode } from '@shared/constant';
+
+import {
+  NewMathBattleAnswer,
+  SelectableMathBattleAnswer,
+} from './mathBattleAnswer.entity';
 import { MathBattleAnswerRepository } from './mathBattleAnswer.repository';
 
 @Injectable()
@@ -9,7 +14,17 @@ export class MathBattleAnswerMutationService {
     private readonly mathBattleAnswerRepository: MathBattleAnswerRepository,
   ) {}
 
-  async create(values: NewMathBattleAnswer) {
-    return this.mathBattleAnswerRepository.create(values);
+  async create(
+    values: NewMathBattleAnswer,
+  ): Promise<SelectableMathBattleAnswer> {
+    const entity = await this.mathBattleAnswerRepository.create(values);
+
+    if (!entity) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.COULD_NOT_CREATE_MATH_BATTLE_ANSWER,
+      );
+    }
+
+    return entity;
   }
 }

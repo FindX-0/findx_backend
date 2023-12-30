@@ -8,6 +8,7 @@ import {
 import { MatchQueryService } from '@modules/matchmaking/service/matchQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { PublishMathBattleAnswers } from './publishMathBattleAnswers.usecase';
 import { MathProblemQueryService } from '../../mathProblem/mathProblemQuery.service';
 import { MathBattleAnswerMutationService } from '../mathBattleAnswerMutation.service';
 
@@ -24,6 +25,7 @@ export class SubmitMathProblemAnswer {
     private readonly mathProblemQueryService: MathProblemQueryService,
     private readonly matchQueryService: MatchQueryService,
     private readonly mathBattleAnswerMutationService: MathBattleAnswerMutationService,
+    private readonly publishMathBattleAnswers: PublishMathBattleAnswers,
   ) {}
 
   async call({ userId, matchId, mathProblemId, answer }: Args) {
@@ -58,5 +60,7 @@ export class SubmitMathProblemAnswer {
       mathProblemId,
       userId,
     });
+
+    await this.publishMathBattleAnswers.call({ match });
   }
 }

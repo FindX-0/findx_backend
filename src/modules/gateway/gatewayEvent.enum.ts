@@ -1,4 +1,4 @@
 export enum GatewayEvent {
   TICKET_CHANGED = 'ticketChanged',
-  MATCH_CHANGED = 'matchChanged',
+  MATH_BATTLE_SCORE_CHANGED = 'mathBattleScoreChanged',
 }

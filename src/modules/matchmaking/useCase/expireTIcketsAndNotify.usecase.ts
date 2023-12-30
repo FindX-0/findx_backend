@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { TicketState } from '@entities/index';
-import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
+import { PublishTicketChanged } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import { TransactionProvider } from '@shared/util';
 
 import { SelectableTicket } from '../entity/ticket.entity';
@@ -11,7 +11,7 @@ import { TicketRepository } from '../repository/ticket.repository';
 export class ExpireTicketsAndNotify {
   constructor(
     private readonly ticketRepository: TicketRepository,
-    private readonly publishTicketChangedUsecase: PublishTicketChangedUsecase,
+    private readonly publishTicketChangedUsecase: PublishTicketChanged,
   ) {}
 
   async call({
