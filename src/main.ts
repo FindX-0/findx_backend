@@ -9,7 +9,7 @@ import {
 } from '@nestjs/platform-fastify';
 
 import { AppModule } from './app.module';
-import { registerGqlEnums } from './config/gql';
+import { registerGqlEnums } from './config/gql/registerGqlEnums';
 import { DIRECTORY_UPLOADS } from './modules/mediaFile/mediaFile.constant';
 
 async function bootstrap() {

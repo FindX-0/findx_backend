@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { PublishMathBattleScoreChanged } from '@modules/gateway/usecase/publishMathBattleScoreChanged.usecase';
 import { SelectableMatch } from '@modules/matchmaking/entity/match.entity';
 import { groupByToMap } from '@shared/util';
 
@@ -14,7 +15,7 @@ type Args = {
 export class PublishMathBattleAnswers {
   constructor(
     private readonly mathBattleAnswerQueryService: MathBattleAnswerQueryService,
-    // private readonly publishMathBattleScoreChanged: PublishMathBattleScoreChanged,
+    private readonly publishMathBattleScoreChanged: PublishMathBattleScoreChanged,
   ) {}
 
   async call({ match }: Args) {
@@ -30,9 +31,9 @@ export class PublishMathBattleAnswers {
       };
     });
 
-    // await this.publishMathBattleScoreChanged.call({
-    //   userIds: match.userIds,
-    //   payload: { matchId: match.id, scores: scores },
-    // });
+    await this.publishMathBattleScoreChanged.call({
+      userIds: match.userIds,
+      payload: { matchId: match.id, scores: scores },
+    });
   }
 }

@@ -4,7 +4,7 @@ import { InjectKysely } from 'nestjs-kysely';
 
 import { DB } from '@entities/index';
 
-import { KyselyDB } from '../../config/database';
+import { KyselyDB } from '../../config/database/kyselyDb.type';
 
 export interface TransactionProvider {
   get(): Transaction<DB>;

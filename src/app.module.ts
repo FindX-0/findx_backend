@@ -9,11 +9,13 @@ import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
 
+import { createPostgresPool } from '@config/database/postgresPool.factory';
+import { RedisModule } from '@config/database/redis.module';
 import { MathBattleModule } from '@modules/mathBattle/mathBattle.module';
 
 import { AppController } from './AppController';
-import { createPostgresPool, RedisModule } from './config/database';
-import { EnvModule, EnvService } from './config/env';
+import { EnvModule } from './config/env/env.module';
+import { EnvService } from './config/env/env.service';
 import { validationExceptionFactory } from './config/validation';
 import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
 import { AdminUserModule } from './modules/adminUser/adminUser.module';

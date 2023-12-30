@@ -4,7 +4,7 @@ import {
   Logger,
 } from '@nestjs/common';
 
-import { EnvService } from '@config/env';
+import { EnvService } from '@config/env/env.service';
 import { MatchState, TicketState } from '@entities/index';
 import { MathProblemIdStore } from '@modules/mathProblem/repository/mathProblemId.store';
 import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuery.service';

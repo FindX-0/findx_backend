@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
+import { KyselyDB } from '@config/database/kyselyDb.type';
 import { MatchState } from '@entities/index';
 import { TransactionProvider } from '@shared/util';
 

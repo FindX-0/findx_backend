@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval, SchedulerRegistry } from '@nestjs/schedule';
 
-import { EnvService } from '@config/env';
+import { EnvService } from '@config/env/env.service';
 import { TicketState } from '@entities/index';
 import { PublishTicketChanged } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import {

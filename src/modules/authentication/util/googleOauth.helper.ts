@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { GoogleApis, google } from 'googleapis';
 
-import { EnvService } from '@config/env';
+import { EnvService } from '@config/env/env.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 type OAuth2Client = typeof GoogleApis.prototype.auth.OAuth2.prototype;

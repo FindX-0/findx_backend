@@ -1,11 +1,11 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 
-import { HttpAuthPayload } from '@modules/authentication/filter/httpAuthPayload.interceptor';
 import { UserAuthPayload } from '@modules/authentication/type/userAuthPayload.type';
 import { SubmitMathProblemAnswerInput } from '@modules/mathBattle/gql/submitMathProblemAnswer.input';
 import { SuccessObject } from '@shared/gql';
 
 import { SubmitMathProblemAnswer } from './usecase/submitMathProblemAnswer.usecase';
+import { HttpAuthPayload } from '../authentication/filter/httpAuthPayload.interceptor';
 
 @Resolver()
 export class MathBattleResolver {

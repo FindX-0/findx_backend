@@ -5,7 +5,7 @@ import { InjectKysely } from 'nestjs-kysely';
 
 import { TransactionProvider } from '@shared/util';
 
-import { KyselyDB } from '../../../config/database';
+import { KyselyDB } from '../../../config/database/kyselyDb.type';
 import { DB } from '../../../entities';
 import {
   MathProblemAnswer,
