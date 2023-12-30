@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -29,11 +28,9 @@ export class SubmitMathProblemAnswer {
   ) {}
 
   async call({ userId, matchId, mathProblemId, answer }: Args) {
-    const match = await this.matchQueryService.getById(matchId);
-
-    if (!match.userIds.includes(userId)) {
-      throw new ForbiddenException(ExceptionMessageCode.MATCH_USER_NOT_FOUND);
-    }
+    const match = await this.matchQueryService.getById(matchId, {
+      validateUserIncluded: { userId },
+    });
 
     if (!match.mathProblemIds.includes(mathProblemId)) {
       throw new BadRequestException(

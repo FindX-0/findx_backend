@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { ExceptionMessageCode } from '@shared/constant';
 
@@ -19,11 +23,26 @@ export class MatchQueryService {
     return mathProblemIds;
   }
 
-  async getById(id: string): Promise<SelectableMatch> {
+  async getById(
+    id: string,
+    options?: {
+      validateUserIncluded?: {
+        userId: string;
+      };
+    },
+  ): Promise<SelectableMatch> {
     const match = await this.matchRepository.getById(id);
 
     if (!match) {
       throw new NotFoundException(ExceptionMessageCode.MATCH_NOT_FOUND);
+    }
+
+    const validateIncludedUserId = options?.validateUserIncluded?.userId;
+    if (
+      validateIncludedUserId &&
+      !match.userIds.includes(validateIncludedUserId)
+    ) {
+      throw new ForbiddenException(ExceptionMessageCode.MATCH_USER_NOT_FOUND);
     }
 
     return match;

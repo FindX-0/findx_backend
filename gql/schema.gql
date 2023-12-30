@@ -107,6 +107,24 @@ input LastIdPageParamsObject {
   limit: Int!
 }
 
+type MatchObject {
+  closeAt: DateTime!
+  createdAt: DateTime!
+  endAt: DateTime!
+  id: ID!
+  mathFieldId: String!
+  mathProblemIds: [String!]!
+  startAt: DateTime!
+  state: MatchState!
+  userIds: [String!]!
+}
+
+enum MatchState {
+  FINISHED
+  IN_PROGRESS
+  PENDING
+}
+
 type MathBattleMathProblemObject {
   answers: [MathProblemAnswerWoutCorrectObject!]!
   createdAt: DateTime!
@@ -208,11 +226,13 @@ type Query {
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAuthUser: UserObject!
+  getMatchById(input: IdentifierInput!): MatchObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!
   getServerTime: ServerTimeObject!
+  getUserById(input: IdentifierInput!): UserObject!
 }
 
 input RefreshTokenInput {
