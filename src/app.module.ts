@@ -9,6 +9,8 @@ import { GraphQLFormattedError } from 'graphql';
 import { PostgresDialect } from 'kysely';
 import { KyselyModule } from 'nestjs-kysely';
 
+import { MathBattleModule } from '@modules/mathBattle/mathBattle.module';
+
 import { AppController } from './AppController';
 import { createPostgresPool, RedisModule } from './config/database';
 import { EnvModule, EnvService } from './config/env';
@@ -73,6 +75,7 @@ import { TransactionRunnerModule } from './shared/util';
     MathSubFieldModule,
     MathProblemModule,
     MediaFileModule,
+    MathBattleModule,
   ],
   controllers: [AppController],
   providers: [

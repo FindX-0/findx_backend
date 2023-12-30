@@ -175,6 +175,7 @@ type Mutation {
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
+  submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
@@ -199,6 +200,12 @@ input RefreshTokenInput {
 
 type ServerTimeObject {
   serverTime: DateTime!
+}
+
+input SubmitMathProblemAnswerInput {
+  answer: String!
+  matchId: ID!
+  mathProblemId: ID!
 }
 
 type SuccessObject {

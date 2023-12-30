@@ -7,6 +7,7 @@ import { MatchmakingResolver } from './matchmaking.resolver';
 import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
+import { MatchQueryService } from './service/matchQuery.service';
 import { CreateMatch } from './useCase/createMatch.usecase';
 import { EnqueueTicket } from './useCase/enqueueTicket.usecase';
 import { ExpireTicketsAndNotify } from './useCase/expireTIcketsAndNotify.usecase';
@@ -20,6 +21,8 @@ import { GatewayModule } from '../gateway/gateway.module';
     // repository
     TicketRepository,
     MatchRepository,
+    // service
+    MatchQueryService,
     // usecases
     EnqueueTicket,
     CreateMatch,
@@ -30,5 +33,6 @@ import { GatewayModule } from '../gateway/gateway.module';
     MatchmakingResolver,
     MatchmakingScheduler,
   ],
+  exports: [MatchQueryService],
 })
 export class MatchmakingModule {}
