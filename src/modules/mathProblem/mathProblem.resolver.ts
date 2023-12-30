@@ -8,8 +8,8 @@ import {
 } from '@shared/gql';
 
 import { CreateMathProblemInput } from './gql/createMathProblem.input';
+import { MathProblemObject } from './gql/mathProblem/mathProfilem.object';
 import { MathProblemPageObject } from './gql/mathProblemPage.object';
-import { MathProblemObject } from './gql/mathProfilem.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';

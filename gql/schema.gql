@@ -85,6 +85,10 @@ input GetAllMathFieldsInput {
   onlyPublic: Boolean!
 }
 
+input GetMathBattleMathProblemsInput {
+  matchId: ID!
+}
+
 input GoogleSignInInput {
   accessToken: String!
 }
@@ -103,6 +107,18 @@ input LastIdPageParamsObject {
   limit: Int!
 }
 
+type MathBattleMathProblemObject {
+  answers: [MathProblemAnswerWoutCorrectObject!]!
+  createdAt: DateTime!
+  difficulty: Int!
+  id: ID!
+  images: [MediaFileObject!]
+  mathFieldId: String!
+  mathSubFieldId: String!
+  tex: String
+  text: String
+}
+
 type MathFieldObject {
   createdAt: DateTime!
   id: ID!
@@ -116,6 +132,10 @@ type MathFieldPageObject {
 
 type MathProblemAnswerObject {
   isCorrect: Boolean!
+  tex: String!
+}
+
+type MathProblemAnswerWoutCorrectObject {
   tex: String!
 }
 
@@ -188,6 +208,7 @@ type Query {
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAuthUser: UserObject!
+  getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!

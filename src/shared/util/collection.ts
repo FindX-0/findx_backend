@@ -21,3 +21,25 @@ export const partition = <T>(
 
   return [pass, fail];
 };
+
+export const shuffleArray = <T>(array: T[]): T[] => {
+  const arrayCopy = [...array];
+
+  let currentIndex = arrayCopy.length;
+  let randomIndex = -1;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [arrayCopy[currentIndex] as unknown, arrayCopy[randomIndex] as unknown] = [
+      arrayCopy[randomIndex],
+      arrayCopy[currentIndex],
+    ];
+  }
+
+  return arrayCopy;
+};

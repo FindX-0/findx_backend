@@ -145,6 +145,16 @@ export class MathProblemRepository {
     return parseInt(count as string);
   }
 
+  async getByIds(ids: string[]): Promise<SelectableMathProblem[]> {
+    const entities = await this.db
+      .selectFrom('mathProblems')
+      .selectAll()
+      .where('id', 'in', ids)
+      .execute();
+
+    return entities as SelectableMathProblem[];
+  }
+
   private withMathField(eb: ExpressionBuilder<DB, 'mathProblems'>) {
     return jsonObjectFrom(
       eb
