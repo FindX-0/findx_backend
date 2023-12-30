@@ -35,4 +35,24 @@ export class MatchRepository {
       .where('id', '=', id)
       .execute();
   }
+
+  async getMathProblemIdsById(id: string): Promise<string[] | null> {
+    const entity = await this.db
+      .selectFrom('matches')
+      .select(['id', 'mathProblemIds'])
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity?.mathProblemIds ?? null;
+  }
+
+  async getById(id: string): Promise<SelectableMatch | null> {
+    const entity = await this.db
+      .selectFrom('matches')
+      .selectAll()
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
 }

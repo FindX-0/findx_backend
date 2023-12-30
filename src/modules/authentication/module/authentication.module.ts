@@ -8,14 +8,14 @@ import { RandomGenerator } from '@shared/util';
 
 import { JwtHelperModule } from './jwtHelper.module';
 import { AuthenticationResolver } from '../authentication.resolver';
-import { AdminRefreshTokenUseCase } from '../useCase/adminRefreshToken.usecase';
-import { AdminUserSignInUseCase } from '../useCase/adminUserSignIn.usecase';
-import { AdminUserSignUpUseCase } from '../useCase/adminUserSignUp.usecase';
-import { DeviceSignInUseCase } from '../useCase/deviceSignIn.usecase';
-import { EmailSignInUseCase } from '../useCase/emailSignIn.usecase';
-import { EmailSignUpUseCase } from '../useCase/emailSignUp.usecase';
-import { GoogleSignInUseCase } from '../useCase/googleSignIn.usecase';
-import { RefreshTokenUseCase } from '../useCase/refreshToken.usecase';
+import { AdminRefreshToken } from '../useCase/adminRefreshToken.usecase';
+import { AdminUserSignIn } from '../useCase/adminUserSignIn.usecase';
+import { AdminUserSignUp } from '../useCase/adminUserSignUp.usecase';
+import { DeviceSignIn } from '../useCase/deviceSignIn.usecase';
+import { EmailSignIn } from '../useCase/emailSignIn.usecase';
+import { EmailSignUp } from '../useCase/emailSignUp.usecase';
+import { GoogleSignIn } from '../useCase/googleSignIn.usecase';
+import { RefreshToken } from '../useCase/refreshToken.usecase';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
@@ -35,14 +35,14 @@ import { PasswordEncoder } from '../util/password.encoder';
     PasswordEncoder,
     GoogleOauthHelper,
     // usecase
-    GoogleSignInUseCase,
-    EmailSignUpUseCase,
-    EmailSignInUseCase,
-    RefreshTokenUseCase,
-    AdminUserSignInUseCase,
-    AdminUserSignUpUseCase,
-    AdminRefreshTokenUseCase,
-    DeviceSignInUseCase,
+    GoogleSignIn,
+    EmailSignUp,
+    EmailSignIn,
+    RefreshToken,
+    AdminUserSignIn,
+    AdminUserSignUp,
+    AdminRefreshToken,
+    DeviceSignIn,
   ],
 })
 export class AuthenticationModule {}

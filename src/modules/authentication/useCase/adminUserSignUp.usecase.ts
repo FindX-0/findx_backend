@@ -16,7 +16,7 @@ type Values = {
 };
 
 @Injectable()
-export class AdminUserSignUpUseCase {
+export class AdminUserSignUp {
   constructor(
     private readonly createAdminUserUseCase: CreateAdminUserUseCase,
     private readonly passwordEncoder: PasswordEncoder,

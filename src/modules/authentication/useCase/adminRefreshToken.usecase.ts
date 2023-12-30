@@ -8,7 +8,7 @@ import { AuthenticationPayload } from '../authentication.type';
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class AdminRefreshTokenUseCase {
+export class AdminRefreshToken {
   constructor(
     private readonly adminUserQueryService: AdminUserQueryService,
     private readonly jwtHelper: JwtHelper,

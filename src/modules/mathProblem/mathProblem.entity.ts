@@ -13,7 +13,7 @@ export type MathProblemAnswer = {
 
 type MathProblemAnswersField = { answers: MathProblemAnswer[] };
 
-export type SelectableMathProblem = Selectable<MathProblem> &
+export type SelectableMathProblem = Omit<Selectable<MathProblem>, 'answers'> &
   MathProblemAnswersField;
 
 export type SelectableMathProblemWithRelations = SelectableMathProblem & {

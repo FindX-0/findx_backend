@@ -10,22 +10,22 @@ import { MathProblemIdStore } from '@modules/mathProblem/repository/mathProblemI
 import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuery.service';
 import { TransactionProvider, splitNumIntoChunks } from '@shared/util';
 
-import { UpdateTicketAndPublishUsecase } from './updateTicketAndPublish.usecase';
+import { UpdateTicketAndPublish } from './updateTicketAndPublish.usecase';
 import { SelectableMatch } from '../entity/match.entity';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { MatchRepository } from '../repository/match.repository';
 
 @Injectable()
-export class CreateMatchUseCase {
+export class CreateMatch {
   constructor(
     private readonly matchRepository: MatchRepository,
     private readonly envService: EnvService,
-    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
+    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublish,
     private readonly mathProblemIdStore: MathProblemIdStore,
     private readonly mathSubFieldQueryService: MathSubFieldQueryService,
   ) {}
 
-  private readonly logger = new Logger(CreateMatchUseCase.name);
+  private readonly logger = new Logger(CreateMatch.name);
 
   async call({
     mathFieldId,

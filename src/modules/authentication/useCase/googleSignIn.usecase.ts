@@ -17,7 +17,7 @@ import { JwtHelper } from '../util/jwt.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
 @Injectable()
-export class GoogleSignInUseCase {
+export class GoogleSignIn {
   constructor(
     private readonly googleOauthHelper: GoogleOauthHelper,
     private readonly userService: UserMutationService,

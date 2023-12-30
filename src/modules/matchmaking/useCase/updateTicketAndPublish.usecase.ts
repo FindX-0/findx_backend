@@ -8,7 +8,7 @@ import { TicketUpdate } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 
 @Injectable()
-export class UpdateTicketAndPublishUsecase {
+export class UpdateTicketAndPublish {
   constructor(
     private readonly ticketRepository: TicketRepository,
     private readonly publishTicketChangedUsecase: PublishTicketChangedUsecase,

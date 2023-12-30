@@ -32,6 +32,14 @@ export type Match = {
     userIds: string[];
     mathProblemIds: string[];
 };
+export type MathBattleAnswer = {
+    id: Generated<string>;
+    createdAt: Generated<Timestamp>;
+    isCorrect: boolean;
+    userId: string;
+    mathProblemId: string;
+    matchId: string;
+};
 export type MathField = {
     id: Generated<string>;
     name: string;
@@ -93,6 +101,7 @@ export type DB = {
     accountVerification: AccountVerification;
     adminUsers: AdminUser;
     matches: Match;
+    MathBattleAnswer: MathBattleAnswer;
     mathFields: MathField;
     mathProblems: MathProblem;
     mathSubFields: MathSubField;

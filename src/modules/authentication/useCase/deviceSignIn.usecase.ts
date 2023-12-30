@@ -14,7 +14,7 @@ import {
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class DeviceSignInUseCase {
+export class DeviceSignIn {
   constructor(
     private readonly userQueryService: UserQueryService,
     private readonly userMutationService: UserMutationService,

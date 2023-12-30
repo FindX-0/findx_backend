@@ -14,21 +14,21 @@ import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 
 import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
-import { CreateMatchUseCase } from '../useCase/createMatch.usecase';
-import { ExpireTicketsAndNotifyUsecase } from '../useCase/expireTIcketsAndNotify.usecase';
-import { FinishMatchAndPublishUseCase } from '../useCase/finishMatchAndPublish.usecase';
+import { CreateMatch } from '../useCase/createMatch.usecase';
+import { ExpireTicketsAndNotify } from '../useCase/expireTIcketsAndNotify.usecase';
+import { FinishMatch } from '../useCase/finishMatch.usecase';
 
 @Injectable()
 export class MatchmakingScheduler {
   constructor(
     private readonly ticketRepository: TicketRepository,
-    private readonly createMatchUseCase: CreateMatchUseCase,
-    private readonly finishMatchUseCase: FinishMatchAndPublishUseCase,
+    private readonly createMatchUseCase: CreateMatch,
+    private readonly finishMatchUseCase: FinishMatch,
     private readonly transactionRunner: TransactionRunner,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
     private readonly publishTicketChangesUsecase: PublishTicketChangedUsecase,
-    private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotifyUsecase,
+    private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotify,
   ) {}
 
   private readonly logger = new Logger(MatchmakingScheduler.name);

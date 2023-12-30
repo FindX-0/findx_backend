@@ -70,6 +70,7 @@ model User {
 
   refreshTokens       RefreshToken[]
   accountVerification AccountVerification?
+  mathBattleAnswers   MathBattleAnswer[]
 
   @@index([email, deviceId])
   @@map("users")
@@ -168,7 +169,8 @@ model Match {
   userIds        String[]
   mathProblemIds String[]
 
-  mathField MathField @relation(fields: [mathFieldId], references: [id])
+  mathField         MathField          @relation(fields: [mathFieldId], references: [id])
+  mathBattleAnswers MathBattleAnswer[]
 
   @@map("matches")
 }
@@ -183,10 +185,26 @@ model MathProblem {
   tex           String?
   answers       Json[]   @db.JsonB
 
-  mathFieldId    BigInt
-  mathSubFieldId BigInt
-  mathField      MathField    @relation(fields: [mathFieldId], references: [id])
-  mathSubField   MathSubField @relation(fields: [mathSubFieldId], references: [id])
+  mathFieldId       BigInt
+  mathSubFieldId    BigInt
+  mathField         MathField          @relation(fields: [mathFieldId], references: [id])
+  mathSubField      MathSubField       @relation(fields: [mathSubFieldId], references: [id])
+  mathBattleAnswers MathBattleAnswer[]
 
   @@map("mathProblems")
+}
+
+model MathBattleAnswer {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  isCorrect Boolean
+
+  userId        BigInt
+  mathProblemId BigInt
+  matchId       BigInt
+
+  user        User        @relation(fields: [userId], references: [id])
+  mathProblem MathProblem @relation(fields: [mathProblemId], references: [id])
+  match       Match       @relation(fields: [matchId], references: [id])
 }
