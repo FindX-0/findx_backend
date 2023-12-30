@@ -8,7 +8,7 @@ import {
 } from '@shared/gql';
 
 import { CreateMathProblemInput } from './gql/createMathProblem.input';
-import { MathProblemObject } from './gql/mathProblem/mathProfilem.object';
+import { MathProblemObject } from './gql/mathProblem/mathProblem.object';
 import { MathProblemPageObject } from './gql/mathProblemPage.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
 import { MathProblemMutationService } from './mathProblemMutation.service';
