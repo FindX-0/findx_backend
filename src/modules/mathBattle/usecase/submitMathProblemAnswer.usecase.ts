@@ -8,6 +8,7 @@ import { MatchQueryService } from '@modules/matchmaking/service/matchQuery.servi
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { PublishMathBattleAnswers } from './publishMathBattleAnswers.usecase';
+import { MatchState } from '../../../entities';
 import { MathProblemQueryService } from '../../mathProblem/mathProblemQuery.service';
 import { MathBattleAnswerMutationService } from '../mathBattleAnswerMutation.service';
 
@@ -31,6 +32,10 @@ export class SubmitMathProblemAnswer {
     const match = await this.matchQueryService.getById(matchId, {
       validateUserIncluded: { userId },
     });
+
+    if (match.state !== MatchState.IN_PROGRESS) {
+      throw new BadRequestException(ExceptionMessageCode.INVALID_MATCH_STATE);
+    }
 
     if (!match.mathProblemIds.includes(mathProblemId)) {
       throw new BadRequestException(
