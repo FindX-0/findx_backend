@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "start:migrate:prod": "NODE_ENV=production dotenv -e .env.production -- npx prisma migrate deploy && npm run start:prod",
     "migrate": "dotenv -e .env.development -- npx prisma migrate dev",
+    "migrate:createonly": "dotenv -e .env.development -- npx prisma migrate dev --create-only",
     "gen": "npx prisma generate"
   },
   "dependencies": {

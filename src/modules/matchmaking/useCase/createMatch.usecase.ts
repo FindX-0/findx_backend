@@ -53,7 +53,7 @@ export class CreateMatch {
         endAt: matchEndAt,
         closeAt: matchCloseAt,
         userIds: [ticketA.userId, ticketB.userId],
-        state: MatchState.PENDING,
+        state: MatchState.IN_PROGRESS,
         mathProblemIds: await this.resolveMathProblemIds(mathFieldId),
       },
       txProvider,

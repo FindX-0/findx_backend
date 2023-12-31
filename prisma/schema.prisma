@@ -30,7 +30,6 @@ enum TicketState {
 }
 
 enum MatchState {
-  PENDING
   IN_PROGRESS
   FINISHED
 

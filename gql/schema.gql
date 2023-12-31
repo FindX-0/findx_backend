@@ -122,7 +122,6 @@ type MatchObject {
 enum MatchState {
   FINISHED
   IN_PROGRESS
-  PENDING
 }
 
 type MathBattleMathProblemObject {
