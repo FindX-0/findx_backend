@@ -14,10 +14,11 @@ import { EnvService } from '../env/env.service';
           host: envService.get('REDIS_HOST'),
           port: envService.get('REDIS_PORT'),
           password: envService.get('REDIS_PASSWORD'),
+          maxRetriesPerRequest: 1000,
         });
 
         redisInstance.on('error', (e) => {
-          throw new Error(`Redis connection failed: ${e}`);
+          console.error(e);
         });
 
         return redisInstance;
