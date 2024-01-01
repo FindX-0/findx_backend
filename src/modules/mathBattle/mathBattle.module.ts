@@ -5,9 +5,8 @@ import { MatchmakingModule } from '@modules/matchmaking/matchmaking.module';
 import { MathProblemModule } from '@modules/mathProblem/mathProblem.module';
 
 import { MathBattleResolver } from './mathBattle.resolver';
-import { MathBattleAnswerRepository } from './mathBattleAnswer.repository';
-import { MathBattleAnswerMutationService } from './mathBattleAnswerMutation.service';
-import { MathBattleAnswerQueryService } from './mathBattleAnswerQuery.service';
+import { MathBattleAnswerModule } from './mathBattleAnswer/mathBattleAnswer.module';
+import { MathBattleResultModule } from './mathBattleResult/mathBattleResult.module';
 import { GetMathBattleMatchMathProblems } from './usecase/getMathBattleMatchMathProblems.usecase';
 import { PublishMathBattleAnswers } from './usecase/publishMathBattleAnswers.usecase';
 import { SubmitMathProblemAnswer } from './usecase/submitMathProblemAnswer.usecase';
@@ -19,15 +18,16 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     MathProblemModule,
     MatchmakingModule,
     GatewayModule,
+    MathBattleAnswerModule,
+    MathBattleResultModule,
   ],
   providers: [
-    MathBattleAnswerRepository,
-    MathBattleAnswerMutationService,
-    MathBattleAnswerQueryService,
+    // usecase
     SubmitMathProblemAnswer,
     PublishMathBattleAnswers,
-    MathBattleResolver,
     GetMathBattleMatchMathProblems,
+    // resolver
+    MathBattleResolver,
   ],
 })
 export class MathBattleModule {}

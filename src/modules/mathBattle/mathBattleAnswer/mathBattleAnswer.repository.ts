@@ -17,7 +17,7 @@ export class MathBattleAnswerRepository {
     values: NewMathBattleAnswer,
   ): Promise<SelectableMathBattleAnswer | null> {
     const created = await this.db
-      .insertInto('MathBattleAnswer')
+      .insertInto('mathBattleAnswers')
       .values(values)
       .returningAll()
       .executeTakeFirst();
@@ -30,7 +30,7 @@ export class MathBattleAnswerRepository {
     values: MathBattleAnswerUpdate,
   ): Promise<SelectableMathBattleAnswer | null> {
     const updated = await this.db
-      .updateTable('MathBattleAnswer')
+      .updateTable('mathBattleAnswers')
       .where('id', '=', id)
       .set(values)
       .returningAll()
@@ -41,7 +41,7 @@ export class MathBattleAnswerRepository {
 
   async deleteById(id: string): Promise<boolean> {
     const deleteResults = await this.db
-      .deleteFrom('MathBattleAnswer')
+      .deleteFrom('mathBattleAnswers')
       .where('id', '=', id)
       .execute();
 
@@ -52,7 +52,7 @@ export class MathBattleAnswerRepository {
     matchId: string,
   ): Promise<SelectableMathBattleAnswer[]> {
     return this.db
-      .selectFrom('MathBattleAnswer')
+      .selectFrom('mathBattleAnswers')
       .selectAll()
       .where('matchId', '=', matchId)
       .execute();

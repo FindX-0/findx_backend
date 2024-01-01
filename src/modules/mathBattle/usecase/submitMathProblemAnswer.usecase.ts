@@ -10,7 +10,7 @@ import { ExceptionMessageCode } from '@shared/constant';
 import { PublishMathBattleAnswers } from './publishMathBattleAnswers.usecase';
 import { MatchState } from '../../../entities';
 import { MathProblemQueryService } from '../../mathProblem/mathProblemQuery.service';
-import { MathBattleAnswerMutationService } from '../mathBattleAnswerMutation.service';
+import { MathBattleAnswerMutationService } from '../mathBattleAnswer/mathBattleAnswerMutation.service';
 
 type Args = {
   matchId: string;
