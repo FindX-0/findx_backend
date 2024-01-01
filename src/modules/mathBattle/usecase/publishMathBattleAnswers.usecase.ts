@@ -5,7 +5,7 @@ import { SelectableMatch } from '@modules/matchmaking/entity/match.entity';
 import { groupByToMap } from '@shared/util';
 
 import { MathBattleUserScoreDto } from '../dto/mathBattleScoreChanged.dto';
-import { MathBattleAnswerQueryService } from '../mathBattleAnswer/mathBattleAnswerQuery.service';
+import { MathBattleAnswerQueryService } from '../../mathBattleAnswer/mathBattleAnswerQuery.service';
 
 type Args = {
   match: SelectableMatch;
