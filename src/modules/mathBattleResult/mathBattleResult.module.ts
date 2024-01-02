@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { MathBattleResultRepository } from './mathBattleResult.repository';
+import { MathBattleResultResolver } from './mathBattleResult.resolver';
 import { MathBattleResultMutationService } from './mathBattleResultMutation.service';
 import { MathBattleResultQueryService } from './mathBattleResultQuery.service';
 
@@ -9,6 +10,7 @@ import { MathBattleResultQueryService } from './mathBattleResultQuery.service';
     MathBattleResultRepository,
     MathBattleResultQueryService,
     MathBattleResultMutationService,
+    MathBattleResultResolver,
   ],
   exports: [MathBattleResultQueryService, MathBattleResultMutationService],
 })

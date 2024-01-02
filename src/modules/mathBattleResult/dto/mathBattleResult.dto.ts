@@ -3,10 +3,10 @@ import { Exclude, Expose } from 'class-transformer';
 @Exclude()
 export class MathBattleResultDto {
   @Expose()
-  userId: string;
+  id: string;
 
   @Expose()
-  id: string;
+  userId: string;
 
   @Expose()
   createdAt: Date;

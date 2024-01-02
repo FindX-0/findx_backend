@@ -89,6 +89,10 @@ input GetMathBattleMathProblemsInput {
   matchId: ID!
 }
 
+input GetMathBattleResultsInput {
+  matchId: ID!
+}
+
 input GoogleSignInInput {
   accessToken: String!
 }
@@ -134,6 +138,16 @@ type MathBattleMathProblemObject {
   mathSubFieldId: String!
   tex: String
   text: String
+}
+
+type MathBattleResultObject {
+  createdAt: DateTime!
+  id: ID!
+  isDraw: Boolean!
+  isWinner: Boolean!
+  matchId: ID!
+  score: Float!
+  userId: ID!
 }
 
 type MathFieldObject {
@@ -227,6 +241,7 @@ type Query {
   getAuthUser: UserObject!
   getMatchById(input: IdentifierInput!): MatchObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
+  getMathBattleResults(input: GetMathBattleResultsInput!): [MathBattleResultObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!
