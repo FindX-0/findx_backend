@@ -50,6 +50,7 @@ export type MathBattleResult = {
   createdAt: Generated<Timestamp>;
   score: number;
   isWinner: boolean;
+  isDraw: boolean;
   matchId: string;
   userId: string;
 };

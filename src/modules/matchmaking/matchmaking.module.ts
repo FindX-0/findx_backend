@@ -14,9 +14,17 @@ import { ExpireTicketsAndNotify } from './useCase/expireTIcketsAndNotify.usecase
 import { FinishMatch } from './useCase/finishMatch.usecase';
 import { UpdateTicketAndPublish } from './useCase/updateTicketAndPublish.usecase';
 import { GatewayModule } from '../gateway/gateway.module';
+import { MathBattleAnswerModule } from '../mathBattleAnswer/mathBattleAnswer.module';
+import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.module';
 
 @Module({
-  imports: [GatewayModule, MathProblemModule, MathSubFieldModule],
+  imports: [
+    GatewayModule,
+    MathProblemModule,
+    MathSubFieldModule,
+    MathBattleResultModule,
+    MathBattleAnswerModule,
+  ],
   providers: [
     // repository
     TicketRepository,

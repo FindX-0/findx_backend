@@ -230,6 +230,7 @@ model MathBattleResult {
 
   score    Int
   isWinner Boolean
+  isDraw   Boolean
 
   matchId BigInt
   userId  BigInt

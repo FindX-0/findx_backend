@@ -7,6 +7,7 @@ import {
   SelectableMathBattleResult,
 } from './mathBattleResult.entity';
 import { MathBattleResultRepository } from './mathBattleResult.repository';
+import { TransactionProvider } from '../../shared/util';
 
 @Injectable()
 export class MathBattleResultMutationService {
@@ -16,8 +17,12 @@ export class MathBattleResultMutationService {
 
   async create(
     values: NewMathBattleResult,
+    txProvider?: TransactionProvider,
   ): Promise<SelectableMathBattleResult> {
-    const entity = await this.mathBattleResultRepository.create(values);
+    const entity = await this.mathBattleResultRepository.create(
+      values,
+      txProvider,
+    );
 
     if (!entity) {
       throw new InternalServerErrorException(

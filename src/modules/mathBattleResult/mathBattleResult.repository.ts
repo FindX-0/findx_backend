@@ -7,6 +7,7 @@ import {
   NewMathBattleResult,
   SelectableMathBattleResult,
 } from './mathBattleResult.entity';
+import { TransactionProvider } from '../../shared/util';
 
 @Injectable()
 export class MathBattleResultRepository {
@@ -14,8 +15,9 @@ export class MathBattleResultRepository {
 
   async create(
     values: NewMathBattleResult,
+    txProvider?: TransactionProvider,
   ): Promise<SelectableMathBattleResult | null> {
-    const created = await this.db
+    const created = await (txProvider?.get() ?? this.db)
       .insertInto('mathBattleResults')
       .values(values)
       .returningAll()
