@@ -4,12 +4,13 @@ import { plainToInstance } from 'class-transformer';
 import { TicketDto } from '@modules/matchmaking/dto/ticket.dto';
 import { UserQueryService } from '@modules/user/userQuery.service';
 
+import { SelectableTicket } from '../../matchmaking/entity/ticket.entity';
 import { SocketGateway } from '../gateway';
 import { GatewayEvent } from '../gatewayEvent.enum';
 
 type Args = {
   userId: string;
-  ticket: TicketDto | null;
+  ticket: SelectableTicket | null;
 };
 
 @Injectable()

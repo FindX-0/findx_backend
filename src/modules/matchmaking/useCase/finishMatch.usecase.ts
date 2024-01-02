@@ -3,12 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { MatchState } from '@entities/index';
 
 import { TransactionRunner } from '../../../shared/util';
+import { PublishMathBattleResultsChanged } from '../../gateway/usecase/pushMathBattleResultsChanged.usecase';
 import {
   CalculateMathMattleScore,
   MathBattleUserScore,
 } from '../../mathBattleAnswer/usecase/calculateMatbBattleScore.usecase';
 import { NewMathBattleResult } from '../../mathBattleResult/mathBattleResult.entity';
 import { MathBattleResultMutationService } from '../../mathBattleResult/mathBattleResultMutation.service';
+import { MathBattleResultQueryService } from '../../mathBattleResult/mathBattleResultQuery.service';
 import { SelectableMatch } from '../entity/match.entity';
 import { MatchRepository } from '../repository/match.repository';
 
@@ -17,8 +19,10 @@ export class FinishMatch {
   constructor(
     private readonly matchRepository: MatchRepository,
     private readonly mathBattleResultMutationService: MathBattleResultMutationService,
+    private readonly mathBattleResultQueryService: MathBattleResultQueryService,
     private readonly transactionRunner: TransactionRunner,
     private readonly calculateMathMattleScore: CalculateMathMattleScore,
+    private readonly publishMathBattleResultsChanged: PublishMathBattleResultsChanged,
   ) {}
 
   async call(match: SelectableMatch): Promise<void> {
@@ -38,6 +42,15 @@ export class FinishMatch {
           ),
         ),
       ]);
+    });
+
+    const results = await this.mathBattleResultQueryService.getAllByMatchId(
+      match.id,
+    );
+
+    await this.publishMathBattleResultsChanged.call({
+      userIds: match.userIds,
+      results,
     });
   }
 
