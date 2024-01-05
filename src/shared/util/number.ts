@@ -12,3 +12,14 @@ export const splitNumIntoChunks = (
 
   return chunks;
 };
+
+export const generateNumRange = (
+  min: number,
+  max: number,
+  step: number,
+): number[] => {
+  return Array.from(
+    { length: (max - min) / step + 1 },
+    (_, i) => min + i * step,
+  );
+};

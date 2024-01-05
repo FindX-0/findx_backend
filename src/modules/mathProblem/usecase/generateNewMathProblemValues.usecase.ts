@@ -1,7 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { ExceptionMessageCode } from '../../../shared/constant';
-import { arrayEqualsIgnoreOrder, groupByToMap } from '../../../shared/util';
+import {
+  arrayEqualsIgnoreOrder,
+  generateNumRange,
+  groupByToMap,
+} from '../../../shared/util';
 
 type GeneratedNewMathProblemValues = {
   correctAnswer: string;
@@ -60,6 +64,24 @@ export class GenerateMathProblems {
     ];
 
     this.validateTemplateParamIndices(templateParams, templatePlaceholders);
+
+    const generatedNumberParams = numberParams.map((param) => {
+      const numbers = generateNumRange(param.min, param.max, param.step);
+
+      return { index: param.index, numbers };
+    });
+
+    const generatedCustomStrParams = customStrParams.map((param) => {
+      const customStrings = param.values.split(',');
+
+      if (!customStrings.length) {
+        throw new BadRequestException(
+          ExceptionMessageCode.INVALID_CUSTOM_STRING_PARAMS,
+        );
+      }
+
+      return { index: param.index, customStrings };
+    });
 
     return [];
   }
