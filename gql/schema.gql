@@ -81,6 +81,31 @@ input FilterMathSubFieldsInput {
   mathFieldId: ID
 }
 
+input GenerateNewMathProblemCustomStrParameterInput {
+  index: Int!
+  values: String!
+}
+
+input GenerateNewMathProblemNumberParameterInput {
+  index: Int!
+  max: Int!
+  min: Int!
+  step: Float!
+}
+
+input GenerateNewMathProblemValuesInput {
+  customStrParams: [GenerateNewMathProblemCustomStrParameterInput!]!
+  numberParams: [GenerateNewMathProblemNumberParameterInput!]!
+  template: String!
+}
+
+type GenerateNewMathProblemValuesObject {
+  correctAnswer: String!
+  mathFieldId: String!
+  mathSubFieldId: String!
+  tex: String!
+}
+
 input GetAllMathFieldsInput {
   onlyPublic: Boolean!
 }
@@ -237,6 +262,7 @@ type Query {
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
+  generateNewMathProblemValues(input: GenerateNewMathProblemValuesInput!): [GenerateNewMathProblemValuesObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAuthUser: UserObject!
   getMatchById(input: IdentifierInput!): MatchObject!

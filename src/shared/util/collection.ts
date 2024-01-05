@@ -1,4 +1,4 @@
-export const groupByToMap = <T, Q>(
+export const groupByToMap = <Q, T>(
   array: T[],
   predicate: (value: T, index: number, array: T[]) => Q,
 ) =>
@@ -42,4 +42,31 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   }
 
   return arrayCopy;
+};
+
+export const arrayEqualsIgnoreOrder = <T>(a: T[], b: T[]): boolean => {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  const seen: Record<string, number> = {};
+
+  a.forEach((v) => {
+    const key = typeof v + v;
+    if (!seen[key]) {
+      seen[key] = 0;
+    }
+    seen[key] += 1;
+  });
+
+  return b.every((v) => {
+    const key = typeof v + v;
+
+    if (seen[key]) {
+      seen[key] -= 1;
+      return true;
+    }
+
+    return false;
+  });
 };

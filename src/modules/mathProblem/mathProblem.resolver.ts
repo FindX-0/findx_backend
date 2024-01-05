@@ -8,11 +8,14 @@ import {
 } from '@shared/gql';
 
 import { CreateMathProblemInput } from './gql/createMathProblem.input';
+import { GenerateNewMathProblemValuesInput } from './gql/generateNewMathProblemValues.input';
+import { GenerateNewMathProblemValuesObject } from './gql/generateNewMathProblemValues.object';
 import { MathProblemObject } from './gql/mathProblem/mathProblem.object';
 import { MathProblemPageObject } from './gql/mathProblemPage.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
+import { GenerateMathProblems } from './usecase/generateNewMathProblemValues.usecase';
 import { Roles } from '../authentication/decorator/roles.decorator';
 import { MediaFileQueryService } from '../mediaFile/mediaFileQuery.service';
 
@@ -22,6 +25,7 @@ export class MathProblemResolver {
     private readonly mathProblemQueryService: MathProblemQueryService,
     private readonly mathProblemMutationService: MathProblemMutationService,
     private readonly mediaFileCrudService: MediaFileQueryService,
+    private readonly generateNewMathProblemValuesUsecase: GenerateMathProblems,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -101,5 +105,13 @@ export class MathProblemResolver {
       includeMathField: true,
       includeMathSubField: true,
     });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @Query(() => [GenerateNewMathProblemValuesObject])
+  async generateNewMathProblemValues(
+    @Args('input') input: GenerateNewMathProblemValuesInput,
+  ): Promise<GenerateNewMathProblemValuesObject[]> {
+    return this.generateNewMathProblemValuesUsecase.call(input);
   }
 }
