@@ -65,23 +65,33 @@ export class GenerateMathProblems {
 
     this.validateTemplateParamIndices(templateParams, templatePlaceholders);
 
-    const generatedNumberParams = numberParams.map((param) => {
-      const numbers = generateNumRange(param.min, param.max, param.step);
+    const generatedParams = templateParams
+      .map((param) => {
+        if (param.__type === 'number') {
+          const numbers = generateNumRange(param.min, param.max, param.step);
 
-      return { index: param.index, numbers };
-    });
+          return { index: param.index, numbers };
+        }
 
-    const generatedCustomStrParams = customStrParams.map((param) => {
-      const customStrings = param.values.split(',');
+        const customStrings = param.values.split(',');
 
-      if (!customStrings.length) {
-        throw new BadRequestException(
-          ExceptionMessageCode.INVALID_CUSTOM_STRING_PARAMS,
-        );
-      }
+        if (!customStrings.length) {
+          throw new BadRequestException(
+            ExceptionMessageCode.INVALID_CUSTOM_STRING_PARAMS,
+          );
+        }
 
-      return { index: param.index, customStrings };
-    });
+        return { index: param.index, customStrings };
+      })
+      .sort((a, b) => (a.index > b.index ? 1 : -1));
+
+    console.log(generatedParams);
+
+    // '#1 #2 #3 #1'
+
+    // #1: 0-10
+    // #2: - + *
+    // #3: 10-20
 
     return [];
   }
@@ -132,4 +142,21 @@ export class GenerateMathProblems {
         })) ?? [],
     }));
   }
+}
+
+// accept if we want only non-negatives
+// and generate till it satisfies,
+// if looping throw
+function primeFactors(n: number) {
+  const arr: number[] = [];
+  let i = 2;
+  while (i <= n) {
+    if (n % i == 0) {
+      n = n / i;
+      arr.push(i);
+    } else {
+      i++;
+    }
+  }
+  return arr;
 }
