@@ -95,6 +95,8 @@ input GenerateNewMathProblemNumberParameterInput {
 
 input GenerateNewMathProblemValuesInput {
   customStrParams: [GenerateNewMathProblemCustomStrParameterInput!]!
+  mathFieldId: ID!
+  mathSubFieldId: ID!
   numberParams: [GenerateNewMathProblemNumberParameterInput!]!
   template: String!
 }

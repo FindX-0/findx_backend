@@ -1,4 +1,4 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class GenerateNewMathProblemValuesInput {
@@ -10,6 +10,12 @@ export class GenerateNewMathProblemValuesInput {
 
   @Field(() => [GenerateNewMathProblemCustomStrParameterInput])
   customStrParams: GenerateNewMathProblemCustomStrParameterInput[];
+
+  @Field(() => ID)
+  mathFieldId: string;
+
+  @Field(() => ID)
+  mathSubFieldId: string;
 }
 
 @InputType()
