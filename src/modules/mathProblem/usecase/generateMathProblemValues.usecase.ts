@@ -10,46 +10,26 @@ import {
   arrayEqualsIgnoreOrder,
   generateNumRange,
   groupByToMap,
+  product,
 } from '../../../shared/util';
+import {
+  GenerateMathProblemValuesArgs,
+  GeneratedNewMathProblemValues,
+  TemplateCustomStrParam,
+  TemplateNumberParam,
+} from '../mathProblem.type';
 
 enum ParamType {
   NUMBERS,
   CUSTOM_STRINGS,
 }
 
-type GeneratedNewMathProblemValues = {
-  correctAnswer: string;
-  mathFieldId: string;
-  mathSubFieldId: string;
-  tex: string;
-};
-
-type TemplateNumberParam = {
-  index: number;
-  min: number;
-  max: number;
-  step: number;
-};
-
 type TypedTemplateNumberParam = TemplateNumberParam & {
   __type: ParamType.NUMBERS;
 };
 
-type TemplateCustomStrParam = {
-  index: number;
-  values: string;
-};
-
 type TypedTemplateCustomStrParam = TemplateCustomStrParam & {
   __type: ParamType.CUSTOM_STRINGS;
-};
-
-type GenerateNewMathProblemValuesArgs = {
-  template: string;
-  numberParams: TemplateNumberParam[];
-  customStrParams: TemplateCustomStrParam[];
-  mathFieldId: string;
-  mathSubFieldId: string;
 };
 
 type TemplatePlaceholder = {
@@ -72,7 +52,7 @@ type GeneratedTemplateParam = {
 );
 
 @Injectable()
-export class GenerateMathProblems {
+export class GenerateMathProblemValues {
   /**
    * @param template example: "#0 #1 #2"
    */
@@ -82,9 +62,7 @@ export class GenerateMathProblems {
     customStrParams,
     mathFieldId,
     mathSubFieldId,
-  }: GenerateNewMathProblemValuesArgs): Promise<
-    GeneratedNewMathProblemValues[]
-  > {
+  }: GenerateMathProblemValuesArgs): Promise<GeneratedNewMathProblemValues[]> {
     const templatePlaceholders = this.parseTemplatePlaceholders(template);
 
     const templateParams: TypedTemplateParam[] = [
@@ -142,90 +120,51 @@ export class GenerateMathProblems {
       })
       .sort((a, b) => (a.index > b.index ? 1 : -1));
 
-    const generatedTemplateCount = generatedParams.reduce(
-      (prev, curr) => prev * this.getTemplateParamCount(curr),
-      1,
+    const replaceParamsProduct = product(
+      ...generatedParams.map((e) => {
+        switch (e.__type) {
+          case ParamType.NUMBERS:
+            return e.numbers;
+          case ParamType.CUSTOM_STRINGS:
+            return e.customStrings;
+        }
+      }),
     );
 
     const generatedValues: GeneratedNewMathProblemValues[] = [];
-    const templateParamIndices = generatedParams.map((param) => ({
-      ...param,
-      replaceParamIndex: 0,
-      paramCount: this.getTemplateParamCount(param),
-    }));
-
-    const changingIndex = 0;
-    for (let i = 0; i < generatedTemplateCount; i++) {
+    for (const replaceParams of replaceParamsProduct) {
       let templated = template;
-      console.log('template = ' + template);
 
-      for (const templateParamIndex of templateParamIndices) {
-        let replaceParam: string | undefined;
+      for (let i = 0; i < replaceParams.length; i++) {
+        const generatedParam = generatedParams[i];
 
-        switch (templateParamIndex.__type) {
-          case ParamType.NUMBERS:
-            replaceParam =
-              templateParamIndex.numbers[
-                templateParamIndex.replaceParamIndex
-              ]?.toString();
-
-            break;
-          case ParamType.CUSTOM_STRINGS:
-            replaceParam =
-              templateParamIndex.customStrings[
-                templateParamIndex.replaceParamIndex
-              ];
-
-            break;
+        if (!generatedParam) {
+          throw new InternalServerErrorException('templateParam not found');
         }
+
+        const replaceParam = replaceParams[i];
 
         if (!replaceParam) {
           throw new InternalServerErrorException('replace param is undefined');
         }
 
-        console.log({
-          templated,
-          placeholder: templateParamIndex.placeholder,
-          replaceParam,
-        });
         templated = templated.replace(
-          templateParamIndex.placeholder,
-          replaceParam,
+          new RegExp(generatedParam.placeholder, 'g'),
+          replaceParam?.toString(),
         );
       }
 
-      console.log(templated);
-
-      break;
-
-      // generatedValues.push({
-      //   correctAnswer: '',
-      //   mathFieldId,
-      //   mathSubFieldId,
-      //   tex: templated,
-      // });
-
-      // const changingTemplateParamIndex = templateParamIndices.find(
-      //   (e) => e.index === changingIndex,
-      // );
-
-      // if (!changingTemplateParamIndex) {
-      //   break;
-      // }
-
-      // if (changingTemplateParamIndex.index) {
-      // }
+      generatedValues.push({
+        correctAnswer: '',
+        mathFieldId,
+        mathSubFieldId,
+        tex: templated,
+      });
     }
 
-    console.log(generatedValues);
+    generatedValues.map((e) => e.tex).forEach((e) => console.log(e));
 
-    return [];
-  }
-
-  private getTemplateParamCount(templateParam: GeneratedTemplateParam): number {
-    return templateParam.__type === ParamType.NUMBERS
-      ? templateParam.numbers.length
-      : templateParam.customStrings.length;
+    return generatedValues;
   }
 
   private validateTemplateParamIndices(

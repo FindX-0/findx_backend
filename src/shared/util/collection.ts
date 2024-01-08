@@ -70,3 +70,41 @@ export const arrayEqualsIgnoreOrder = <T>(a: T[], b: T[]): boolean => {
     return false;
   });
 };
+
+type Iterableify<T> = { [K in keyof T]: Iterable<T[K]> };
+
+export function* product<T extends Array<unknown>>(
+  ...iterables: Iterableify<T>
+): Generator<T> {
+  if (iterables.length === 0) {
+    return;
+  }
+  const iterators = iterables.map((it) => it[Symbol.iterator]());
+  const results = iterators.map((it) => it.next());
+
+  // Cycle through iterators
+  for (let i = 0; ; ) {
+    if (results[i] && results[i]!.done) {
+      // Reset the current iterator
+      if (iterables[i]) {
+        iterators[i] = iterables[i]![Symbol.iterator]();
+      }
+
+      if (iterators[i]) {
+        results[i] = iterators[i]!.next();
+      }
+
+      // Advance and exit if we've reached the end
+      if (++i >= iterators.length) {
+        return;
+      }
+    } else {
+      yield results.map(({ value }) => value) as T;
+      i = 0;
+    }
+
+    if (iterators[i]) {
+      results[i] = iterators[i]!.next();
+    }
+  }
+}

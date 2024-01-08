@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class GenerateNewMathProblemValuesObject {
+export class GenerateMathProblemValuesObject {
   @Field()
   correctAnswer: string;
 

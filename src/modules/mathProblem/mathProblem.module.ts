@@ -6,7 +6,8 @@ import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
 import { MathProblemRepository } from './repository/mathProblem.repository';
 import { MathProblemIdStore } from './repository/mathProblemId.store';
-import { GenerateMathProblems } from './usecase/generateNewMathProblemValues.usecase';
+import { CountGenerateMathProblemValues } from './usecase/countGenerateMathProblemValues.usecase';
+import { GenerateMathProblemValues } from './usecase/generateMathProblemValues.usecase';
 import { GetAllMathSubFieldIdsModule } from '../mathSubField/module/getAllMathSubFieldIds.module';
 import { MediaFileModule } from '../mediaFile/mediaFile.module';
 
@@ -20,7 +21,8 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     MathProblemIdStore,
     MathProblemIdsInit,
     // usecase
-    GenerateMathProblems,
+    GenerateMathProblemValues,
+    CountGenerateMathProblemValues,
   ],
   exports: [
     MathProblemQueryService,

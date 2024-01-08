@@ -27,6 +27,15 @@ enum AuthProvider {
   NONE
 }
 
+input CountGenerateMathProblemValuesInput {
+  customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
+  numberParams: [GenerateMathProblemNumberParameterInput!]!
+}
+
+type CountObject {
+  count: Int!
+}
+
 input CreateMathFieldInput {
   name: String!
 }
@@ -81,27 +90,27 @@ input FilterMathSubFieldsInput {
   mathFieldId: ID
 }
 
-input GenerateNewMathProblemCustomStrParameterInput {
+input GenerateMathProblemCustomStrParameterInput {
   index: Int!
   values: String!
 }
 
-input GenerateNewMathProblemNumberParameterInput {
+input GenerateMathProblemNumberParameterInput {
   index: Int!
   max: Int!
   min: Int!
   step: Float!
 }
 
-input GenerateNewMathProblemValuesInput {
-  customStrParams: [GenerateNewMathProblemCustomStrParameterInput!]!
+input GenerateMathProblemValuesInput {
+  customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
   mathFieldId: ID!
   mathSubFieldId: ID!
-  numberParams: [GenerateNewMathProblemNumberParameterInput!]!
+  numberParams: [GenerateMathProblemNumberParameterInput!]!
   template: String!
 }
 
-type GenerateNewMathProblemValuesObject {
+type GenerateMathProblemValuesObject {
   correctAnswer: String!
   mathFieldId: String!
   mathSubFieldId: String!
@@ -261,10 +270,11 @@ type Mutation {
 
 type Query {
   authenticationStatus: SuccessObject!
+  countGenerateMathProblemValues(input: CountGenerateMathProblemValuesInput!): CountObject!
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
-  generateNewMathProblemValues(input: GenerateNewMathProblemValuesInput!): [GenerateNewMathProblemValuesObject!]!
+  generateMathProblemValues(input: GenerateMathProblemValuesInput!): [GenerateMathProblemValuesObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAuthUser: UserObject!
   getMatchById(input: IdentifierInput!): MatchObject!
