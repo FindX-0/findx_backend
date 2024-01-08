@@ -33,13 +33,9 @@ export type CountGenerateMathProblemValuesArgs =
 
 export type GenerateMathProblemValuesArgs = GenerateMathProblemValuesParams & {
   template: string;
-  mathFieldId: string;
-  mathSubFieldId: string;
 };
 
 export type GeneratedNewMathProblemValues = {
-  correctAnswer: string;
-  mathFieldId: string;
-  mathSubFieldId: string;
+  correctAnswer: string | null;
   tex: string;
 };

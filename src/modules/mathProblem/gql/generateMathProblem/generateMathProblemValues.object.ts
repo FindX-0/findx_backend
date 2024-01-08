@@ -2,14 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class GenerateMathProblemValuesObject {
-  @Field()
-  correctAnswer: string;
-
-  @Field()
-  mathFieldId: string;
-
-  @Field()
-  mathSubFieldId: string;
+  @Field(() => String, { nullable: true })
+  correctAnswer: string | null;
 
   @Field()
   tex: string;

@@ -60,8 +60,6 @@ export class GenerateMathProblemValues {
     template,
     numberParams,
     customStrParams,
-    mathFieldId,
-    mathSubFieldId,
   }: GenerateMathProblemValuesArgs): Promise<GeneratedNewMathProblemValues[]> {
     const templatePlaceholders = this.parseTemplatePlaceholders(template);
 
@@ -78,46 +76,13 @@ export class GenerateMathProblemValues {
 
     this.validateTemplateParamIndices(templateParams, templatePlaceholders);
 
-    const generatedParams: GeneratedTemplateParam[] = templateParams
-      .map<GeneratedTemplateParam>((param) => {
-        const templatePlaceholder = templatePlaceholders.find(
-          (placeholder) => placeholder.templateParamIndex === param.index,
-        );
-
-        if (!templatePlaceholder) {
-          throw new BadRequestException(
-            ExceptionMessageCode.INVALID_TEMPLATE_PARAMS,
-          );
-        }
-
-        if (param.__type === ParamType.NUMBERS) {
-          const numbers = generateNumRange(param.min, param.max, param.step);
-
-          return {
-            index: param.index,
-            placeholder: templatePlaceholder.placeholder,
-            numbers,
-            positions: templatePlaceholder.positions,
-            __type: ParamType.NUMBERS,
-          };
-        }
-
-        const customStrings = param.values?.split(',') ?? [];
-
-        if (!customStrings.length) {
-          throw new BadRequestException(
-            ExceptionMessageCode.INVALID_CUSTOM_STRING_PARAMS,
-          );
-        }
-
-        return {
-          index: param.index,
-          placeholder: templatePlaceholder.placeholder,
-          customStrings,
-          positions: templatePlaceholder.positions,
-          __type: ParamType.CUSTOM_STRINGS,
-        };
-      })
+    const generatedParams = templateParams
+      .map((param) =>
+        this.typedTemplateParamToGeneratedTemplateParam(
+          param,
+          templatePlaceholders,
+        ),
+      )
       .sort((a, b) => (a.index > b.index ? 1 : -1));
 
     const replaceParamsProduct = product(
@@ -131,40 +96,93 @@ export class GenerateMathProblemValues {
       }),
     );
 
-    const generatedValues: GeneratedNewMathProblemValues[] = [];
+    const generatedValues = [];
     for (const replaceParams of replaceParamsProduct) {
-      let templated = template;
-
-      for (let i = 0; i < replaceParams.length; i++) {
-        const generatedParam = generatedParams[i];
-
-        if (!generatedParam) {
-          throw new InternalServerErrorException('templateParam not found');
-        }
-
-        const replaceParam = replaceParams[i];
-
-        if (!replaceParam) {
-          throw new InternalServerErrorException('replace param is undefined');
-        }
-
-        templated = templated.replace(
-          new RegExp(generatedParam.placeholder, 'g'),
-          replaceParam?.toString(),
-        );
-      }
+      const tex = this.templateWithParams(
+        template,
+        replaceParams,
+        generatedParams,
+      );
 
       generatedValues.push({
-        correctAnswer: '',
-        mathFieldId,
-        mathSubFieldId,
-        tex: templated,
+        correctAnswer: null,
+        tex,
       });
     }
 
-    generatedValues.map((e) => e.tex).forEach((e) => console.log(e));
-
     return generatedValues;
+  }
+
+  private templateWithParams(
+    template: string,
+    replaceParams: (string | number)[],
+    generatedParams: GeneratedTemplateParam[],
+  ): string {
+    let templated = template;
+
+    for (let i = 0; i < replaceParams.length; i++) {
+      const generatedParam = generatedParams[i];
+
+      if (!generatedParam) {
+        throw new InternalServerErrorException('templateParam not found');
+      }
+
+      const replaceParam = replaceParams[i];
+
+      if (!replaceParam) {
+        throw new InternalServerErrorException('replace param is undefined');
+      }
+
+      templated = templated.replace(
+        new RegExp(generatedParam.placeholder, 'g'),
+        replaceParam?.toString(),
+      );
+    }
+
+    return templated;
+  }
+
+  private typedTemplateParamToGeneratedTemplateParam(
+    param: TypedTemplateParam,
+    templatePlaceholders: TemplatePlaceholder[],
+  ): GeneratedTemplateParam {
+    const templatePlaceholder = templatePlaceholders.find(
+      (placeholder) => placeholder.templateParamIndex === param.index,
+    );
+
+    if (!templatePlaceholder) {
+      throw new BadRequestException(
+        ExceptionMessageCode.INVALID_TEMPLATE_PARAMS,
+      );
+    }
+
+    if (param.__type === ParamType.NUMBERS) {
+      const numbers = generateNumRange(param.min, param.max, param.step);
+
+      return {
+        index: param.index,
+        placeholder: templatePlaceholder.placeholder,
+        numbers,
+        positions: templatePlaceholder.positions,
+        __type: ParamType.NUMBERS,
+      };
+    }
+
+    const customStrings = param.values?.split(',') ?? [];
+
+    if (!customStrings.length) {
+      throw new BadRequestException(
+        ExceptionMessageCode.INVALID_CUSTOM_STRING_PARAMS,
+      );
+    }
+
+    return {
+      index: param.index,
+      placeholder: templatePlaceholder.placeholder,
+      customStrings,
+      positions: templatePlaceholder.positions,
+      __type: ParamType.CUSTOM_STRINGS,
+    };
   }
 
   private validateTemplateParamIndices(
