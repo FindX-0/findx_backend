@@ -4,9 +4,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
+import { MathProblemAnswerGenerator } from './mathProblemAnswerGenerator';
 import { ExceptionMessageCode } from '../../../shared/constant';
 import { StringPosition } from '../../../shared/type/string.type';
 import {
+  arrayChunks,
   arrayEqualsIgnoreOrder,
   generateNumRange,
   groupByToMap,
@@ -53,6 +55,10 @@ type GeneratedTemplateParam = {
 
 @Injectable()
 export class GenerateMathProblemValues {
+  constructor(
+    private readonly mathProblemAnswerGenerator: MathProblemAnswerGenerator,
+  ) {}
+
   /**
    * @param template example: "#0 #1 #2"
    */
@@ -85,29 +91,32 @@ export class GenerateMathProblemValues {
       )
       .sort((a, b) => (a.index > b.index ? 1 : -1));
 
-    const replaceParamsProduct = product(
-      ...generatedParams.map((e) => {
-        switch (e.__type) {
-          case ParamType.NUMBERS:
-            return e.numbers;
-          case ParamType.CUSTOM_STRINGS:
-            return e.customStrings;
-        }
-      }),
+    const replaceParamsProduct = Array.from(
+      product(
+        ...generatedParams.map((e) => {
+          switch (e.__type) {
+            case ParamType.NUMBERS:
+              return e.numbers;
+            case ParamType.CUSTOM_STRINGS:
+              return e.customStrings;
+          }
+        }),
+      ),
     );
 
-    const generatedValues = [];
-    for (const replaceParams of replaceParamsProduct) {
-      const tex = this.templateWithParams(
-        template,
-        replaceParams,
-        generatedParams,
+    const generatedValues: GeneratedNewMathProblemValues[] = [];
+    for (const replaceParamsChunk of arrayChunks(replaceParamsProduct, 10)) {
+      const values: GeneratedNewMathProblemValues[] = await Promise.all(
+        replaceParamsChunk.map(async (chunk) => {
+          const tex = this.templateWithParams(template, chunk, generatedParams);
+
+          const answers = await this.mathProblemAnswerGenerator.call(tex);
+
+          return { answers, tex };
+        }),
       );
 
-      generatedValues.push({
-        correctAnswer: null,
-        tex,
-      });
+      generatedValues.push(...values);
     }
 
     return generatedValues;

@@ -1,5 +1,7 @@
 import { LastIdPageParams } from '@shared/type';
 
+import { MathProblemAnswer } from './mathProblem.entity';
+
 export type CountMathProblemParams = {
   mathSubFieldId?: string | null;
   mathFieldId?: string | null;
@@ -36,6 +38,6 @@ export type GenerateMathProblemValuesArgs = GenerateMathProblemValuesParams & {
 };
 
 export type GeneratedNewMathProblemValues = {
-  correctAnswer: string | null;
+  answers: MathProblemAnswer[] | null;
   tex: string;
 };

@@ -108,3 +108,9 @@ export function* product<T extends Array<unknown>>(
     }
   }
 }
+
+export function* arrayChunks<T>(arr: T[], n: number): Generator<T[], void> {
+  for (let i = 0; i < arr.length; i += n) {
+    yield arr.slice(i, i + n);
+  }
+}

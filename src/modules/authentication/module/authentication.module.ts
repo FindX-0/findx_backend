@@ -4,7 +4,6 @@ import { AccountVerificationModule } from '@modules/accountVerification/accountV
 import { AdminUserModule } from '@modules/adminUser/adminUser.module';
 import { RefreshTokenModule } from '@modules/refreshToken/refreshToken.module';
 import { UserModule } from '@modules/user/user.module';
-import { RandomGenerator } from '@shared/util';
 
 import { JwtHelperModule } from './jwtHelper.module';
 import { AuthenticationResolver } from '../authentication.resolver';
@@ -31,7 +30,6 @@ import { PasswordEncoder } from '../util/password.encoder';
     // resolver
     AuthenticationResolver,
     // util
-    RandomGenerator,
     PasswordEncoder,
     GoogleOauthHelper,
     // usecase

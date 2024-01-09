@@ -9,8 +9,8 @@ import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service'
 import { UserValidator } from '@modules/user/user.validator';
 import { UserMutationService } from '@modules/user/userMutation.service';
 import { ExceptionMessageCode } from '@shared/constant';
-import { RandomGenerator } from '@shared/util';
 
+import { randomHEX } from '../../../shared/util/random';
 import { AuthPayloadObject } from '../gql/authPayload.object';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { JwtHelper } from '../util/jwt.helper';
@@ -23,7 +23,6 @@ export class GoogleSignIn {
     private readonly userService: UserMutationService,
     private readonly userValidator: UserValidator,
     private readonly passwordEncoder: PasswordEncoder,
-    private readonly randomGenerator: RandomGenerator,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
   ) {}
@@ -40,7 +39,7 @@ export class GoogleSignIn {
 
     await this.userValidator.validateUniqueEmail(email);
 
-    const generatedPassword = this.randomGenerator.hex(16);
+    const generatedPassword = randomHEX(16);
 
     const hashedPassword = await this.passwordEncoder.encode(generatedPassword);
 

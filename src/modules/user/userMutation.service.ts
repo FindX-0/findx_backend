@@ -1,21 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { RandomGenerator } from '@shared/util';
-
 import { NewUser, SelectableUser } from './user.entity';
 import { UserRepository } from './user.repository';
+import { randomHEX } from '../../shared/util/random';
 
 @Injectable()
 export class UserMutationService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly randomGenerator: RandomGenerator,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async create(
     params: Omit<NewUser, 'isOnline' | 'socketId'>,
   ): Promise<SelectableUser | null> {
-    const socketId = this.randomGenerator.hex(32);
+    const socketId = randomHEX(32);
 
     return this.userRepository.createUser({
       ...params,

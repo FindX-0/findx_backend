@@ -109,7 +109,7 @@ input GenerateMathProblemValuesInput {
 }
 
 type GenerateMathProblemValuesObject {
-  correctAnswer: String
+  answers: [MathProblemAnswerObject!]
   tex: String!
 }
 

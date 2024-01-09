@@ -7,7 +7,7 @@ import { UserMutationService } from '@modules/user/userMutation.service';
 import { UserQueryService } from '@modules/user/userQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
-import { RandomGenerator } from '../../../shared/util';
+import { randomHEX } from '../../../shared/util/random';
 import {
   AuthenticationPayload,
   DeviceSignInParams,
@@ -21,7 +21,6 @@ export class DeviceSignIn {
     private readonly userMutationService: UserMutationService,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
-    private readonly randomGenerator: RandomGenerator,
   ) {}
 
   async call(params: DeviceSignInParams): Promise<AuthenticationPayload> {
@@ -54,7 +53,7 @@ export class DeviceSignIn {
       deviceId,
       email: null,
       passwordHash: null,
-      userName: this.randomGenerator.hex(6),
+      userName: randomHEX(6),
     });
 
     if (!newUser) {

@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { RandomGenerator } from '@shared/util';
-
 import { UserRepository } from './user.repository';
 import { UserResolver } from './user.resolver';
 import { UserValidator } from './user.validator';
@@ -15,7 +13,6 @@ import { UserQueryService } from './userQuery.service';
     UserRepository,
     UserValidator,
     UserResolver,
-    RandomGenerator,
   ],
   exports: [UserMutationService, UserValidator, UserQueryService],
 })
