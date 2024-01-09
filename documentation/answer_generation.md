@@ -21,10 +21,8 @@ ceil(answer * uniform(.1-1))
 ```
 
 ```
-answer < 10:
-  (+-)answer +- rand(1-10) * 10^(intZeroCount-1)
-else:
-  (+-)answer +- rand(1-10) * 10^(intZeroCount-2)
+answer > 10:
+  (+-)answer +- rand(1-10) * 10^(intLen-2)
 ```
 
 ```
@@ -54,7 +52,7 @@ answer * rand([.05, .1, .2, .25, .5, .75, 1.25, 1.5, 2.5, 7.5])
 ```
 
 ```
-answer +- answer * rand([.05, .1, .2, .25, .5, .75, 1.25, 1.5, 2.5, 7.5]) 
+answer * (1 +- rand([0.05, 0.1, 0.2, 0.25, 0.5, 0.75, 1.25, 1.5, 2.5, 7.5]));
 ```
 
 ```

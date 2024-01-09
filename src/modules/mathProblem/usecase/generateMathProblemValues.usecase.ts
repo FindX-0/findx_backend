@@ -241,20 +241,3 @@ export class GenerateMathProblemValues {
     });
   }
 }
-
-// accept if we want only non-negatives
-// and generate till it satisfies,
-// if looping throw
-// function primeFactors(n: number) {
-//   const arr: number[] = [];
-//   let i = 2;
-//   while (i <= n) {
-//     if (n % i == 0) {
-//       n = n / i;
-//       arr.push(i);
-//     } else {
-//       i++;
-//     }
-//   }
-//   return arr;
-// }
