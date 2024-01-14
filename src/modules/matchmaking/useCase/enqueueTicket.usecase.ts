@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { TransactionRunner } from '@shared/util/transactionRunner';
 import { TicketState } from '@entities/index';
+import { TransactionRunner } from '@shared/util/transactionRunner';
 
 import { TicketRepository } from '../repository/ticket.repository';
 
@@ -11,7 +11,7 @@ type EnqueueTicketParams = {
 };
 
 @Injectable()
-export class EnqueueTicketUseCase {
+export class EnqueueTicket {
   constructor(
     private readonly ticketRepository: TicketRepository,
     private readonly transactionRunner: TransactionRunner,

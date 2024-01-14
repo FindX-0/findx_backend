@@ -30,7 +30,6 @@ enum TicketState {
 }
 
 enum MatchState {
-  PENDING
   IN_PROGRESS
   FINISHED
 
@@ -70,6 +69,8 @@ model User {
 
   refreshTokens       RefreshToken[]
   accountVerification AccountVerification?
+  mathBattleAnswers   MathBattleAnswer[]
+  mathBattleResults   MathBattleResult[]
 
   @@index([email, deviceId])
   @@map("users")
@@ -90,11 +91,13 @@ model AdminUser {
 }
 
 model RefreshToken {
-  id          BigInt   @id @default(autoincrement())
-  createdAt   DateTime @default(now())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  value String
+
   userId      BigInt?
   adminUserId BigInt?
-  value       String
 
   user      User?      @relation(fields: [userId], references: [id])
   adminUser AdminUser? @relation(fields: [adminUserId], references: [id])
@@ -104,11 +107,13 @@ model RefreshToken {
 }
 
 model AccountVerification {
-  id          BigInt   @id @default(autoincrement())
-  createdAt   DateTime @default(now())
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
   isVerified  Boolean
   oneTimeCode Int
-  userId      BigInt   @unique
+
+  userId BigInt @unique
 
   user User @relation(fields: [userId], references: [id])
 
@@ -117,9 +122,10 @@ model AccountVerification {
 
 model MathField {
   id        BigInt   @id @default(autoincrement())
-  name      String
   createdAt DateTime @default(now())
-  isPublic  Boolean  @default(true)
+
+  name     String
+  isPublic Boolean @default(true)
 
   mathProblems  MathProblem[]
   mathSubFields MathSubField[]
@@ -133,10 +139,12 @@ model MathSubField {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  name        String
+  name String
+
   mathFieldId BigInt
 
-  mathField    MathField     @relation(fields: [mathFieldId], references: [id])
+  mathField MathField @relation(fields: [mathFieldId], references: [id])
+
   mathProblems MathProblem[]
 
   @@map("mathSubFields")
@@ -146,10 +154,11 @@ model Ticket {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
+  userId  BigInt
+  state   TicketState
+  matchId BigInt?
+
   mathFieldId BigInt
-  userId      BigInt
-  state       TicketState
-  matchId     BigInt?
 
   mathField MathField @relation(fields: [mathFieldId], references: [id])
 
@@ -164,11 +173,15 @@ model Match {
   endAt          DateTime
   closeAt        DateTime
   state          MatchState
-  mathFieldId    BigInt
   userIds        String[]
   mathProblemIds String[]
 
+  mathFieldId BigInt
+
   mathField MathField @relation(fields: [mathFieldId], references: [id])
+
+  mathBattleAnswers MathBattleAnswer[]
+  mathBattleResults MathBattleResult[]
 
   @@map("matches")
 }
@@ -185,8 +198,45 @@ model MathProblem {
 
   mathFieldId    BigInt
   mathSubFieldId BigInt
-  mathField      MathField    @relation(fields: [mathFieldId], references: [id])
-  mathSubField   MathSubField @relation(fields: [mathSubFieldId], references: [id])
+
+  mathField    MathField    @relation(fields: [mathFieldId], references: [id])
+  mathSubField MathSubField @relation(fields: [mathSubFieldId], references: [id])
+
+  mathBattleAnswers MathBattleAnswer[]
 
   @@map("mathProblems")
+}
+
+model MathBattleAnswer {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  isCorrect Boolean
+
+  userId        BigInt
+  mathProblemId BigInt
+  matchId       BigInt
+
+  user        User        @relation(fields: [userId], references: [id])
+  mathProblem MathProblem @relation(fields: [mathProblemId], references: [id])
+  match       Match       @relation(fields: [matchId], references: [id])
+
+  @@map("mathBattleAnswers")
+}
+
+model MathBattleResult {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  score    Int
+  isWinner Boolean
+  isDraw   Boolean
+
+  matchId BigInt
+  userId  BigInt
+
+  match Match @relation(fields: [matchId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@map("mathBattleResults")
 }

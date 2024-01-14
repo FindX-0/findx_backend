@@ -1,24 +1,25 @@
 import { Exclude, Expose } from 'class-transformer';
 
-import { MatchState } from '@entities/index';
-
 @Exclude()
-export class MatchDto {
+export class MathBattleResultDto {
   @Expose()
   id: string;
+
+  @Expose()
+  userId: string;
 
   @Expose()
   createdAt: Date;
 
   @Expose()
-  mathFieldId: string;
+  score: number;
 
   @Expose()
-  startAt: Date;
+  isWinner: boolean;
 
   @Expose()
-  endAt: Date;
+  isDraw: boolean;
 
   @Expose()
-  state: MatchState;
+  matchId: string;
 }

@@ -27,6 +27,15 @@ enum AuthProvider {
   NONE
 }
 
+input CountGenerateMathProblemValuesInput {
+  customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
+  numberParams: [GenerateMathProblemNumberParameterInput!]!
+}
+
+type CountObject {
+  count: Int!
+}
+
 input CreateMathFieldInput {
   name: String!
 }
@@ -81,8 +90,39 @@ input FilterMathSubFieldsInput {
   mathFieldId: ID
 }
 
+input GenerateMathProblemCustomStrParameterInput {
+  index: Int!
+  values: String!
+}
+
+input GenerateMathProblemNumberParameterInput {
+  index: Int!
+  max: Int!
+  min: Int!
+  step: Float!
+}
+
+input GenerateMathProblemValuesInput {
+  customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
+  numberParams: [GenerateMathProblemNumberParameterInput!]!
+  template: String!
+}
+
+type GenerateMathProblemValuesObject {
+  answers: [MathProblemAnswerObject!]
+  tex: String!
+}
+
 input GetAllMathFieldsInput {
   onlyPublic: Boolean!
+}
+
+input GetMathBattleMathProblemsInput {
+  matchId: ID!
+}
+
+input GetMathBattleResultsInput {
+  matchId: ID!
 }
 
 input GoogleSignInInput {
@@ -103,6 +143,45 @@ input LastIdPageParamsObject {
   limit: Int!
 }
 
+type MatchObject {
+  closeAt: DateTime!
+  createdAt: DateTime!
+  endAt: DateTime!
+  id: ID!
+  mathFieldId: String!
+  mathProblemIds: [String!]!
+  startAt: DateTime!
+  state: MatchState!
+  userIds: [String!]!
+}
+
+enum MatchState {
+  FINISHED
+  IN_PROGRESS
+}
+
+type MathBattleMathProblemObject {
+  answers: [MathProblemAnswerWoutCorrectObject!]!
+  createdAt: DateTime!
+  difficulty: Int!
+  id: ID!
+  images: [MediaFileObject!]
+  mathFieldId: String!
+  mathSubFieldId: String!
+  tex: String
+  text: String
+}
+
+type MathBattleResultObject {
+  createdAt: DateTime!
+  id: ID!
+  isDraw: Boolean!
+  isWinner: Boolean!
+  matchId: ID!
+  score: Float!
+  userId: ID!
+}
+
 type MathFieldObject {
   createdAt: DateTime!
   id: ID!
@@ -116,6 +195,10 @@ type MathFieldPageObject {
 
 type MathProblemAnswerObject {
   isCorrect: Boolean!
+  tex: String!
+}
+
+type MathProblemAnswerWoutCorrectObject {
   tex: String!
 }
 
@@ -175,6 +258,7 @@ type Mutation {
   enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
+  submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
@@ -182,15 +266,21 @@ type Mutation {
 
 type Query {
   authenticationStatus: SuccessObject!
+  countGenerateMathProblemValues(input: CountGenerateMathProblemValuesInput!): CountObject!
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
+  generateMathProblemValues(input: GenerateMathProblemValuesInput!): [GenerateMathProblemValuesObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAuthUser: UserObject!
+  getMatchById(input: IdentifierInput!): MatchObject!
+  getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
+  getMathBattleResults(input: GetMathBattleResultsInput!): [MathBattleResultObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!
   getServerTime: ServerTimeObject!
+  getUserById(input: IdentifierInput!): UserObject!
 }
 
 input RefreshTokenInput {
@@ -199,6 +289,12 @@ input RefreshTokenInput {
 
 type ServerTimeObject {
   serverTime: DateTime!
+}
+
+input SubmitMathProblemAnswerInput {
+  answer: String!
+  matchId: ID!
+  mathProblemId: ID!
 }
 
 type SuccessObject {

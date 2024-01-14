@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { PublishTicketChangedUsecase } from '@modules/gateway/usecase/publishTicketChanged.usecase';
+import { PublishTicketChanged } from '@modules/gateway/usecase/publishTicketChanged.usecase';
 import { ExceptionMessageCode } from '@shared/constant';
 import { TransactionProvider } from '@shared/util';
 
@@ -8,10 +8,10 @@ import { TicketUpdate } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 
 @Injectable()
-export class UpdateTicketAndPublishUsecase {
+export class UpdateTicketAndPublish {
   constructor(
     private readonly ticketRepository: TicketRepository,
-    private readonly publishTicketChangedUsecase: PublishTicketChangedUsecase,
+    private readonly publishTicketChangedUsecase: PublishTicketChanged,
   ) {}
 
   async call({

@@ -3,7 +3,7 @@ import { ExpressionBuilder } from 'kysely';
 import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
+import { KyselyDB } from '@config/database/kyselyDb.type';
 import { DB } from '@entities/index';
 
 import {

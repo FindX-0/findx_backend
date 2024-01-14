@@ -14,7 +14,7 @@ import { JwtHelper } from '../util/jwt.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
 @Injectable()
-export class EmailSignUpUseCase {
+export class EmailSignUp {
   constructor(
     private readonly userService: UserMutationService,
     private readonly passwordEncoder: PasswordEncoder,

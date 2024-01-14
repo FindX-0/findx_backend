@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
 import { SocketGateway } from './gateway';
-import { PublishMatchChangedUsecase } from './usecase/publishMatchChanged.usecase';
-import { PublishTicketChangedUsecase } from './usecase/publishTicketChanged.usecase';
+import { PublishMathBattleScoreChanged } from './usecase/publishMathBattleScoreChanged.usecase';
+import { PublishTicketChanged } from './usecase/publishTicketChanged.usecase';
+import { PublishMathBattleResultsChanged } from './usecase/pushMathBattleResultsChanged.usecase';
 import { JwtHelperModule } from '../authentication/module/jwtHelper.module';
 import { UserModule } from '../user/user.module';
 
@@ -10,9 +11,15 @@ import { UserModule } from '../user/user.module';
   imports: [UserModule, JwtHelperModule],
   providers: [
     SocketGateway,
-    PublishTicketChangedUsecase,
-    PublishMatchChangedUsecase,
+    // usecase
+    PublishTicketChanged,
+    PublishMathBattleScoreChanged,
+    PublishMathBattleResultsChanged,
   ],
-  exports: [PublishTicketChangedUsecase, PublishMatchChangedUsecase],
+  exports: [
+    PublishTicketChanged,
+    PublishMathBattleScoreChanged,
+    PublishMathBattleResultsChanged,
+  ],
 })
 export class GatewayModule {}

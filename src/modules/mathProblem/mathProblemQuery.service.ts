@@ -5,7 +5,7 @@ import { DataPage } from '@shared/type';
 
 import {
   SelectableMathProblem,
-  SelectableMathProblemWithRelations,
+  SelectableMathProblemWRelations,
 } from './mathProblem.entity';
 import {
   CountMathProblemParams,
@@ -33,7 +33,7 @@ export class MathProblemQueryService {
 
   async filter(
     filter: FilterMathProblemParams,
-  ): Promise<DataPage<SelectableMathProblemWithRelations>> {
+  ): Promise<DataPage<SelectableMathProblemWRelations>> {
     const count = await this.mathProblemRepository.count(filter);
 
     if (count == 0) {
@@ -60,5 +60,9 @@ export class MathProblemQueryService {
 
   async countBy(params: CountMathProblemParams): Promise<number> {
     return this.mathProblemRepository.count(params);
+  }
+
+  async getByIds(ids: string[]): Promise<SelectableMathProblem[]> {
+    return this.mathProblemRepository.getByIds(ids);
   }
 }

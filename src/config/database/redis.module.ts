@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { Redis } from 'ioredis';
 
-import { EnvService } from '../env';
+import { EnvService } from '../env/env.service';
 
 @Global()
 @Module({
@@ -14,10 +14,11 @@ import { EnvService } from '../env';
           host: envService.get('REDIS_HOST'),
           port: envService.get('REDIS_PORT'),
           password: envService.get('REDIS_PASSWORD'),
+          maxRetriesPerRequest: 1000,
         });
 
         redisInstance.on('error', (e) => {
-          throw new Error(`Redis connection failed: ${e}`);
+          console.error(e);
         });
 
         return redisInstance;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
+import { KyselyDB } from '@config/database/kyselyDb.type';
 import { MatchState } from '@entities/index';
 import { TransactionProvider } from '@shared/util';
 
@@ -34,5 +34,25 @@ export class MatchRepository {
       .set({ state })
       .where('id', '=', id)
       .execute();
+  }
+
+  async getMathProblemIdsById(id: string): Promise<string[] | null> {
+    const entity = await this.db
+      .selectFrom('matches')
+      .select(['id', 'mathProblemIds'])
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity?.mathProblemIds ?? null;
+  }
+
+  async getById(id: string): Promise<SelectableMatch | null> {
+    const entity = await this.db
+      .selectFrom('matches')
+      .selectAll()
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return entity ?? null;
   }
 }

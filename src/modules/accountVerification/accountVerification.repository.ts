@@ -6,7 +6,7 @@ import {
   SelectableAccountVerification,
   UpdateAccountVerification,
 } from './accountVerification.entity';
-import { KyselyDB } from '../../config/database';
+import { KyselyDB } from '../../config/database/kyselyDb.type';
 
 @Injectable()
 export class AccountVerificationRepository {

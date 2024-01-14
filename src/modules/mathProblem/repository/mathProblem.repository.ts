@@ -5,7 +5,7 @@ import { InjectKysely } from 'nestjs-kysely';
 
 import { TransactionProvider } from '@shared/util';
 
-import { KyselyDB } from '../../../config/database';
+import { KyselyDB } from '../../../config/database/kyselyDb.type';
 import { DB } from '../../../entities';
 import {
   MathProblemAnswer,
@@ -143,6 +143,16 @@ export class MathProblemRepository {
     const count = countRes?.count ?? '0';
 
     return parseInt(count as string);
+  }
+
+  async getByIds(ids: string[]): Promise<SelectableMathProblem[]> {
+    const entities = await this.db
+      .selectFrom('mathProblems')
+      .selectAll()
+      .where('id', 'in', ids)
+      .execute();
+
+    return entities as SelectableMathProblem[];
   }
 
   private withMathField(eb: ExpressionBuilder<DB, 'mathProblems'>) {

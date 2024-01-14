@@ -7,6 +7,7 @@ import { UserMutationService } from '@modules/user/userMutation.service';
 import { UserQueryService } from '@modules/user/userQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { randomHEX } from '../../../shared/util/random';
 import {
   AuthenticationPayload,
   DeviceSignInParams,
@@ -14,7 +15,7 @@ import {
 import { JwtHelper } from '../util/jwt.helper';
 
 @Injectable()
-export class DeviceSignInUseCase {
+export class DeviceSignIn {
   constructor(
     private readonly userQueryService: UserQueryService,
     private readonly userMutationService: UserMutationService,
@@ -52,7 +53,7 @@ export class DeviceSignInUseCase {
       deviceId,
       email: null,
       passwordHash: null,
-      userName: null,
+      userName: randomHEX(6),
     });
 
     if (!newUser) {

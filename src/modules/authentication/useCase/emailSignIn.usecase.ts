@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { ExceptionMessageCode } from '@shared/constant';
 import { AccountVerificationService } from '@modules/accountVerification/accountVerification.service';
 import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { UserQueryService } from '@modules/user/userQuery.service';
+import { ExceptionMessageCode } from '@shared/constant';
 
 import {
   AuthenticationPayload,
@@ -17,7 +17,7 @@ import { JwtHelper } from '../util/jwt.helper';
 import { PasswordEncoder } from '../util/password.encoder';
 
 @Injectable()
-export class EmailSignInUseCase {
+export class EmailSignIn {
   constructor(
     private readonly userQueryService: UserQueryService,
     private readonly passwordEncoder: PasswordEncoder,

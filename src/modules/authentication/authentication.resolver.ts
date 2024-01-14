@@ -14,26 +14,26 @@ import { EmailSignUpInput } from './gql/emailSignUp.input';
 import { GoogleSignInInput } from './gql/googleSignIn.input';
 import { JwtTokenPayloadObject } from './gql/jwtTokenPayload.object';
 import { RefreshTokenInput } from './gql/refreshToken.input';
-import { AdminRefreshTokenUseCase } from './useCase/adminRefreshToken.usecase';
-import { AdminUserSignInUseCase } from './useCase/adminUserSignIn.usecase';
-import { AdminUserSignUpUseCase } from './useCase/adminUserSignUp.usecase';
-import { DeviceSignInUseCase } from './useCase/deviceSignIn.usecase';
-import { EmailSignInUseCase } from './useCase/emailSignIn.usecase';
-import { EmailSignUpUseCase } from './useCase/emailSignUp.usecase';
-import { GoogleSignInUseCase } from './useCase/googleSignIn.usecase';
-import { RefreshTokenUseCase } from './useCase/refreshToken.usecase';
+import { AdminRefreshToken } from './useCase/adminRefreshToken.usecase';
+import { AdminUserSignIn } from './useCase/adminUserSignIn.usecase';
+import { AdminUserSignUp } from './useCase/adminUserSignUp.usecase';
+import { DeviceSignIn } from './useCase/deviceSignIn.usecase';
+import { EmailSignIn } from './useCase/emailSignIn.usecase';
+import { EmailSignUp } from './useCase/emailSignUp.usecase';
+import { GoogleSignIn } from './useCase/googleSignIn.usecase';
+import { RefreshToken } from './useCase/refreshToken.usecase';
 
 @Resolver('authentication')
 export class AuthenticationResolver {
   constructor(
-    private readonly emailSignUpUseCase: EmailSignUpUseCase,
-    private readonly googleSignInUseCase: GoogleSignInUseCase,
-    private readonly refreshTokenUseCase: RefreshTokenUseCase,
-    private readonly emailSignInUseCase: EmailSignInUseCase,
-    private readonly adminUserSignInUseCase: AdminUserSignInUseCase,
-    private readonly adminUserSignUpUseCase: AdminUserSignUpUseCase,
-    private readonly adminRefreshTokenUseCase: AdminRefreshTokenUseCase,
-    private readonly deviceSignInUsecase: DeviceSignInUseCase,
+    private readonly emailSignUpUseCase: EmailSignUp,
+    private readonly googleSignInUseCase: GoogleSignIn,
+    private readonly refreshTokenUseCase: RefreshToken,
+    private readonly emailSignInUseCase: EmailSignIn,
+    private readonly adminUserSignInUseCase: AdminUserSignIn,
+    private readonly adminUserSignUpUseCase: AdminUserSignUp,
+    private readonly adminRefreshTokenUseCase: AdminRefreshToken,
+    private readonly deviceSignInUsecase: DeviceSignIn,
   ) {}
 
   @Query(() => SuccessObject)

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { NewAdminUser, SelectableAdminUser } from './adminUser.entity';
-import { KyselyDB } from '../../config/database';
+import { KyselyDB } from '../../config/database/kyselyDb.type';
 import { Role } from '../../entities';
 
 @Injectable()

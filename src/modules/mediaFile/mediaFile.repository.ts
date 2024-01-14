@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
-import { KyselyDB } from '@config/database';
+import { KyselyDB } from '@config/database/kyselyDb.type';
 import { TransactionProvider } from '@shared/util';
 
 import { NewMediaFile, SelectableMediaFile } from './mediaFile.entity';

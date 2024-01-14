@@ -4,28 +4,28 @@ import {
   Logger,
 } from '@nestjs/common';
 
-import { EnvService } from '@config/env';
+import { EnvService } from '@config/env/env.service';
 import { MatchState, TicketState } from '@entities/index';
 import { MathProblemIdStore } from '@modules/mathProblem/repository/mathProblemId.store';
 import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuery.service';
 import { TransactionProvider, splitNumIntoChunks } from '@shared/util';
 
-import { UpdateTicketAndPublishUsecase } from './updateTicketAndPublish.usecase';
+import { UpdateTicketAndPublish } from './updateTicketAndPublish.usecase';
 import { SelectableMatch } from '../entity/match.entity';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { MatchRepository } from '../repository/match.repository';
 
 @Injectable()
-export class CreateMatchUseCase {
+export class CreateMatch {
   constructor(
     private readonly matchRepository: MatchRepository,
     private readonly envService: EnvService,
-    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublishUsecase,
+    private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublish,
     private readonly mathProblemIdStore: MathProblemIdStore,
     private readonly mathSubFieldQueryService: MathSubFieldQueryService,
   ) {}
 
-  private readonly logger = new Logger(CreateMatchUseCase.name);
+  private readonly logger = new Logger(CreateMatch.name);
 
   async call({
     mathFieldId,
@@ -53,7 +53,7 @@ export class CreateMatchUseCase {
         endAt: matchEndAt,
         closeAt: matchCloseAt,
         userIds: [ticketA.userId, ticketB.userId],
-        state: MatchState.PENDING,
+        state: MatchState.IN_PROGRESS,
         mathProblemIds: await this.resolveMathProblemIds(mathFieldId),
       },
       txProvider,

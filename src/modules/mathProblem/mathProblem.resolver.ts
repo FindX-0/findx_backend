@@ -8,11 +8,17 @@ import {
 } from '@shared/gql';
 
 import { CreateMathProblemInput } from './gql/createMathProblem.input';
+import { CountGenerateMathProblemValuesInput } from './gql/generateMathProblem/countGenerateMathProblemValues.input';
+import { GenerateMathProblemValuesInput } from './gql/generateMathProblem/generateMathProblemValues.input';
+import { GenerateMathProblemValuesObject } from './gql/generateMathProblem/generateMathProblemValues.object';
+import { MathProblemObject } from './gql/mathProblem/mathProblem.object';
 import { MathProblemPageObject } from './gql/mathProblemPage.object';
-import { MathProblemObject } from './gql/mathProfilem.object';
 import { UpdateMathProblemInput } from './gql/updateMathProblem.input';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
+import { CountGenerateMathProblemValues } from './usecase/countGenerateMathProblemValues.usecase';
+import { GenerateMathProblemValues } from './usecase/generateMathProblemValues.usecase';
+import { CountObject } from '../../shared/gql/count.object';
 import { Roles } from '../authentication/decorator/roles.decorator';
 import { MediaFileQueryService } from '../mediaFile/mediaFileQuery.service';
 
@@ -22,6 +28,8 @@ export class MathProblemResolver {
     private readonly mathProblemQueryService: MathProblemQueryService,
     private readonly mathProblemMutationService: MathProblemMutationService,
     private readonly mediaFileCrudService: MediaFileQueryService,
+    private readonly generateNewMathProblemValuesUsecase: GenerateMathProblemValues,
+    private readonly countGenerateMathProblemValuesUsecase: CountGenerateMathProblemValues,
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
@@ -101,5 +109,23 @@ export class MathProblemResolver {
       includeMathField: true,
       includeMathSubField: true,
     });
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @Query(() => [GenerateMathProblemValuesObject])
+  async generateMathProblemValues(
+    @Args('input') input: GenerateMathProblemValuesInput,
+  ): Promise<GenerateMathProblemValuesObject[]> {
+    return this.generateNewMathProblemValuesUsecase.call(input);
+  }
+
+  @Roles(Role.SUPER_ADMIN)
+  @Query(() => CountObject)
+  async countGenerateMathProblemValues(
+    @Args('input') input: CountGenerateMathProblemValuesInput,
+  ): Promise<CountObject> {
+    const count = await this.countGenerateMathProblemValuesUsecase.call(input);
+
+    return { count };
   }
 }
