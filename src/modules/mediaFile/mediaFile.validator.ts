@@ -5,7 +5,7 @@ import { ExceptionMessageCode } from '@shared/constant';
 import { MediaFileRepository } from './mediaFile.repository';
 
 @Injectable()
-export class MediaFileValidatorService {
+export class MediaFileValidator {
   constructor(private readonly mediaFileRepository: MediaFileRepository) {}
 
   async validateExistsMany(ids: string[]): Promise<void> {

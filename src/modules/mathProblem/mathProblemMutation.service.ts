@@ -12,25 +12,22 @@ import {
   NewMathProblem,
   SelectableMathProblem,
 } from './mathProblem.entity';
+import { MathProblemValidator } from './mathProblem.validator';
 import { MathProblemRepository } from './repository/mathProblem.repository';
-import { MediaFileValidatorService } from '../mediaFile/mediaFileValidator.service';
 import { DeleteMediaFileUsecase } from '../mediaFile/usecase/deleteMediaFile.usecase';
 
 @Injectable()
 export class MathProblemMutationService {
   constructor(
     private readonly mathProblemRepository: MathProblemRepository,
-    private readonly mediaFileValidatorService: MediaFileValidatorService,
     private readonly deleteMediaFileUsecase: DeleteMediaFileUsecase,
     private readonly transactionRunner: TransactionRunner,
+    private readonly mathProblemValidator: MathProblemValidator,
   ) {}
 
   async create(values: NewMathProblem): Promise<SelectableMathProblem> {
-    if (values.imageMediaIds.length) {
-      await this.mediaFileValidatorService.validateExistsMany(
-        values.imageMediaIds,
-      );
-    }
+    this.mathProblemValidator.validateAnswers(values);
+    await this.mathProblemValidator.validateImageMediaIds(values);
 
     const entity = await this.mathProblemRepository.create(values);
 
@@ -44,15 +41,8 @@ export class MathProblemMutationService {
   }
 
   async bulkCreate(values: NewMathProblem[]): Promise<SelectableMathProblem[]> {
-    const flatImageMediaIds = new Set(
-      values.map((e) => e.imageMediaIds).flat(1),
-    );
-
-    if (flatImageMediaIds.size) {
-      await this.mediaFileValidatorService.validateExistsMany(
-        Array.from(flatImageMediaIds),
-      );
-    }
+    this.mathProblemValidator.validateManyAnswers(values);
+    await this.mathProblemValidator.validateManyImageMediaIds(values);
 
     return this.mathProblemRepository.bulkCreate(values);
   }
@@ -61,13 +51,12 @@ export class MathProblemMutationService {
     id: string,
     values: MathProblemUpdate,
   ): Promise<SelectableMathProblem> {
+    this.mathProblemValidator.validateAnswers(values);
+    await this.mathProblemValidator.validateImageMediaIds(values);
+
     let oldImageMediaIds: string[] | null = null;
 
     if (values.imageMediaIds) {
-      await this.mediaFileValidatorService.validateExistsMany(
-        values.imageMediaIds,
-      );
-
       oldImageMediaIds =
         await this.mathProblemRepository.getImageMediaIdsById(id);
     }
