@@ -7,7 +7,9 @@ import {
   LastIdPageParamsObject,
 } from '@shared/gql';
 
-import { CreateMathProblemInput } from './gql/createMathProblem.input';
+import { BulkCreateMathProblemInput } from './gql/createMathProblem/bulkCreateMathPropblem.input';
+import { CreateMathProblemInput } from './gql/createMathProblem/createMathProblem.input';
+import { CreateMathProblemResObject } from './gql/createMathProblem/createMathProblemRes.object';
 import { CountGenerateMathProblemValuesInput } from './gql/generateMathProblem/countGenerateMathProblemValues.input';
 import { GenerateMathProblemValuesInput } from './gql/generateMathProblem/generateMathProblemValues.input';
 import { GenerateMathProblemValuesObject } from './gql/generateMathProblem/generateMathProblemValues.object';
@@ -33,22 +35,24 @@ export class MathProblemResolver {
   ) {}
 
   @Roles(Role.SUPER_ADMIN)
-  @Mutation(() => MathProblemObject)
+  @Mutation(() => CreateMathProblemResObject)
   async createMathProblem(
     @Args('input') input: CreateMathProblemInput,
-  ): Promise<MathProblemObject> {
-    const { imageMediaIds, ...restOfInput } = input;
-
-    const mathProblem = await this.mathProblemMutationService.create({
-      ...restOfInput,
-      imageMediaIds: imageMediaIds ?? [],
+  ): Promise<CreateMathProblemResObject> {
+    return this.mathProblemMutationService.create({
+      ...input,
+      imageMediaIds: input.imageMediaIds ?? [],
     });
+  }
 
-    const images = imageMediaIds?.length
-      ? await this.mediaFileCrudService.getByIds(imageMediaIds)
-      : [];
-
-    return { ...mathProblem, images };
+  @Roles(Role.SUPER_ADMIN)
+  @Mutation(() => [CreateMathProblemResObject])
+  async bulkCreateMathProblem(
+    @Args('input') input: BulkCreateMathProblemInput,
+  ): Promise<CreateMathProblemResObject[]> {
+    return this.mathProblemMutationService.bulkCreate(
+      input.values.map((e) => ({ ...e, imageMediaIds: e.imageMediaIds ?? [] })),
+    );
   }
 
   @Roles(Role.SUPER_ADMIN)

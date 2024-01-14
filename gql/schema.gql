@@ -27,6 +27,10 @@ enum AuthProvider {
   NONE
 }
 
+input BulkCreateMathProblemInput {
+  values: [CreateMathProblemInput!]!
+}
+
 input CountGenerateMathProblemValuesInput {
   customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
   numberParams: [GenerateMathProblemNumberParameterInput!]!
@@ -51,6 +55,16 @@ input CreateMathProblemInput {
   imageMediaIds: [ID!]
   mathFieldId: ID!
   mathSubFieldId: ID!
+  tex: String
+  text: String
+}
+
+type CreateMathProblemResObject {
+  createdAt: DateTime!
+  difficulty: Int!
+  id: ID!
+  mathFieldId: String!
+  mathSubFieldId: String!
   tex: String
   text: String
 }
@@ -246,8 +260,9 @@ type Mutation {
   adminRefreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
+  bulkCreateMathProblem(input: BulkCreateMathProblemInput!): [CreateMathProblemResObject!]!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
-  createMathProblem(input: CreateMathProblemInput!): MathProblemObject!
+  createMathProblem(input: CreateMathProblemInput!): CreateMathProblemResObject!
   createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!

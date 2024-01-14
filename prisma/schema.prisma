@@ -193,7 +193,7 @@ model MathProblem {
   difficulty    Int      @db.SmallInt
   imageMediaIds String[]
   text          String?
-  tex           String?
+  tex           String?  @unique
   answers       Json[]   @db.JsonB
 
   mathFieldId    BigInt

@@ -12,7 +12,7 @@ import {
   Min,
 } from 'class-validator';
 
-import { CreateMathProblemAnswerInput } from './createMathProblemAnswer.input';
+import { CreateMathProblemAnswerInput } from '../createMathProblemAnswer.input';
 
 @InputType()
 export class CreateMathProblemInput {

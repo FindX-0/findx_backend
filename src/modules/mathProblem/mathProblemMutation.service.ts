@@ -43,6 +43,20 @@ export class MathProblemMutationService {
     return entity;
   }
 
+  async bulkCreate(values: NewMathProblem[]): Promise<SelectableMathProblem[]> {
+    const flatImageMediaIds = new Set(
+      values.map((e) => e.imageMediaIds).flat(1),
+    );
+
+    if (flatImageMediaIds.size) {
+      await this.mediaFileValidatorService.validateExistsMany(
+        Array.from(flatImageMediaIds),
+      );
+    }
+
+    return this.mathProblemRepository.bulkCreate(values);
+  }
+
   async updateById(
     id: string,
     values: MathProblemUpdate,
