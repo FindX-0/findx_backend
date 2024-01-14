@@ -32,6 +32,29 @@ export class MathProblemRepository {
     return (created as SelectableMathProblem) ?? null;
   }
 
+  async bulkCreate(values: NewMathProblem[]): Promise<SelectableMathProblem[]> {
+    const created = await this.db
+      .insertInto('mathProblems')
+      .values(values)
+      .returningAll()
+      .onConflict((qb) =>
+        qb.column('tex').doUpdateSet((eb) => ({
+          id: eb.ref('excluded.id'),
+          createdAt: eb.ref('excluded.createdAt'),
+          tex: eb.ref('excluded.tex'),
+          text: eb.ref('excluded.text'),
+          mathFieldId: eb.ref('excluded.mathFieldId'),
+          mathSubFieldId: eb.ref('excluded.mathSubFieldId'),
+          imageMediaIds: eb.ref('excluded.imageMediaIds'),
+          difficulty: eb.ref('excluded.difficulty'),
+          answers: eb.ref('excluded.answers'),
+        })),
+      )
+      .execute();
+
+    return (created as SelectableMathProblem[]) ?? null;
+  }
+
   async updateById(
     id: string,
     values: MathProblemUpdate,

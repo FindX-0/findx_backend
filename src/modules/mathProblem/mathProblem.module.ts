@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { MathProblemIdsInit } from './bootstrap/mathProblemIds.init';
 import { MathProblemResolver } from './mathProblem.resolver';
+import { MathProblemValidator } from './mathProblem.validator';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
 import { MathProblemRepository } from './repository/mathProblem.repository';
@@ -21,6 +22,7 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     MathProblemMutationService,
     MathProblemIdStore,
     MathProblemIdsInit,
+    MathProblemValidator,
     // usecase
     GenerateMathProblemValues,
     CountGenerateMathProblemValues,
