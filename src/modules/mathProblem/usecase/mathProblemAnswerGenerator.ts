@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Decimal } from 'decimal.js';
 
+import { decimalDigits } from '../../../shared/util';
 import {
   randomBoolean,
   randomElement,
@@ -12,7 +13,6 @@ import {
 } from '../../../shared/util/random';
 import { solveTexExpression } from '../../../shared/util/solveTexExpression';
 import { MathProblemAnswer } from '../mathProblem.entity';
-import { decimalDigits } from '../../../shared/util';
 
 type MathAnswerFunc = {
   func: (num: Decimal) => Decimal;

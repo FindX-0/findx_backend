@@ -19,6 +19,7 @@ import { EnvService } from './config/env/env.service';
 import { validationExceptionFactory } from './config/validation';
 import { AccountVerificationModule } from './modules/accountVerification/accountVerification.module';
 import { AdminUserModule } from './modules/adminUser/adminUser.module';
+import { AnswerFunctionModule } from './modules/answerFunction/answerFunction.module';
 import { HttpAuthPayloadInterceptor } from './modules/authentication/filter/httpAuthPayload.interceptor';
 import { HttpJwtAuthGuard } from './modules/authentication/filter/httpJwtAuth.guard';
 import { HttpRolesGuard } from './modules/authentication/filter/httpRoles.guard';
@@ -78,6 +79,7 @@ import { TransactionRunnerModule } from './shared/util';
     MathProblemModule,
     MediaFileModule,
     MathBattleModule,
+    AnswerFunctionModule,
   ],
   controllers: [AppController],
   providers: [

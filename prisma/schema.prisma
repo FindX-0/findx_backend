@@ -240,3 +240,14 @@ model MathBattleResult {
 
   @@map("mathBattleResults")
 }
+
+model AnswerFunction {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  func      String
+  weight    Decimal
+  condition String?
+
+  @@map("answerFunctions")
+}
