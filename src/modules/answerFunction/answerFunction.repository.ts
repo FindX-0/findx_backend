@@ -83,7 +83,15 @@ export class AnswerFunctionRepository {
     return parseInt(count as string);
   }
 
-  async getAll(): Promise<SelectableAnswerFunction[]> {
-    return this.db.selectFrom('answerFunctions').selectAll().execute();
+  async getAll({
+    notIncludeId,
+  }: {
+    notIncludeId: string | null;
+  }): Promise<SelectableAnswerFunction[]> {
+    return this.db
+      .selectFrom('answerFunctions')
+      .$if(Boolean(notIncludeId), (qb) => qb.where('id', '!=', notIncludeId))
+      .selectAll()
+      .execute();
   }
 }

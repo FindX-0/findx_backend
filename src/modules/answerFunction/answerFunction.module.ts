@@ -4,6 +4,7 @@ import { AnswerFunctionRepository } from './answerFunction.repository';
 import { AnswerFunctionResolver } from './answerFunction.resolver';
 import { AnswerFunctionMutationService } from './answerFunctionMutation.service';
 import { AnswerFunctionQueryService } from './answerFunctionQuery.service';
+import { NormalizeAnswerFunctionWeight } from './usecase/normalizeAnswerFunctionWeight.usecase';
 
 @Module({
   providers: [
@@ -11,6 +12,8 @@ import { AnswerFunctionQueryService } from './answerFunctionQuery.service';
     AnswerFunctionQueryService,
     AnswerFunctionMutationService,
     AnswerFunctionResolver,
+    // usecase
+    NormalizeAnswerFunctionWeight,
   ],
   exports: [AnswerFunctionMutationService, AnswerFunctionQueryService],
 })

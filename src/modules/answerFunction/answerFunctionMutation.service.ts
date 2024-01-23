@@ -7,21 +7,25 @@ import {
 import { ExceptionMessageCode } from '@shared/constant';
 
 import {
-  AnswerFunctionUpdate,
-  NewAnswerFunction,
+  AnswerFunctionUpdateWeightNum,
   SelectableAnswerFunction,
+  NewAnswerFunctionWeightNum,
 } from './answerFunction.entity';
 import { AnswerFunctionRepository } from './answerFunction.repository';
+import { NormalizeAnswerFunctionWeight } from './usecase/normalizeAnswerFunctionWeight.usecase';
 
 @Injectable()
 export class AnswerFunctionMutationService {
   constructor(
     private readonly answerFunctionRepository: AnswerFunctionRepository,
+    private readonly normalizeAnswerFunctionWeight: NormalizeAnswerFunctionWeight,
   ) {}
 
   async create(
-    values: Omit<NewAnswerFunction, 'weight'> & { weight: number },
+    values: NewAnswerFunctionWeightNum,
   ): Promise<SelectableAnswerFunction> {
+    await this.normalizeAnswerFunctionWeight.normalizeForCreate(values);
+
     const entity = await this.answerFunctionRepository.create({
       ...values,
       weight: values.weight.toString(),
@@ -38,8 +42,10 @@ export class AnswerFunctionMutationService {
 
   async updateById(
     id: string,
-    values: Omit<AnswerFunctionUpdate, 'weight'> & { weight?: number },
+    values: AnswerFunctionUpdateWeightNum,
   ): Promise<SelectableAnswerFunction> {
+    await this.normalizeAnswerFunctionWeight.normalizeForUpdate(id, values);
+
     const { weight, ...restValues } = values;
 
     const entity = await this.answerFunctionRepository.updateById(id, {
