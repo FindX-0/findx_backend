@@ -19,6 +19,7 @@ export const MatchState = {
 } as const;
 export type MatchState = (typeof MatchState)[keyof typeof MatchState];
 export const Role = {
+    ADMIN: "ADMIN",
     SUPER_ADMIN: "SUPER_ADMIN"
 } as const;
 export type Role = (typeof Role)[keyof typeof Role];

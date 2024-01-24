@@ -37,6 +37,7 @@ enum MatchState {
 }
 
 enum Role {
+  ADMIN
   SUPER_ADMIN
 
   @@map("role")
