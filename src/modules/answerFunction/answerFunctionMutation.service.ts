@@ -13,12 +13,16 @@ import {
 } from './answerFunction.entity';
 import { AnswerFunctionRepository } from './answerFunction.repository';
 import { NormalizeAnswerFunctionWeight } from './usecase/normalizeAnswerFunctionWeight.usecase';
+import { Role } from '../../entities';
+import { AdminUserQueryService } from '../adminUser/adminUserQuery.service';
+import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
 
 @Injectable()
 export class AnswerFunctionMutationService {
   constructor(
     private readonly answerFunctionRepository: AnswerFunctionRepository,
     private readonly normalizeAnswerFunctionWeight: NormalizeAnswerFunctionWeight,
+    private readonly adminUserQueryService: AdminUserQueryService,
   ) {}
 
   async create(
@@ -42,14 +46,23 @@ export class AnswerFunctionMutationService {
 
   async updateById(
     id: string,
+    userAuthPayload: UserAuthPayload,
     values: AnswerFunctionUpdateWeightNum,
   ): Promise<SelectableAnswerFunction> {
     await this.normalizeAnswerFunctionWeight.normalizeForUpdate(id, values);
 
-    const { weight, ...restValues } = values;
+    const { weight, condition, func } = values;
+
+    const adminUser = userAuthPayload.isAdmin
+      ? await this.adminUserQueryService.getById(userAuthPayload.userId)
+      : null;
+
+    const isAdminUserSuperAdmin =
+      adminUser?.roles.includes(Role.SUPER_ADMIN) ?? false;
 
     const entity = await this.answerFunctionRepository.updateById(id, {
-      ...restValues,
+      ...(condition && isAdminUserSuperAdmin && { condition }),
+      ...(func && isAdminUserSuperAdmin && { func }),
       ...(weight && { weight: weight.toString() }),
     });
 

@@ -19,7 +19,7 @@ export class MathSubFieldResolver {
     private readonly mathSubFielQueryService: MathSubFieldQueryService,
   ) {}
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => MathSubFieldObject)
   async createMathSubField(
     @Args('input') input: CreateMathSubFieldInput,
@@ -27,7 +27,7 @@ export class MathSubFieldResolver {
     return this.mathSubFieldMutationService.create(input);
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => MathSubFieldObject)
   async updateMathSubField(
     @Args('input') input: UpdateMathSubFieldInput,
@@ -40,7 +40,7 @@ export class MathSubFieldResolver {
     });
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => SuccessObject)
   async deleteMathSubField(
     @Args('input') input: IdentifierInput,

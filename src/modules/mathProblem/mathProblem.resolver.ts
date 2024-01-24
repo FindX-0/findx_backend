@@ -34,7 +34,7 @@ export class MathProblemResolver {
     private readonly countGenerateMathProblemValuesUsecase: CountGenerateMathProblemValues,
   ) {}
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => CreateMathProblemResObject)
   async createMathProblem(
     @Args('input') input: CreateMathProblemInput,
@@ -45,7 +45,7 @@ export class MathProblemResolver {
     });
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => [CreateMathProblemResObject])
   async bulkCreateMathProblem(
     @Args('input') input: BulkCreateMathProblemInput,
@@ -55,7 +55,7 @@ export class MathProblemResolver {
     );
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => MathProblemObject)
   async updateMathProblem(
     @Args('input') input: UpdateMathProblemInput,
@@ -79,7 +79,7 @@ export class MathProblemResolver {
     return { ...mathProblem, images };
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => SuccessObject)
   async deleteMathProblem(
     @Args('input') input: IdentifierInput,
@@ -89,7 +89,7 @@ export class MathProblemResolver {
     return { success: true };
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Query(() => MathProblemObject)
   async getMathProblemById(
     @Args('input') input: IdentifierInput,
@@ -103,7 +103,7 @@ export class MathProblemResolver {
     return { ...mathProblem, images };
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Query(() => MathProblemPageObject)
   async filterMathProblems(
     @Args('input') input: LastIdPageParamsObject,
@@ -115,7 +115,7 @@ export class MathProblemResolver {
     });
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Query(() => [GenerateMathProblemValuesObject])
   async generateMathProblemValues(
     @Args('input') input: GenerateMathProblemValuesInput,
@@ -123,7 +123,7 @@ export class MathProblemResolver {
     return this.generateNewMathProblemValuesUsecase.call(input);
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Query(() => CountObject)
   async countGenerateMathProblemValues(
     @Args('input') input: CountGenerateMathProblemValuesInput,
