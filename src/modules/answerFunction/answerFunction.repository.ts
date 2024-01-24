@@ -9,6 +9,7 @@ import {
   NewAnswerFunction,
   SelectableAnswerFunction,
 } from './answerFunction.entity';
+import { GetAllAnswerFunctionParams } from './answerFunction.type';
 
 @Injectable()
 export class AnswerFunctionRepository {
@@ -85,12 +86,12 @@ export class AnswerFunctionRepository {
 
   async getAll({
     notIncludeId,
-  }: {
-    notIncludeId: string | null;
-  }): Promise<SelectableAnswerFunction[]> {
+  }: GetAllAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
-      .$if(Boolean(notIncludeId), (qb) => qb.where('id', '!=', notIncludeId))
+      .$if(Boolean(notIncludeId), (qb) =>
+        qb.where('id', '!=', notIncludeId as string),
+      )
       .selectAll()
       .execute();
   }

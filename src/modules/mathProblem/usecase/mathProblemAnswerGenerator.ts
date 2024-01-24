@@ -12,6 +12,8 @@ import {
   weightedRandom,
 } from '../../../shared/util/random';
 import { solveTexExpression } from '../../../shared/util/solveTexExpression';
+import { SelectableAnswerFunction } from '../../answerFunction/answerFunction.entity';
+import { AnswerFunctionQueryService } from '../../answerFunction/answerFunctionQuery.service';
 import { MathProblemAnswer } from '../mathProblem.entity';
 
 type MathAnswerFunc = {
@@ -373,6 +375,10 @@ const floatFuncOptions: MathAnswerFunc[] = [
 
 @Injectable()
 export class MathProblemAnswerGenerator {
+  constructor(
+    private readonly answerFunctionQueryService: AnswerFunctionQueryService,
+  ) {}
+
   async call(tex: string): Promise<MathProblemAnswer[] | null> {
     if (!tex) {
       return null;
@@ -394,20 +400,35 @@ export class MathProblemAnswerGenerator {
       return null;
     }
 
+    const answerFunctions = await this.answerFunctionQueryService.getAll({});
+
     if (correctAnswer.isInt()) {
-      return this.generateAnswers(correctAnswer, intFuncOptions);
+      return this.generateAnswers(correctAnswer, answerFunctions);
     }
 
-    return this.generateAnswers(correctAnswer, floatFuncOptions);
+    return this.generateAnswers(correctAnswer, answerFunctions);
   }
 
   private generateAnswers(
     correctAnswer: Decimal,
-    options: MathAnswerFunc[],
+    answerFunctions: SelectableAnswerFunction[],
   ): MathProblemAnswer[] {
-    const filteredOptions = options.filter((option) =>
-      option.condition ? option.condition(correctAnswer) : true,
-    );
+    const filteredOptions = answerFunctions
+      .filter((answerFunc) => {
+        if (!answerFunc.condition) {
+          return true;
+        }
+
+        const conditionFunc = new Function('num', answerFunc.condition);
+
+        return conditionFunc(correctAnswer);
+      })
+      .map((answerFunc) => {
+        return {
+          ...answerFunc,
+          weight: parseFloat(answerFunc.weight),
+        };
+      });
 
     let safecondition = 0;
     const randomAnswers: MathProblemAnswer[] = [];
@@ -421,9 +442,12 @@ export class MathProblemAnswerGenerator {
         );
       }
 
+      console.log(answerFunc.func);
+      const func = new Function('num', answerFunc.func);
+
       const answer: MathProblemAnswer = {
         isCorrect: false,
-        tex: answerFunc.func(correctAnswer).toString(),
+        tex: func(correctAnswer).toString(),
       };
 
       if (!randomAnswers.includes(answer)) {

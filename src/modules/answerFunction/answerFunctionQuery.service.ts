@@ -5,6 +5,7 @@ import { DataPage, LastIdPageParams } from '@shared/type';
 
 import { SelectableAnswerFunction } from './answerFunction.entity';
 import { AnswerFunctionRepository } from './answerFunction.repository';
+import { GetAllAnswerFunctionParams } from './answerFunction.type';
 
 @Injectable()
 export class AnswerFunctionQueryService {
@@ -34,7 +35,9 @@ export class AnswerFunctionQueryService {
     return { data, count };
   }
 
-  async getAll(): Promise<SelectableAnswerFunction[]> {
-    return this.answerFunctionRepository.getAll();
+  async getAll(
+    params: GetAllAnswerFunctionParams,
+  ): Promise<SelectableAnswerFunction[]> {
+    return this.answerFunctionRepository.getAll(params);
   }
 }
