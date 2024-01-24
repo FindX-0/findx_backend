@@ -63,6 +63,8 @@ export class AnswerFunctionMutationService {
   }
 
   async deleteById(id: string): Promise<void> {
+    await this.normalizeAnswerFunctionWeight.normalizeForDelete(id);
+
     const didDelete = await this.answerFunctionRepository.deleteById(id);
 
     if (!didDelete) {

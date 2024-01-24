@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { ExceptionMessageCode } from '../../../shared/constant';
 import {
   AnswerFunctionUpdateWeightNum,
   NewAnswerFunctionWeightNum,
@@ -22,7 +23,11 @@ export class NormalizeAnswerFunctionWeight {
       return;
     }
 
-    return this.normalizeAnswerFunctionWeights(values.weight, answerFunctions);
+    return this.normalizeAnswerFunctionWeights(
+      values.weight,
+      answerFunctions,
+      'sub',
+    );
   }
 
   async normalizeForUpdate(
@@ -41,7 +46,38 @@ export class NormalizeAnswerFunctionWeight {
       return;
     }
 
-    return this.normalizeAnswerFunctionWeights(values.weight, answerFunctions);
+    return this.normalizeAnswerFunctionWeights(
+      values.weight,
+      answerFunctions,
+      'sub',
+    );
+  }
+
+  async normalizeForDelete(answerFunctionId: string): Promise<void> {
+    const answerFunctionToBeDeleted =
+      await this.answerFunctionRepository.getById(answerFunctionId);
+
+    if (!answerFunctionToBeDeleted) {
+      throw new NotFoundException(
+        ExceptionMessageCode.ANSWER_FUNCTION_NOT_FOUND,
+      );
+    }
+
+    const { answerFunctions, weightSum } = await this.sumAnswerFunctionWeights({
+      notIncludeId: answerFunctionId,
+    });
+
+    const answerFunctionWeight = parseFloat(answerFunctionToBeDeleted.weight);
+
+    if (weightSum + answerFunctionWeight < 99) {
+      return;
+    }
+
+    await this.normalizeAnswerFunctionWeights(
+      answerFunctionWeight,
+      answerFunctions,
+      'add',
+    );
   }
 
   private async sumAnswerFunctionWeights({
@@ -67,6 +103,7 @@ export class NormalizeAnswerFunctionWeight {
   private async normalizeAnswerFunctionWeights(
     weight: number,
     answerFunctions: SelectableAnswerFunction[],
+    op: 'add' | 'sub',
   ): Promise<void> {
     // normalize answer function weights
     const normalizeWeight = weight / answerFunctions.length;
@@ -74,7 +111,8 @@ export class NormalizeAnswerFunctionWeight {
     const updatePromises = answerFunctions.map((answerFunction) =>
       this.answerFunctionRepository.updateById(answerFunction.id, {
         weight: (
-          parseFloat(answerFunction.weight) - normalizeWeight
+          parseFloat(answerFunction.weight) +
+          normalizeWeight * (op === 'add' ? 1 : -1)
         ).toString(),
       }),
     );
