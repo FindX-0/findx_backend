@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -9,6 +10,8 @@ import {
 } from 'class-validator';
 
 import { IdentifierInput } from '@shared/gql';
+
+import { NumberType } from '../../../entities';
 
 @InputType()
 export class UpdateAnswerFunctionInput extends IdentifierInput {
@@ -30,4 +33,9 @@ export class UpdateAnswerFunctionInput extends IdentifierInput {
   @Min(0)
   @Max(50)
   weight: number | null;
+
+  @Field(() => NumberType, { nullable: true })
+  @IsOptional()
+  @IsEnum(NumberType)
+  numberType: NumberType | null;
 }

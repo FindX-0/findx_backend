@@ -9,7 +9,11 @@ import {
   NewAnswerFunction,
   SelectableAnswerFunction,
 } from './answerFunction.entity';
-import { GetAllAnswerFunctionParams } from './answerFunction.type';
+import {
+  FilterAnswerFunctionParams,
+  GetAllAnswerFunctionParams,
+} from './answerFunction.type';
+import { NumberType } from '../../entities';
 
 @Injectable()
 export class AnswerFunctionRepository {
@@ -63,20 +67,27 @@ export class AnswerFunctionRepository {
   async filter({
     lastId,
     limit,
-  }: LastIdPageParams): Promise<SelectableAnswerFunction[]> {
+    numberType,
+  }: FilterAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
+      .$if(Boolean(numberType), (qb) =>
+        qb.where('numberType', '=', numberType as NumberType),
+      )
       .orderBy('id desc')
       .limit(limit)
       .execute();
   }
 
-  async count(): Promise<number> {
+  async count({ numberType }: FilterAnswerFunctionParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('answerFunctions')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
+      .$if(Boolean(numberType), (qb) =>
+        qb.where('numberType', '=', numberType as NumberType),
+      )
       .executeTakeFirst();
 
     const count = countRes?.count ?? '0';
@@ -86,11 +97,15 @@ export class AnswerFunctionRepository {
 
   async getAll({
     notIncludeId,
+    numberType,
   }: GetAllAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
       .$if(Boolean(notIncludeId), (qb) =>
         qb.where('id', '!=', notIncludeId as string),
+      )
+      .$if(Boolean(numberType), (qb) =>
+        qb.where('numberType', '==', numberType as NumberType),
       )
       .selectAll()
       .execute();

@@ -43,6 +43,13 @@ enum Role {
   @@map("role")
 }
 
+enum NumberType {
+  INTEGER
+  DECIMAL
+
+  @@map("numberType")
+}
+
 model MediaFile {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -246,9 +253,10 @@ model AnswerFunction {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  func      String
-  weight    Decimal
-  condition String?
+  func       String
+  weight     Decimal
+  condition  String?
+  numberType NumberType @default(INTEGER)
 
   @@map("answerFunctions")
 }

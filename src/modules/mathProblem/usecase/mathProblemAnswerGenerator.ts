@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Decimal } from 'decimal.js';
 
+import { NumberType } from '../../../entities';
 import { decimalDigits } from '../../../shared/util';
 import {
   randomBoolean,
@@ -373,6 +374,12 @@ const floatFuncOptions: MathAnswerFunc[] = [
   },
 ];
 
+const answerFunctionHelpers = `
+const randomBoolean = () => Math.random() < 0.5;
+const randomSign = () => randomBoolean() ? -1 : 1;
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+`;
+
 @Injectable()
 export class MathProblemAnswerGenerator {
   constructor(
@@ -400,11 +407,17 @@ export class MathProblemAnswerGenerator {
       return null;
     }
 
-    const answerFunctions = await this.answerFunctionQueryService.getAll({});
-
     if (correctAnswer.isInt()) {
+      const answerFunctions = await this.answerFunctionQueryService.getAll({
+        numberType: NumberType.INTEGER,
+      });
+
       return this.generateAnswers(correctAnswer, answerFunctions);
     }
+
+    const answerFunctions = await this.answerFunctionQueryService.getAll({
+      numberType: NumberType.DECIMAL,
+    });
 
     return this.generateAnswers(correctAnswer, answerFunctions);
   }
@@ -442,8 +455,10 @@ export class MathProblemAnswerGenerator {
         );
       }
 
-      console.log(answerFunc.func);
-      const func = new Function('num', answerFunc.func);
+      const func = new Function(
+        'num',
+        answerFunctionHelpers + '\n\n' + answerFunc.func,
+      );
 
       const answer: MathProblemAnswer = {
         isCorrect: false,

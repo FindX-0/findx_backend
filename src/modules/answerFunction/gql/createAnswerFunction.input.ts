@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import {
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -7,6 +8,8 @@ import {
   Max,
   Min,
 } from 'class-validator';
+
+import { NumberType } from '../../../entities';
 
 @InputType()
 export class CreateAnswerFunctionInput {
@@ -26,4 +29,8 @@ export class CreateAnswerFunctionInput {
   @Min(0)
   @Max(50)
   weight: number;
+
+  @Field()
+  @IsEnum(NumberType)
+  numberType: NumberType;
 }

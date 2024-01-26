@@ -1,17 +1,15 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { Role } from '@entities/index';
-import {
-  SuccessObject,
-  IdentifierInput,
-  LastIdPageParamsObject,
-} from '@shared/gql';
+import { SuccessObject, IdentifierInput } from '@shared/gql';
 
 import { AnswerFunctionMutationService } from './answerFunctionMutation.service';
 import { AnswerFunctionQueryService } from './answerFunctionQuery.service';
 import { AnswerFunctionObject } from './gql/answerFunction.object';
 import { AnswerFunctionPageObject } from './gql/answerFunctionPage.object';
 import { CreateAnswerFunctionInput } from './gql/createAnswerFunction.input';
+import { FilterAnswerFunctionsInput } from './gql/filterAnswerFunctions.input';
+import { GetAllAnswerFunctionsInput } from './gql/getAllAnswerFunctions.input';
 import { UpdateAnswerFunctionInput } from './gql/updateAnswerFunction.input';
 import { NoAuth } from '../authentication/decorator/noAuth.decorator';
 import { Roles } from '../authentication/decorator/roles.decorator';
@@ -45,6 +43,7 @@ export class AnswerFunctionResolver {
       ...(values.func && { func: values.func }),
       ...(values.condition && { condition: values.condition }),
       ...(values.weight && { weight: values.weight }),
+      ...(values.numberType && { numberType: values.numberType }),
     });
   }
 
@@ -69,7 +68,7 @@ export class AnswerFunctionResolver {
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Query(() => AnswerFunctionPageObject)
   async filterAnswerFunctions(
-    @Args('input') input: LastIdPageParamsObject,
+    @Args('input') input: FilterAnswerFunctionsInput,
   ): Promise<AnswerFunctionPageObject> {
     return this.answerFunctionQueryService.filter(input);
   }
@@ -77,7 +76,9 @@ export class AnswerFunctionResolver {
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @NoAuth()
   @Query(() => [AnswerFunctionObject])
-  async getAllAnswerFunctions(): Promise<AnswerFunctionObject[]> {
-    return this.answerFunctionQueryService.getAll();
+  async getAllAnswerFunctions(
+    @Args('input') input: GetAllAnswerFunctionsInput,
+  ): Promise<AnswerFunctionObject[]> {
+    return this.answerFunctionQueryService.getAll(input);
   }
 }

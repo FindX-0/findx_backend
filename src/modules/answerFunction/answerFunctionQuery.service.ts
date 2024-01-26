@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ExceptionMessageCode } from '@shared/constant';
-import { DataPage, LastIdPageParams } from '@shared/type';
+import { DataPage } from '@shared/type';
 
 import { SelectableAnswerFunction } from './answerFunction.entity';
 import { AnswerFunctionRepository } from './answerFunction.repository';
-import { GetAllAnswerFunctionParams } from './answerFunction.type';
+import {
+  FilterAnswerFunctionParams,
+  GetAllAnswerFunctionParams,
+} from './answerFunction.type';
 
 @Injectable()
 export class AnswerFunctionQueryService {
@@ -26,11 +29,11 @@ export class AnswerFunctionQueryService {
   }
 
   async filter(
-    filter: LastIdPageParams,
+    filter: FilterAnswerFunctionParams,
   ): Promise<DataPage<SelectableAnswerFunction>> {
     const data = await this.answerFunctionRepository.filter(filter);
 
-    const count = await this.answerFunctionRepository.count();
+    const count = await this.answerFunctionRepository.count(filter);
 
     return { data, count };
   }
