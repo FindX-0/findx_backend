@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database/kyselyDb.type';
-import { LastIdPageParams } from '@shared/type';
 
 import {
   AnswerFunctionUpdate,

@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
+import { NumberType } from '../../../entities';
+
 @ObjectType()
 export class AnswerFunctionObject {
   @Field(() => ID)
@@ -16,4 +18,7 @@ export class AnswerFunctionObject {
 
   @Field()
   weight: string;
+
+  @Field()
+  numberType: NumberType;
 }

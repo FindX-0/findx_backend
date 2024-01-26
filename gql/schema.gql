@@ -18,6 +18,7 @@ type AnswerFunctionObject {
   createdAt: DateTime!
   func: String!
   id: ID!
+  numberType: NumberType!
   weight: String!
 }
 
