@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-import { NumberType } from '../../../entities';
+import { NumberType } from '../../../../entities';
 
 @ObjectType()
 export class AnswerFunctionObject {

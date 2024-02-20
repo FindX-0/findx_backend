@@ -31,9 +31,13 @@ export class AnswerFunctionQueryService {
   async filter(
     filter: FilterAnswerFunctionParams,
   ): Promise<DataPage<SelectableAnswerFunction>> {
-    const data = await this.answerFunctionRepository.filter(filter);
-
     const count = await this.answerFunctionRepository.count(filter);
+
+    if (!count) {
+      return { data: [], count: 0 };
+    }
+
+    const data = await this.answerFunctionRepository.filter(filter);
 
     return { data, count };
   }

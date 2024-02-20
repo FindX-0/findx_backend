@@ -25,7 +25,18 @@ type AnswerFunctionObject {
 
 type AnswerFunctionPageObject {
   count: Int!
-  data: [AnswerFunctionObject!]!
+  data: [AnswerFunctionWithRelations!]!
+}
+
+type AnswerFunctionWithRelations {
+  condition: String
+  createdAt: DateTime!
+  func: String!
+  id: ID!
+  mathSubField: MathSubFieldObject
+  mathSubFieldId: ID!
+  numberType: NumberType!
+  weight: String!
 }
 
 type AuthPayloadObject {

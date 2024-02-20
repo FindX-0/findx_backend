@@ -2,9 +2,9 @@ import { ObjectType } from '@nestjs/graphql';
 
 import { DataPageObject } from '@shared/gql';
 
-import { AnswerFunctionObject } from './answerFunction.object';
+import { AnswerFunctionWithRelations } from './answerFunction/answerFunctionWithRelations.object';
 
 @ObjectType()
 export class AnswerFunctionPageObject extends DataPageObject(
-  AnswerFunctionObject,
+  AnswerFunctionWithRelations,
 ) {}

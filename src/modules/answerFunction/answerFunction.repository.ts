@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { ExpressionBuilder } from 'kysely';
+import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database/kyselyDb.type';
@@ -12,7 +14,7 @@ import {
   FilterAnswerFunctionParams,
   GetAllAnswerFunctionParams,
 } from './answerFunction.type';
-import { NumberType } from '../../entities';
+import { DB, NumberType } from '../../entities';
 
 @Injectable()
 export class AnswerFunctionRepository {
@@ -79,6 +81,7 @@ export class AnswerFunctionRepository {
       .$if(Boolean(mathSubFieldId), (qb) =>
         qb.where('mathSubFieldId', '=', mathSubFieldId as string),
       )
+      .select(this.withMathSubField)
       .orderBy('id desc')
       .limit(limit)
       .execute();
@@ -122,5 +125,14 @@ export class AnswerFunctionRepository {
       )
       .selectAll()
       .execute();
+  }
+
+  private withMathSubField(eb: ExpressionBuilder<DB, 'answerFunctions'>) {
+    return jsonObjectFrom(
+      eb
+        .selectFrom('mathSubFields')
+        .selectAll()
+        .whereRef('mathSubFields.id', '=', 'answerFunctions.mathSubFieldId'),
+    ).as('mathSubField');
   }
 }

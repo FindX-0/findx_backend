@@ -5,7 +5,7 @@ import { SuccessObject, IdentifierInput } from '@shared/gql';
 
 import { AnswerFunctionMutationService } from './answerFunctionMutation.service';
 import { AnswerFunctionQueryService } from './answerFunctionQuery.service';
-import { AnswerFunctionObject } from './gql/answerFunction.object';
+import { AnswerFunctionObject } from './gql/answerFunction/answerFunction.object';
 import { AnswerFunctionPageObject } from './gql/answerFunctionPage.object';
 import { CreateAnswerFunctionInput } from './gql/createAnswerFunction.input';
 import { FilterAnswerFunctionsInput } from './gql/filterAnswerFunctions.input';
