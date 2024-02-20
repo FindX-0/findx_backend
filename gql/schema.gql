@@ -18,6 +18,7 @@ type AnswerFunctionObject {
   createdAt: DateTime!
   func: String!
   id: ID!
+  mathSubFieldId: ID!
   numberType: NumberType!
   weight: String!
 }
@@ -42,6 +43,7 @@ enum AuthProvider {
 }
 
 input BulkCreateMathProblemInput {
+  generatedBatchName: String!
   values: [CreateMathProblemInput!]!
 }
 
@@ -57,6 +59,7 @@ type CountObject {
 input CreateAnswerFunctionInput {
   condition: String
   func: String!
+  mathSubFieldId: ID!
   numberType: NumberType!
   weight: Float!
 }
@@ -83,6 +86,7 @@ input CreateMathProblemInput {
 type CreateMathProblemResObject {
   createdAt: DateTime!
   difficulty: Int!
+  generatedBatchName: String
   id: ID!
   mathFieldId: String!
   mathSubFieldId: String!
@@ -122,6 +126,7 @@ input EnqueueTicketInput {
 input FilterAnswerFunctionsInput {
   lastId: ID
   limit: Int!
+  mathSubFieldId: ID
   numberType: NumberType
 }
 
@@ -145,6 +150,7 @@ input GenerateMathProblemNumberParameterInput {
 
 input GenerateMathProblemValuesInput {
   customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
+  mathSubFieldId: ID!
   numberParams: [GenerateMathProblemNumberParameterInput!]!
   template: String!
 }
@@ -209,6 +215,7 @@ type MathBattleMathProblemObject {
   answers: [MathProblemAnswerWoutCorrectObject!]!
   createdAt: DateTime!
   difficulty: Int!
+  generatedBatchName: String
   id: ID!
   images: [MediaFileObject!]
   mathFieldId: String!
@@ -251,6 +258,7 @@ type MathProblemObject {
   answers: [MathProblemAnswerObject!]!
   createdAt: DateTime!
   difficulty: Int!
+  generatedBatchName: String
   id: ID!
   images: [MediaFileObject!]
   mathField: MathFieldObject
@@ -362,6 +370,7 @@ input UpdateAnswerFunctionInput {
   condition: String
   func: String
   id: ID!
+  mathSubFieldId: ID
   numberType: NumberType
   weight: Float
 }

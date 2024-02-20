@@ -21,4 +21,7 @@ export class AnswerFunctionObject {
 
   @Field()
   numberType: NumberType;
+
+  @Field(() => ID)
+  mathSubFieldId: string;
 }

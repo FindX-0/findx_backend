@@ -22,4 +22,7 @@ export class MathProblemBaseObject {
 
   @Field()
   mathSubFieldId: string;
+
+  @Field(() => String, { nullable: true })
+  generatedBatchName: string | null;
 }
