@@ -37,9 +37,17 @@ enum MatchState {
 }
 
 enum Role {
+  ADMIN
   SUPER_ADMIN
 
   @@map("role")
+}
+
+enum NumberType {
+  INTEGER
+  DECIMAL
+
+  @@map("numberType")
 }
 
 model MediaFile {
@@ -239,4 +247,16 @@ model MathBattleResult {
   user  User  @relation(fields: [userId], references: [id])
 
   @@map("mathBattleResults")
+}
+
+model AnswerFunction {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  func       String
+  weight     Decimal
+  condition  String?
+  numberType NumberType @default(INTEGER)
+
+  @@map("answerFunctions")
 }

@@ -13,6 +13,20 @@ input AdminSignUpInput {
   userName: String!
 }
 
+type AnswerFunctionObject {
+  condition: String
+  createdAt: DateTime!
+  func: String!
+  id: ID!
+  numberType: NumberType!
+  weight: String!
+}
+
+type AnswerFunctionPageObject {
+  count: Int!
+  data: [AnswerFunctionObject!]!
+}
+
 type AuthPayloadObject {
   accessToken: String!
   hasEmailVerified: Boolean
@@ -38,6 +52,13 @@ input CountGenerateMathProblemValuesInput {
 
 type CountObject {
   count: Int!
+}
+
+input CreateAnswerFunctionInput {
+  condition: String
+  func: String!
+  numberType: NumberType!
+  weight: Float!
 }
 
 input CreateMathFieldInput {
@@ -98,6 +119,12 @@ input EnqueueTicketInput {
   mathFieldId: ID!
 }
 
+input FilterAnswerFunctionsInput {
+  lastId: ID
+  limit: Int!
+  numberType: NumberType
+}
+
 input FilterMathSubFieldsInput {
   lastId: ID
   limit: Int!
@@ -125,6 +152,10 @@ input GenerateMathProblemValuesInput {
 type GenerateMathProblemValuesObject {
   answers: [MathProblemAnswerObject!]
   tex: String!
+}
+
+input GetAllAnswerFunctionsInput {
+  numberType: NumberType
 }
 
 input GetAllMathFieldsInput {
@@ -261,9 +292,11 @@ type Mutation {
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   bulkCreateMathProblem(input: BulkCreateMathProblemInput!): [CreateMathProblemResObject!]!
+  createAnswerFunction(input: CreateAnswerFunctionInput!): AnswerFunctionObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   createMathProblem(input: CreateMathProblemInput!): CreateMathProblemResObject!
   createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldObject!
+  deleteAnswerFunction(input: IdentifierInput!): SuccessObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
   deleteMathSubField(input: IdentifierInput!): SuccessObject!
@@ -274,19 +307,28 @@ type Mutation {
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
+  updateAnswerFunction(input: UpdateAnswerFunctionInput!): AnswerFunctionObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
 }
 
+enum NumberType {
+  DECIMAL
+  INTEGER
+}
+
 type Query {
   authenticationStatus: SuccessObject!
   countGenerateMathProblemValues(input: CountGenerateMathProblemValuesInput!): CountObject!
+  filterAnswerFunctions(input: FilterAnswerFunctionsInput!): AnswerFunctionPageObject!
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
   generateMathProblemValues(input: GenerateMathProblemValuesInput!): [GenerateMathProblemValuesObject!]!
+  getAllAnswerFunctions(input: GetAllAnswerFunctionsInput!): [AnswerFunctionObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
+  getAnswerFunctionById(input: IdentifierInput!): AnswerFunctionObject!
   getAuthUser: UserObject!
   getMatchById(input: IdentifierInput!): MatchObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
@@ -314,6 +356,14 @@ input SubmitMathProblemAnswerInput {
 
 type SuccessObject {
   success: Boolean!
+}
+
+input UpdateAnswerFunctionInput {
+  condition: String
+  func: String
+  id: ID!
+  numberType: NumberType
+  weight: Float
 }
 
 input UpdateMathFieldInput {

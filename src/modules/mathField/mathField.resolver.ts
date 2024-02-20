@@ -24,7 +24,7 @@ export class MathFieldResolver {
     private readonly mathFieldQueryService: MathFieldQueryService,
   ) {}
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => MathFieldObject)
   async createMathField(
     @Args('input') input: CreateMathFieldInput,
@@ -32,7 +32,7 @@ export class MathFieldResolver {
     return this.mathFieldMutationService.create(input);
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => MathFieldObject)
   async updateMathField(
     @Args('input') input: UpdateMathFieldInput,
@@ -44,7 +44,7 @@ export class MathFieldResolver {
     });
   }
 
-  @Roles(Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @Mutation(() => SuccessObject)
   async deleteMathField(
     @Args('input') input: IdentifierInput,
