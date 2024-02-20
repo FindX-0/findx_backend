@@ -104,7 +104,7 @@ export class AnswerFunctionRepository {
         qb.where('id', '!=', notIncludeId as string),
       )
       .$if(Boolean(numberType), (qb) =>
-        qb.where('numberType', '==', numberType as NumberType),
+        qb.where('numberType', '=', numberType as NumberType),
       )
       .selectAll()
       .execute();
