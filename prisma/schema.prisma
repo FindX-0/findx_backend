@@ -153,7 +153,8 @@ model MathSubField {
 
   mathField MathField @relation(fields: [mathFieldId], references: [id])
 
-  mathProblems MathProblem[]
+  mathProblems    MathProblem[]
+  answerFunctions AnswerFunction[]
 
   @@map("mathSubFields")
 }
@@ -198,11 +199,12 @@ model MathProblem {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  difficulty    Int      @db.SmallInt
-  imageMediaIds String[]
-  text          String?
-  tex           String?  @unique
-  answers       Json[]   @db.JsonB
+  difficulty         Int      @db.SmallInt
+  imageMediaIds      String[]
+  text               String?
+  tex                String?  @unique
+  answers            Json[]   @db.JsonB
+  generatedBatchName String?  @db.VarChar(255)
 
   mathFieldId    BigInt
   mathSubFieldId BigInt
@@ -257,6 +259,10 @@ model AnswerFunction {
   weight     Decimal
   condition  String?
   numberType NumberType @default(INTEGER)
+
+  mathSubFieldId BigInt
+
+  mathSubField MathSubField @relation(fields: [mathSubFieldId], references: [id])
 
   @@map("answerFunctions")
 }

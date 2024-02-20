@@ -23,7 +23,13 @@ export class MathProblemAnswerGenerator {
     private readonly answerFunctionQueryService: AnswerFunctionQueryService,
   ) {}
 
-  async call(tex: string): Promise<MathProblemAnswer[] | null> {
+  async call({
+    tex,
+    mathSubFieldId,
+  }: {
+    tex: string;
+    mathSubFieldId: string;
+  }): Promise<MathProblemAnswer[] | null> {
     if (!tex) {
       return null;
     }
@@ -47,6 +53,7 @@ export class MathProblemAnswerGenerator {
     if (correctAnswer.isInt()) {
       const answerFunctions = await this.answerFunctionQueryService.getAll({
         numberType: NumberType.INTEGER,
+        mathSubFieldId,
       });
 
       return this.generateAnswers(correctAnswer, answerFunctions);
@@ -54,6 +61,7 @@ export class MathProblemAnswerGenerator {
 
     const answerFunctions = await this.answerFunctionQueryService.getAll({
       numberType: NumberType.DECIMAL,
+      mathSubFieldId,
     });
 
     return this.generateAnswers(correctAnswer, answerFunctions);

@@ -44,6 +44,7 @@ export class AnswerFunctionResolver {
       ...(values.condition && { condition: values.condition }),
       ...(values.weight && { weight: values.weight }),
       ...(values.numberType && { numberType: values.numberType }),
+      ...(values.mathSubFieldId && { mathSubFieldId: values.mathSubFieldId }),
     });
   }
 

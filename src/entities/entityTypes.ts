@@ -28,6 +28,7 @@ export type AnswerFunction = {
     weight: string;
     condition: string | null;
     numberType: Generated<NumberType>;
+    mathSubFieldId: Generated<string>;
 };
 export type Match = {
     id: Generated<string>;
@@ -71,6 +72,7 @@ export type MathProblem = {
     text: string | null;
     tex: string | null;
     answers: unknown[];
+    generatedBatchName: string | null;
     mathFieldId: string;
     mathSubFieldId: string;
 };

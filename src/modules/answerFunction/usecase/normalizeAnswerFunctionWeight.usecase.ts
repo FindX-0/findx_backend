@@ -21,8 +21,15 @@ export class NormalizeAnswerFunctionWeight {
   async normalizeForCreate(
     createValues: NewAnswerFunctionWeightNum,
   ): Promise<void> {
-    const { answerFunctions, weightSum } =
-      await this.sumAnswerFunctionWeights();
+    if (!createValues.mathSubFieldId) {
+      throw new BadRequestException(
+        ExceptionMessageCode.MISSING_MATH_SUB_FIELD_ID,
+      );
+    }
+
+    const { answerFunctions, weightSum } = await this.sumAnswerFunctionWeights({
+      mathSubFieldId: createValues.mathSubFieldId,
+    });
 
     if (createValues.weight >= weightSum) {
       throw new BadRequestException(
@@ -59,8 +66,9 @@ export class NormalizeAnswerFunctionWeight {
       );
     }
 
-    const { answerFunctions, weightSum } =
-      await this.sumAnswerFunctionWeights();
+    const { answerFunctions, weightSum } = await this.sumAnswerFunctionWeights({
+      mathSubFieldId: answerFunctionToBeUpdated.mathSubFieldId,
+    });
 
     if (updateValues.weight >= weightSum) {
       throw new BadRequestException(
@@ -90,8 +98,9 @@ export class NormalizeAnswerFunctionWeight {
       );
     }
 
-    const { answerFunctions, weightSum } =
-      await this.sumAnswerFunctionWeights();
+    const { answerFunctions, weightSum } = await this.sumAnswerFunctionWeights({
+      mathSubFieldId: answerFunctionToBeDeleted.mathSubFieldId,
+    });
 
     return this.normalizeAnswerFunctionWeights({
       answerFunctions,
@@ -101,11 +110,17 @@ export class NormalizeAnswerFunctionWeight {
     });
   }
 
-  private async sumAnswerFunctionWeights(): Promise<{
+  private async sumAnswerFunctionWeights({
+    mathSubFieldId,
+  }: {
+    mathSubFieldId: string;
+  }): Promise<{
     answerFunctions: SelectableAnswerFunction[];
     weightSum: number;
   }> {
-    const answerFunctions = await this.answerFunctionRepository.getAll({});
+    const answerFunctions = await this.answerFunctionRepository.getAll({
+      mathSubFieldId,
+    });
 
     const weightSum = answerFunctions.reduce(
       (acc, answerFunction) => acc + parseFloat(answerFunction.weight),

@@ -6,4 +6,7 @@ import { CreateMathProblemInput } from './createMathProblem.input';
 export class BulkCreateMathProblemInput {
   @Field(() => [CreateMathProblemInput])
   values: CreateMathProblemInput[];
+
+  @Field()
+  generatedBatchName: string;
 }

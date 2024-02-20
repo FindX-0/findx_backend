@@ -51,7 +51,11 @@ export class MathProblemResolver {
     @Args('input') input: BulkCreateMathProblemInput,
   ): Promise<CreateMathProblemResObject[]> {
     return this.mathProblemMutationService.bulkCreate(
-      input.values.map((e) => ({ ...e, imageMediaIds: e.imageMediaIds ?? [] })),
+      input.values.map((e) => ({
+        ...e,
+        imageMediaIds: e.imageMediaIds ?? [],
+        generatedBatchName: input.generatedBatchName,
+      })),
     );
   }
 

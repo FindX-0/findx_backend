@@ -67,6 +67,7 @@ export class AnswerFunctionRepository {
     lastId,
     limit,
     numberType,
+    mathSubFieldId,
   }: FilterAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
@@ -75,17 +76,26 @@ export class AnswerFunctionRepository {
       .$if(Boolean(numberType), (qb) =>
         qb.where('numberType', '=', numberType as NumberType),
       )
+      .$if(Boolean(mathSubFieldId), (qb) =>
+        qb.where('mathSubFieldId', '=', mathSubFieldId as string),
+      )
       .orderBy('id desc')
       .limit(limit)
       .execute();
   }
 
-  async count({ numberType }: FilterAnswerFunctionParams): Promise<number> {
+  async count({
+    numberType,
+    mathSubFieldId,
+  }: FilterAnswerFunctionParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('answerFunctions')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
       .$if(Boolean(numberType), (qb) =>
         qb.where('numberType', '=', numberType as NumberType),
+      )
+      .$if(Boolean(mathSubFieldId), (qb) =>
+        qb.where('mathSubFieldId', '=', mathSubFieldId as string),
       )
       .executeTakeFirst();
 
@@ -97,6 +107,7 @@ export class AnswerFunctionRepository {
   async getAll({
     notIncludeId,
     numberType,
+    mathSubFieldId,
   }: GetAllAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
@@ -105,6 +116,9 @@ export class AnswerFunctionRepository {
       )
       .$if(Boolean(numberType), (qb) =>
         qb.where('numberType', '=', numberType as NumberType),
+      )
+      .$if(Boolean(mathSubFieldId), (qb) =>
+        qb.where('mathSubFieldId', '=', mathSubFieldId as string),
       )
       .selectAll()
       .execute();

@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import {
   IsEnum,
   IsNotEmpty,
@@ -38,4 +38,7 @@ export class UpdateAnswerFunctionInput extends IdentifierInput {
   @IsOptional()
   @IsEnum(NumberType)
   numberType: NumberType | null;
+
+  @Field(() => ID, { nullable: true })
+  mathSubFieldId: string | null;
 }

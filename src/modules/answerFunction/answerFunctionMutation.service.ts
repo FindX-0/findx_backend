@@ -51,7 +51,7 @@ export class AnswerFunctionMutationService {
   ): Promise<SelectableAnswerFunction> {
     await this.normalizeAnswerFunctionWeight.normalizeForUpdate(id, values);
 
-    const { weight, condition, func } = values;
+    const { weight, condition, func, mathSubFieldId } = values;
 
     const adminUser = userAuthPayload.isAdmin
       ? await this.adminUserQueryService.getById(userAuthPayload.userId)
@@ -63,6 +63,7 @@ export class AnswerFunctionMutationService {
     const entity = await this.answerFunctionRepository.updateById(id, {
       ...(condition && isAdminUserSuperAdmin && { condition }),
       ...(func && isAdminUserSuperAdmin && { func }),
+      ...(mathSubFieldId && isAdminUserSuperAdmin && { mathSubFieldId }),
       ...(weight && { weight: weight.toString() }),
     });
 

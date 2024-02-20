@@ -35,6 +35,7 @@ export type CountGenerateMathProblemValuesArgs =
 
 export type GenerateMathProblemValuesArgs = GenerateMathProblemValuesParams & {
   template: string;
+  mathSubFieldId: string;
 };
 
 export type GeneratedNewMathProblemValues = {
