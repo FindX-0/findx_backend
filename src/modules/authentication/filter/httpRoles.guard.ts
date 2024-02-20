@@ -54,6 +54,6 @@ export class HttpRolesGuard implements CanActivate {
 
     const roles = await this.adminUserQueryService.getRolesById(payload.userId);
 
-    return requiredRoles.every((role) => roles.includes(role));
+    return requiredRoles.some((role) => roles.includes(role));
   }
 }
