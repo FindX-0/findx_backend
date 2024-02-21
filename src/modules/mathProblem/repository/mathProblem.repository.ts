@@ -48,6 +48,7 @@ export class MathProblemRepository {
           imageMediaIds: eb.ref('excluded.imageMediaIds'),
           difficulty: eb.ref('excluded.difficulty'),
           answers: eb.ref('excluded.answers'),
+          generatedBatchName: eb.ref('excluded.generatedBatchName'),
         })),
       )
       .execute();
