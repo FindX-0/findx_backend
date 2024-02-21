@@ -47,10 +47,13 @@ export class MathSubFieldRepository {
     return updated ?? null;
   }
 
-  async getById(id: string): Promise<SelectableMathSubField | null> {
+  async getById(
+    id: string,
+  ): Promise<SelectableMathSubFieldWithRelations | null> {
     const entity = await this.db
       .selectFrom('mathSubFields')
       .where('id', '=', id)
+      .select(this.withMathField)
       .selectAll()
       .executeTakeFirst();
 

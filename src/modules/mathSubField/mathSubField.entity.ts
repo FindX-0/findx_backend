@@ -6,7 +6,7 @@ import { SelectableMathField } from '../mathField/mathField.entity';
 
 export type SelectableMathSubField = Selectable<MathSubField>;
 export type SelectableMathSubFieldWithRelations = Selectable<MathSubField> & {
-  mathField: Partial<SelectableMathField> | null;
+  mathField: SelectableMathField | null;
 };
 
 export type NewMathSubField = Insertable<MathSubField>;
