@@ -5,7 +5,7 @@ import { SuccessObject, IdentifierInput } from '@shared/gql';
 
 import { CreateMathSubFieldInput } from './gql/createMathSubField.input';
 import { FilterMathSubFieldsInput } from './gql/filterMathSubFields.input';
-import { MathSubFieldObject } from './gql/mathSubField.object';
+import { MathSubFieldWithRelationsObject } from './gql/mathSubField/mathSubFieldWithRelations.object';
 import { MathSubFieldPageObject } from './gql/mathSubFIeldPage.object';
 import { UpdateMathSubFieldInput } from './gql/updateMathSubField.input';
 import { MathSubFieldMutationService } from './mathSubFieldMutation.service';
@@ -20,18 +20,18 @@ export class MathSubFieldResolver {
   ) {}
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
-  @Mutation(() => MathSubFieldObject)
+  @Mutation(() => MathSubFieldWithRelationsObject)
   async createMathSubField(
     @Args('input') input: CreateMathSubFieldInput,
-  ): Promise<MathSubFieldObject> {
+  ): Promise<MathSubFieldWithRelationsObject> {
     return this.mathSubFieldMutationService.create(input);
   }
 
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
-  @Mutation(() => MathSubFieldObject)
+  @Mutation(() => MathSubFieldWithRelationsObject)
   async updateMathSubField(
     @Args('input') input: UpdateMathSubFieldInput,
-  ): Promise<MathSubFieldObject> {
+  ): Promise<MathSubFieldWithRelationsObject> {
     const { id, ...values } = input;
 
     return this.mathSubFieldMutationService.updateById(id, {
@@ -50,10 +50,10 @@ export class MathSubFieldResolver {
     return { success: true };
   }
 
-  @Query(() => MathSubFieldObject)
+  @Query(() => MathSubFieldWithRelationsObject)
   async getMathSubFieldById(
     @Args('input') input: IdentifierInput,
-  ): Promise<MathSubFieldObject> {
+  ): Promise<MathSubFieldWithRelationsObject> {
     return this.mathSubFielQueryService.getById(input.id);
   }
 

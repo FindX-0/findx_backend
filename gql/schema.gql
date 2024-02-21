@@ -25,10 +25,10 @@ type AnswerFunctionObject {
 
 type AnswerFunctionPageObject {
   count: Int!
-  data: [AnswerFunctionWithRelations!]!
+  data: [AnswerFunctionWithRelationsObject!]!
 }
 
-type AnswerFunctionWithRelations {
+type AnswerFunctionWithRelationsObject {
   condition: String
   createdAt: DateTime!
   func: String!
@@ -274,7 +274,7 @@ type MathProblemObject {
   images: [MediaFileObject!]
   mathField: MathFieldObject
   mathFieldId: String!
-  mathSubField: MathSubFieldObject
+  mathSubField: MathSubFieldWithRelationsObject
   mathSubFieldId: String!
   tex: String
   text: String
@@ -288,14 +288,21 @@ type MathProblemPageObject {
 type MathSubFieldObject {
   createdAt: DateTime!
   id: ID!
-  mathField: MathFieldObject
   mathFieldId: String!
   name: String!
 }
 
 type MathSubFieldPageObject {
   count: Int!
-  data: [MathSubFieldObject!]!
+  data: [MathSubFieldWithRelationsObject!]!
+}
+
+type MathSubFieldWithRelationsObject {
+  createdAt: DateTime!
+  id: ID!
+  mathField: MathFieldObject
+  mathFieldId: String!
+  name: String!
 }
 
 type MediaFileObject {
@@ -314,7 +321,7 @@ type Mutation {
   createAnswerFunction(input: CreateAnswerFunctionInput!): AnswerFunctionObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   createMathProblem(input: CreateMathProblemInput!): CreateMathProblemResObject!
-  createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldObject!
+  createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldWithRelationsObject!
   deleteAnswerFunction(input: IdentifierInput!): SuccessObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
@@ -329,7 +336,7 @@ type Mutation {
   updateAnswerFunction(input: UpdateAnswerFunctionInput!): AnswerFunctionObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
-  updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldObject!
+  updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldWithRelationsObject!
 }
 
 enum NumberType {
@@ -354,7 +361,7 @@ type Query {
   getMathBattleResults(input: GetMathBattleResultsInput!): [MathBattleResultObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
-  getMathSubFieldById(input: IdentifierInput!): MathSubFieldObject!
+  getMathSubFieldById(input: IdentifierInput!): MathSubFieldWithRelationsObject!
   getServerTime: ServerTimeObject!
   getUserById(input: IdentifierInput!): UserObject!
 }

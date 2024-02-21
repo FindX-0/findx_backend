@@ -2,9 +2,9 @@ import { ObjectType } from '@nestjs/graphql';
 
 import { DataPageObject } from '@shared/gql';
 
-import { MathSubFieldObject } from './mathSubField.object';
+import { MathSubFieldWithRelationsObject } from './mathSubField/mathSubFieldWithRelations.object';
 
 @ObjectType()
 export class MathSubFieldPageObject extends DataPageObject(
-  MathSubFieldObject,
+  MathSubFieldWithRelationsObject,
 ) {}
