@@ -53,11 +53,18 @@ export class MathSubFieldRepository {
     const entity = await this.db
       .selectFrom('mathSubFields')
       .where('id', '=', id)
-      .select(this.withMathField)
+      .select((eb) => [this.withMathField(eb)])
       .selectAll()
       .executeTakeFirst();
 
-    return entity ?? null;
+    const mathField = entity?.mathField
+      ? {
+          ...entity.mathField,
+          createdAt: new Date(entity.mathField.createdAt),
+        }
+      : null;
+
+    return entity ? { ...entity, mathField } : null;
   }
 
   async deleteById(id: string): Promise<boolean> {

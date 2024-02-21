@@ -71,7 +71,7 @@ export class AnswerFunctionRepository {
     numberType,
     mathSubFieldId,
   }: FilterAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
-    return this.db
+    const entities = await this.db
       .selectFrom('answerFunctions')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
@@ -85,6 +85,17 @@ export class AnswerFunctionRepository {
       .orderBy('id desc')
       .limit(limit)
       .execute();
+
+    return entities.map((entity) => {
+      const mathSubField = entity.mathSubField
+        ? {
+            ...entity.mathSubField,
+            createdAt: new Date(entity.mathSubField.createdAt),
+          }
+        : null;
+
+      return { ...entity, mathSubField: mathSubField };
+    });
   }
 
   async count({
