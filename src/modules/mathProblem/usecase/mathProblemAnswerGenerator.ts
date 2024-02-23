@@ -89,8 +89,8 @@ export class MathProblemAnswerGenerator {
       });
 
     let safecondition = 0;
-    const randomAnswers: MathProblemAnswer[] = [];
-    while (safecondition < 1000 && randomAnswers.length < 3) {
+    const randomAnswers = new Set<MathProblemAnswer>();
+    while (safecondition < 1000 && randomAnswers.size < 3) {
       safecondition++;
 
       const answerFunc = weightedRandom(filteredOptions);
@@ -128,9 +128,7 @@ export class MathProblemAnswerGenerator {
         tex,
       };
 
-      if (!randomAnswers.includes(answer)) {
-        randomAnswers.push(answer);
-      }
+      randomAnswers.add(answer);
     }
 
     return [
