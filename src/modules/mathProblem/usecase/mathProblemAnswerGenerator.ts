@@ -93,8 +93,8 @@ export class MathProblemAnswerGenerator {
       });
 
     let safecondition = 0;
-    const randomAnswers = new Set<MathProblemAnswer>();
-    while (safecondition < 1000 && randomAnswers.size < 3) {
+    const randomAnswers: MathProblemAnswer[] = [];
+    while (safecondition < 1000 && randomAnswers.length < 3) {
       safecondition++;
 
       const answerFunc = weightedRandom(filteredOptions);
@@ -104,7 +104,7 @@ export class MathProblemAnswerGenerator {
         );
       }
 
-      const tex = new Function(
+      const generatedAnswer = new Function(
         'num',
         'Decimal',
         'randomBoolean',
@@ -125,22 +125,30 @@ export class MathProblemAnswerGenerator {
         randomPrime,
         randomSign,
         decimalDigits,
-      ).toString();
+      );
 
       const answer: MathProblemAnswer = {
         isCorrect: false,
-        tex,
+        tex: generatedAnswer.toString(),
       };
 
       const answerPassesCondition =
         !answerConditionFunc ||
-        new Function('num', answerConditionFunc)(answer);
+        new Function('num', answerConditionFunc)(generatedAnswer);
 
       if (!answerPassesCondition) {
         continue;
       }
 
-      randomAnswers.add(answer);
+      const alreadyExists = randomAnswers.some((randomAnswer) => {
+        return randomAnswer.tex === answer.tex;
+      });
+
+      if (alreadyExists) {
+        continue;
+      }
+
+      randomAnswers.push(answer);
     }
 
     return [

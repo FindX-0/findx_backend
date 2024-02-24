@@ -31,7 +31,7 @@ export class NormalizeAnswerFunctionWeight {
       mathSubFieldId: createValues.mathSubFieldId,
     });
 
-    if (createValues.weight >= weightSum) {
+    if (weightSum && createValues.weight >= weightSum) {
       throw new BadRequestException(
         ExceptionMessageCode.INVALID_ANSWER_FUNCTION_WEIGHT,
       );
@@ -70,7 +70,7 @@ export class NormalizeAnswerFunctionWeight {
       mathSubFieldId: answerFunctionToBeUpdated.mathSubFieldId,
     });
 
-    if (updateValues.weight >= weightSum) {
+    if (weightSum && updateValues.weight >= weightSum) {
       throw new BadRequestException(
         ExceptionMessageCode.INVALID_ANSWER_FUNCTION_WEIGHT,
       );
