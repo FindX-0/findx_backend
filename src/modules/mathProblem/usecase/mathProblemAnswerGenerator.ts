@@ -26,9 +26,11 @@ export class MathProblemAnswerGenerator {
   async call({
     tex,
     mathSubFieldId,
+    answerConditionFunc,
   }: {
     tex: string;
     mathSubFieldId: string;
+    answerConditionFunc: string | null;
   }): Promise<MathProblemAnswer[] | null> {
     if (!tex) {
       return null;
@@ -50,27 +52,29 @@ export class MathProblemAnswerGenerator {
       return null;
     }
 
-    if (correctAnswer.isInt()) {
-      const answerFunctions = await this.answerFunctionQueryService.getAll({
-        numberType: NumberType.INTEGER,
-        mathSubFieldId,
-      });
-
-      return this.generateAnswers(correctAnswer, answerFunctions);
-    }
-
     const answerFunctions = await this.answerFunctionQueryService.getAll({
-      numberType: NumberType.DECIMAL,
+      numberType: correctAnswer.isInt()
+        ? NumberType.INTEGER
+        : NumberType.DECIMAL,
       mathSubFieldId,
     });
 
-    return this.generateAnswers(correctAnswer, answerFunctions);
+    return this.generateAnswers({
+      correctAnswer,
+      answerFunctions,
+      answerConditionFunc,
+    });
   }
 
-  private generateAnswers(
-    correctAnswer: Decimal,
-    answerFunctions: SelectableAnswerFunction[],
-  ): MathProblemAnswer[] {
+  private generateAnswers({
+    correctAnswer,
+    answerFunctions,
+    answerConditionFunc,
+  }: {
+    correctAnswer: Decimal;
+    answerFunctions: SelectableAnswerFunction[];
+    answerConditionFunc: string | null;
+  }): MathProblemAnswer[] {
     const filteredOptions = answerFunctions
       .filter((answerFunc) => {
         if (!answerFunc.condition) {
@@ -127,6 +131,14 @@ export class MathProblemAnswerGenerator {
         isCorrect: false,
         tex,
       };
+
+      const answerPassesCondition =
+        !answerConditionFunc ||
+        new Function('num', answerConditionFunc)(answer);
+
+      if (!answerPassesCondition) {
+        continue;
+      }
 
       randomAnswers.add(answer);
     }

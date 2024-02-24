@@ -67,6 +67,7 @@ export class GenerateMathProblemValues {
     numberParams,
     customStrParams,
     mathSubFieldId,
+    answerConditionFunc,
   }: GenerateMathProblemValuesArgs): Promise<GeneratedNewMathProblemValues[]> {
     const templatePlaceholders = this.parseTemplatePlaceholders(template);
 
@@ -114,6 +115,7 @@ export class GenerateMathProblemValues {
           const answers = await this.mathProblemAnswerGenerator.call({
             tex,
             mathSubFieldId,
+            answerConditionFunc,
           });
 
           return { answers, tex };
