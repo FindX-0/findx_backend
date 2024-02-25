@@ -1,9 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql';
-
-import { NumberType } from '../../../entities';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class GetAllAnswerFunctionsInput {
-  @Field(() => NumberType, { nullable: true })
-  numberType: NumberType | null;
+  @Field(() => ID, { nullable: true })
+  @IsOptional()
+  @IsString()
+  mathSubFieldId: string | null;
 }

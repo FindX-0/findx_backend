@@ -14,7 +14,7 @@ import {
   FilterAnswerFunctionParams,
   GetAllAnswerFunctionParams,
 } from './answerFunction.type';
-import { DB, NumberType } from '../../entities';
+import { DB } from '../../entities';
 
 @Injectable()
 export class AnswerFunctionRepository {
@@ -68,16 +68,12 @@ export class AnswerFunctionRepository {
   async filter({
     lastId,
     limit,
-    numberType,
     mathSubFieldId,
   }: FilterAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     const entities = await this.db
       .selectFrom('answerFunctions')
       .selectAll()
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
-      .$if(Boolean(numberType), (qb) =>
-        qb.where('numberType', '=', numberType as NumberType),
-      )
       .$if(Boolean(mathSubFieldId), (qb) =>
         qb.where('mathSubFieldId', '=', mathSubFieldId as string),
       )
@@ -98,16 +94,10 @@ export class AnswerFunctionRepository {
     });
   }
 
-  async count({
-    numberType,
-    mathSubFieldId,
-  }: FilterAnswerFunctionParams): Promise<number> {
+  async count({ mathSubFieldId }: FilterAnswerFunctionParams): Promise<number> {
     const countRes = await this.db
       .selectFrom('answerFunctions')
       .select(({ fn }) => [fn.count<number>('id').as('count')])
-      .$if(Boolean(numberType), (qb) =>
-        qb.where('numberType', '=', numberType as NumberType),
-      )
       .$if(Boolean(mathSubFieldId), (qb) =>
         qb.where('mathSubFieldId', '=', mathSubFieldId as string),
       )
@@ -120,16 +110,12 @@ export class AnswerFunctionRepository {
 
   async getAll({
     notIncludeId,
-    numberType,
     mathSubFieldId,
   }: GetAllAnswerFunctionParams): Promise<SelectableAnswerFunction[]> {
     return this.db
       .selectFrom('answerFunctions')
       .$if(Boolean(notIncludeId), (qb) =>
         qb.where('id', '!=', notIncludeId as string),
-      )
-      .$if(Boolean(numberType), (qb) =>
-        qb.where('numberType', '=', numberType as NumberType),
       )
       .$if(Boolean(mathSubFieldId), (qb) =>
         qb.where('mathSubFieldId', '=', mathSubFieldId as string),

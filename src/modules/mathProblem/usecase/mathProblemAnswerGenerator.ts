@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Decimal } from 'decimal.js';
 
-import { NumberType } from '../../../entities';
 import { decimalDigits } from '../../../shared/util';
 import {
   randomBoolean,
@@ -53,9 +52,6 @@ export class MathProblemAnswerGenerator {
     }
 
     const answerFunctions = await this.answerFunctionQueryService.getAll({
-      numberType: correctAnswer.isInt()
-        ? NumberType.INTEGER
-        : NumberType.DECIMAL,
       mathSubFieldId,
     });
 

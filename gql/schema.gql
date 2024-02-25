@@ -19,7 +19,6 @@ type AnswerFunctionObject {
   func: String!
   id: ID!
   mathSubFieldId: ID!
-  numberType: NumberType!
   weight: String!
 }
 
@@ -35,7 +34,6 @@ type AnswerFunctionWithRelationsObject {
   id: ID!
   mathSubField: MathSubFieldObject
   mathSubFieldId: ID!
-  numberType: NumberType!
   weight: String!
 }
 
@@ -71,7 +69,6 @@ input CreateAnswerFunctionInput {
   condition: String
   func: String!
   mathSubFieldId: ID!
-  numberType: NumberType!
   weight: Float!
 }
 
@@ -138,7 +135,6 @@ input FilterAnswerFunctionsInput {
   lastId: ID
   limit: Int!
   mathSubFieldId: ID
-  numberType: NumberType
 }
 
 input FilterMathSubFieldsInput {
@@ -173,7 +169,7 @@ type GenerateMathProblemValuesObject {
 }
 
 input GetAllAnswerFunctionsInput {
-  numberType: NumberType
+  mathSubFieldId: ID
 }
 
 input GetAllMathFieldsInput {
@@ -340,11 +336,6 @@ type Mutation {
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldWithRelationsObject!
 }
 
-enum NumberType {
-  DECIMAL
-  INTEGER
-}
-
 type Query {
   authenticationStatus: SuccessObject!
   countGenerateMathProblemValues(input: CountGenerateMathProblemValuesInput!): CountObject!
@@ -390,7 +381,6 @@ input UpdateAnswerFunctionInput {
   func: String
   id: ID!
   mathSubFieldId: ID
-  numberType: NumberType
   weight: Float
 }
 
