@@ -4,6 +4,7 @@ import { AnswerFunctionRepository } from './answerFunction.repository';
 import { AnswerFunctionResolver } from './answerFunction.resolver';
 import { AnswerFunctionMutationService } from './answerFunctionMutation.service';
 import { AnswerFunctionQueryService } from './answerFunctionQuery.service';
+import { AnswerFunctionFunc } from './usecase/answerFunctionFunc';
 import { NormalizeAnswerFunctionWeight } from './usecase/normalizeAnswerFunctionWeight.usecase';
 import { AdminUserModule } from '../adminUser/adminUser.module';
 
@@ -16,7 +17,12 @@ import { AdminUserModule } from '../adminUser/adminUser.module';
     AnswerFunctionResolver,
     // usecase
     NormalizeAnswerFunctionWeight,
+    AnswerFunctionFunc,
   ],
-  exports: [AnswerFunctionMutationService, AnswerFunctionQueryService],
+  exports: [
+    AnswerFunctionMutationService,
+    AnswerFunctionQueryService,
+    AnswerFunctionFunc,
+  ],
 })
 export class AnswerFunctionModule {}

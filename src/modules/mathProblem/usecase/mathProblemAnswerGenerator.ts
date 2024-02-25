@@ -14,12 +14,14 @@ import {
 import { solveTexExpression } from '../../../shared/util/solveTexExpression';
 import { SelectableAnswerFunction } from '../../answerFunction/answerFunction.entity';
 import { AnswerFunctionQueryService } from '../../answerFunction/answerFunctionQuery.service';
+import { AnswerFunctionFunc } from '../../answerFunction/usecase/answerFunctionFunc';
 import { MathProblemAnswer } from '../mathProblem.entity';
 
 @Injectable()
 export class MathProblemAnswerGenerator {
   constructor(
     private readonly answerFunctionQueryService: AnswerFunctionQueryService,
+    private readonly answerFunctionFunc: AnswerFunctionFunc,
   ) {}
 
   async call({
@@ -93,35 +95,20 @@ export class MathProblemAnswerGenerator {
     while (safecondition < 1000 && randomAnswers.length < 3) {
       safecondition++;
 
-      const answerFunc = weightedRandom(filteredOptions);
-      if (!answerFunc) {
+      const answerFunction = weightedRandom(filteredOptions);
+      if (!answerFunction) {
         throw new InternalServerErrorException(
           "couldn't get weighted random answer function",
         );
       }
 
-      const generatedAnswer = new Function(
-        'num',
-        'Decimal',
-        'randomBoolean',
-        'randomElement',
-        'randomInt',
-        'randomNumber',
-        'randomPrime',
-        'randomSign',
-        'decimalDigits',
-        answerFunc.func,
-      )(
+      const generatedAnswer = this.answerFunctionFunc.call({
+        answerFunction: {
+          ...answerFunction,
+          weight: answerFunction.weight.toString(),
+        },
         correctAnswer,
-        Decimal,
-        randomBoolean,
-        randomElement,
-        randomInt,
-        randomNumber,
-        randomPrime,
-        randomSign,
-        decimalDigits,
-      );
+      });
 
       const answer: MathProblemAnswer = {
         isCorrect: false,
