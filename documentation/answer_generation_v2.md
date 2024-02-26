@@ -223,4 +223,7 @@ get every digit of number
 manipulate by + random(1, 10) % 10
 ```
 
+```
+37)
+answer + random(11, 15) * oneForInt +- random(1, 10^(decimalPlaces(answer))) / 10^(decimalPlaces(answer)) * oneForDecimal +- randomElement(1, 10) * randomElement(1, 10) / 100 * oneForZero(answer)
 
