@@ -51,17 +51,30 @@ ceil(answer * uniform(.1, 1)) +- random(1, 50) / 10 * oneForZero(answer)
 prime = randomPrime(answer, { orElse: 1 })
 intPrime = randomPrime(int(answer), { orElse: 1 })
 
-+-answer / prime +- randomElement([.2, .4, .6, .8, 1]) * oneForZero(answer) +- int(answer) / intPrime / 10 * oneForDecimal(answer)
++-answer +- randomElement([.2, .4, .6, .8, 1]) * oneForZero(answer) +- int(answer) / intPrime / 10 * oneForDecimal(answer)
 ```
 
 ```
-საეჭვო კაცი
+prime = randomPrime(answer, { orElse: 1 })
+intPrime = randomPrime(int(answer), { orElse: 1 })
 
++-answer / prime +- randomElement([2, 4, 6, 8, 10]) * oneForZero(answer) +- int(answer) / intPrime / 10 * oneForDecimal(answer)
+```
+
+```
 prime = randomPrime(answer, { orElse: 1 })
 decimalPart = (answer - int(answer)) * 10^decimalPlaces(answer)
 
-+-answer +- answer / randomPrime(answer) +- randomElement([.5, 1, 1.5, 2]) +- decimalPart / randomPrime(decimalPart) / 10^decimalPlaces(answer)
+  +-answer +- randomElement([.5, 1, 1.5, 2]) * oneForZero(answer) +- decimalPart / randomPrime(decimalPart) / 10^decimalPlaces(answer)
 ```
+
+```
+prime = randomPrime(answer, { orElse: 1 })
+decimalPart = (answer - int(answer)) * 10^decimalPlaces(answer)
+
++-answer +- answer / randomPrime(answer) +- random(15, 30) * oneForZero(answer) +- decimalPart / randomPrime(decimalPart) / 10^decimalPlaces(answer)
+```
+
 
 ```
 +-answer * randomElement([.5, 2, .25, .75, 1.25, 1.5, 2.5, 7.5]) + randomElement([1, 1.5, 2, 2.5, 3, 3.5, 4]) * oneForZero(answer)
