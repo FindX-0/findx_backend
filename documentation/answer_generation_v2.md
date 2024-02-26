@@ -24,7 +24,7 @@ answer + random(1, 10) + random(1, 10) * oneForZero(answer)
 ```
 
 ```
-answer - random(0, answer) * oneForIntGt10(2 * answer) + random(1, 10) * oneForZero(answer) + 1
+answer - random(0, abs(answer)) * oneForIntGt10(2 * answer) + random(1, 10) * oneForZero(answer) + 1
 ```
 
 ```
