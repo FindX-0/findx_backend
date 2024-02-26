@@ -192,33 +192,33 @@ answer +- randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9]) * oneForDecimal(an
 
 ```
 31)
-answer * randomElement([5, 6, 8, 12, 15]) + random(1, 10) * oneForZero(answer)
+answer * randomElement([7, 6, 8, 12, 11, 15]) + random(1, 10) * oneForZero(answer)
 ```
 
 ```
 32)
-answer * randomElement([5, 6, 8, 12, 15]) +- randomElement([
-  .5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10
+answer * random(1, 15) +- randomElement([
+  .5, 1, 1.3, 2, 2.9, 3, 3.2, 4, 4.1, 5, 5.5, 6, 6.6, 7, 7.3, 8, 8.5, 9, 9.5, 10
 ]) * oneForZero(answer)
 ```
 
 ```
 33)
-answer +- random(2, 10) * ceil(answer / 10) +- random(2, 5) * ceil(answer / 100) + floor(answer * uniform(2, 4)) + randomSign()
-```
-
-```
-33)
-(answer - int(answer)) * random(2, 5) +- answer +- random(1, 20) * oneForInt(answer)
+answer +- random(2, 10) * ceil(answer / 10) +- random(2, 5) * floor(answer / 100) +- floor(answer * uniform(2, 4)) + randomSign()
 ```
 
 ```
 34)
-+- 10 * answer +- answer +- randomElement([.3, .45, .6, .75, .9, 1.05, 1.2]) * oneForZero(answer)
+(answer - int(answer)) * random(2, 5) +- answer +- random(1, 20) * oneForInt(answer)
 ```
 
 ```
 35)
++- 10 * answer +- answer +- randomElement([.3, .45, .6, .75, .9, 1.05, 1.2]) * oneForZero(answer)
+```
+
+```
+36)
 get every digit of number
 manipulate by + random(1, 10) % 10
 ```
