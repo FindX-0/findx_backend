@@ -110,6 +110,10 @@ export class MathProblemAnswerGenerator {
         correctAnswer,
       });
 
+      if (!generatedAnswer) {
+        continue;
+      }
+
       const answer: MathProblemAnswer = {
         isCorrect: false,
         tex: generatedAnswer.toString(),
