@@ -20,6 +20,14 @@ const oneForInt = (num) => num.isInt() ? 1 : 0;
 ```
 
 ```
+answer + random(1, 10) + random(1, 10) * oneForZero(answer)
+```
+
+```
+answer - random(0, answer) * oneForIntGt10(2 * answer) + random(1, 10) * oneForZero(answer) + 1
+```
+
+```
 answer * random(2, 5) + random(1, 8) * oneForZero(answer)
 ```
 
@@ -154,6 +162,4 @@ get every digit of number
 manipulate by + random(1, 10) % 10
 ```
 
-```
-qweqw
-````
+
