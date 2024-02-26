@@ -116,16 +116,11 @@ abs(answer^2 * oneForLt10Positive(answer * 2) - answer * random(1, 20)) + random
 
 ```
 19)
-answer * random(2, 4) + random(1, 10) * oneForZero()
+answer^2 * oneForLt10Positive(answer) + 10 +-answer * ceil(uniform(.1, 1) * 10) / 10 * oneForDecimal(answer) +- answer - random(1, 10) + random(1, 10) * oneForZero()
 ```
 
 ```
 20)
-answer^2 * oneForLt10Positive(answer) + answer - random(1, 10) + random(1, 10) * oneForZero()
-```
-
-```
-21)
 prime1 = randomPrime(answer, { orElse: 1 })
 prime2 = randomPrime(answer, { orElse: 1 })
 
@@ -133,24 +128,24 @@ answer / prime1 + answer / prime2 +- random(1, 15) * oneForZero()
 ```
 
 ```
-22)
+21)
 prime1 = randomPrime(answer, { orElse: 1 })
 prime2 = randomPrime(answer, { orElse: 1 })
 prime3 = randomPrime(answer, { orElse: 1 })
 
-answer / prime1 + answer / prime2 +- random(1, 15) * oneForZero() + answer / prime3 - random(1, 10) * (answer - int(answer))
++-answer / prime1 +- answer / prime2 +- random(1, 15) / 10 * oneForZero() + answer / prime3 - random(1, 10) * (answer - int(answer))
+```
+
+```
+22)
+prime1 = randomPrime(answer, { orElse: 1 })
+prime2 = randomPrime(answer, { orElse: 1 })
+
+answer / prime1 + answer / prime2 + random(1, 100) / 100 * oneForZero()
 ```
 
 ```
 23)
-prime1 = randomPrime(answer, { orElse: 1 })
-prime2 = randomPrime(answer, { orElse: 1 })
-
-answer / prime1 + answer / prime2 + random(1, 15) * oneForZero()
-```
-
-```
-24)
 prime1 = randomPrime(answer, { orElse: 1 })
 prime2 = randomPrime(answer, { orElse: 1 })
 prime3 = randomPrime(answer, { orElse: 1 })
@@ -159,15 +154,20 @@ answer / prime1 + answer / prime2 + random(1, 15) * oneForZero() + answer / prim
 ```
 
 ```
-25)
+24)
 decimalZeros = 10^decimalPlaces(answer)
 
 answer +- random(1, decimalZeros) / decimalZeros + randomSign()
 ```
 
 ```
-26)
+25)
 answer +- randomElement([1, 2])
+```
+
+```
+26)
+answer +- randomElement([1, 2, 3, 4 ,5]) / 10^(decimalplaces(answer))
 ```
 
 ```
@@ -177,28 +177,33 @@ answer * randomElement([.1, 10]) +- randomElement([.1, .2, .3, .4, .5, .6, .7, .
 
 ```
 28)
-answer * randomElement([.01, 100]) +- randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 2]) * oneForZero(answer) * random(1, 10)
+answer * randomElement([.01, 100]) +- randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 2]) * oneForZero(answer)
 ```
 
 ```
 29)
-answer +- randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9]) * oneForDecimal(answer) +- answer * 10 * oneForInt() +- random(1, 15) * oneForZero()
+answer +- answer * randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9]) * oneForDecimal(answer) +- answer * 10 * oneForInt() +- random(1, 15) * oneForZero()
 ```
 
 ```
 30)
-answer * randomElement([5, 6, 8, 12, 15]) + random(1, 10) * oneForZero(answer)
+answer +- randomElement([.1, .2, .3, .4, .5, .6, .7, .8, .9]) * oneForDecimal(answer) +- answer * oneForInt() +- random(5, 15) * oneForZero()
 ```
 
 ```
 31)
+answer * randomElement([5, 6, 8, 12, 15]) + random(1, 10) * oneForZero(answer)
+```
+
+```
+32)
 answer * randomElement([5, 6, 8, 12, 15]) +- randomElement([
   .5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10
 ]) * oneForZero(answer)
 ```
 
 ```
-32)
+33)
 answer +- random(2, 10) * ceil(answer / 10) +- random(2, 5) * ceil(answer / 100) + floor(answer * uniform(2, 4)) + randomSign()
 ```
 
