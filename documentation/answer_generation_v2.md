@@ -81,6 +81,14 @@ decimalPart = (answer - int(answer)) * 10^decimalPlaces(answer)
 ```
 
 ```
++-answer * ceil(uniform(.1, 1) * 10) / 10 + randomElement([1, 1.5, 2, 2.5, 3, 3.5, 4]) * oneForZero(answer)
+```
+
+```
++-answer * ceil(uniform(.1, 1) * 100) / 100 + ceil(uniform(.1, 1) * 100) / 100 * oneForZero(answer)
+```
+
+```
 answer +- random(0, abs(int(answer))) + random(0, 5) * oneForZero()
 ```
 
