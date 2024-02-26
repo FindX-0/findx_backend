@@ -153,3 +153,7 @@ answer +- random(2, 10) * ceil(answer / 10) +- random(2, 5) * ceil(answer / 100)
 get every digit of number
 manipulate by + random(1, 10) % 10
 ```
+
+```
+qweqw
+````
