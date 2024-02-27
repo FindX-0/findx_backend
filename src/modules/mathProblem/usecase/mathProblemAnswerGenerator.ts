@@ -121,8 +121,9 @@ export class MathProblemAnswerGenerator {
       const alreadyExists = randomAnswers.some((randomAnswer) => {
         return randomAnswer.tex === answer.tex;
       });
+      const sameAsAnswer = correctAnswer.eq(generatedAnswer);
 
-      if (alreadyExists) {
+      if (alreadyExists || sameAsAnswer) {
         continue;
       }
 

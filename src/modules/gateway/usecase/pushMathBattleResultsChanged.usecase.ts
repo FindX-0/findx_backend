@@ -29,5 +29,3 @@ export class PublishMathBattleResultsChanged {
       .emit(GatewayEvent.MATH_BATTLE_RESULTS_CHANGED, mapped);
   }
 }
-
-console.log('GHerllpo');

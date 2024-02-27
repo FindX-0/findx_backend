@@ -66,7 +66,13 @@ export class AnswerFunctionFunc {
 
       return generatedAnswer;
     } catch (e) {
-      console.error(e);
+      console.error(
+        'Error in answerFunctionFunc, correctAnswer = ',
+        correctAnswer,
+        ', answerFunc = ',
+        answerFunction,
+        e,
+      );
     }
 
     return null;
