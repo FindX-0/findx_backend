@@ -1,16 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Decimal } from 'decimal.js';
 
-import { decimalDigits } from '../../../shared/util';
-import {
-  randomBoolean,
-  randomElement,
-  randomInt,
-  randomNumber,
-  randomPrime,
-  randomSign,
-  weightedRandom,
-} from '../../../shared/util/random';
+import { weightedRandom } from '../../../shared/util/random';
 import { solveTexExpression } from '../../../shared/util/solveTexExpression';
 import { SelectableAnswerFunction } from '../../answerFunction/answerFunction.entity';
 import { AnswerFunctionQueryService } from '../../answerFunction/answerFunctionQuery.service';
