@@ -37,6 +37,7 @@ export type GenerateMathProblemValuesArgs = GenerateMathProblemValuesParams & {
   template: string;
   mathSubFieldId: string;
   answerConditionFunc: string | null;
+  correctAnswerConditionFunc: string | null;
 };
 
 export type GeneratedNewMathProblemValues = {

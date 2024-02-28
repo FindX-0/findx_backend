@@ -12,4 +12,7 @@ export class GenerateMathProblemValuesInput extends GenerateMathProblemValuesInp
 
   @Field(() => String, { nullable: true })
   answerConditionFunc: string | null;
+
+  @Field(() => String, { nullable: true })
+  correctAnswerConditionFunc: string | null;
 }

@@ -3,6 +3,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import Decimal from 'decimal.js';
 
 import { MathProblemAnswerGenerator } from './mathProblemAnswerGenerator';
 import { ExceptionMessageCode } from '../../../shared/constant';
@@ -14,6 +15,7 @@ import {
   groupByToMap,
   product,
 } from '../../../shared/util';
+import { solveTexExpression } from '../../../shared/util/solveTexExpression';
 import {
   GenerateMathProblemValuesArgs,
   GeneratedNewMathProblemValues,
@@ -68,6 +70,7 @@ export class GenerateMathProblemValues {
     customStrParams,
     mathSubFieldId,
     answerConditionFunc,
+    correctAnswerConditionFunc,
   }: GenerateMathProblemValuesArgs): Promise<GeneratedNewMathProblemValues[]> {
     const templatePlaceholders = this.parseTemplatePlaceholders(template);
 
@@ -112,8 +115,22 @@ export class GenerateMathProblemValues {
         replaceParamsChunk.map(async (chunk) => {
           const tex = this.templateWithParams(template, chunk, generatedParams);
 
+          const correctAnswer = await this.solveCorrectAnswerOnlyNumber(tex);
+          if (!correctAnswer) {
+            return { answers: null, tex };
+          }
+
+          const answerPassesCondition =
+            !correctAnswerConditionFunc ||
+            new Function('num', correctAnswerConditionFunc)(correctAnswer);
+
+          if (!answerPassesCondition) {
+            return { answers: null, tex };
+          }
+
           const answers = await this.mathProblemAnswerGenerator.call({
             tex,
+            correctAnswer,
             mathSubFieldId,
             answerConditionFunc,
           });
@@ -122,7 +139,9 @@ export class GenerateMathProblemValues {
         }),
       );
 
-      generatedValues.push(...values);
+      const filteredValues = values.filter((e) => e.answers && e.tex);
+
+      generatedValues.push(...filteredValues);
     }
 
     return generatedValues;
@@ -254,5 +273,26 @@ export class GenerateMathProblemValues {
           })) ?? [],
       };
     });
+  }
+
+  private async solveCorrectAnswerOnlyNumber(
+    tex: string,
+  ): Promise<Decimal | null> {
+    const correctAnswerTex = await solveTexExpression(tex);
+    if (!correctAnswerTex) {
+      return null;
+    }
+
+    const isCorrectAnswerNumber = /^-?[0-9]\d*(\.\d+)?$/.test(correctAnswerTex);
+    if (!isCorrectAnswerNumber) {
+      return null;
+    }
+
+    const correctAnswer = new Decimal(correctAnswerTex);
+    if (correctAnswer.isNaN()) {
+      return null;
+    }
+
+    return correctAnswer;
   }
 }

@@ -15,9 +15,8 @@ export class CountGenerateMathProblemValues {
     let count = 1;
 
     for (const numberParam of numberParams) {
-      const numberCount = Math.floor(
-        (numberParam.max - numberParam.min) / numberParam.step,
-      );
+      const numberCount =
+        Math.ceil((numberParam.max - numberParam.min) / numberParam.step) + 1;
 
       if (numberCount <= 1) {
         continue;

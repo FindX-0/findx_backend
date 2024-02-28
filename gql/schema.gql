@@ -157,6 +157,7 @@ input GenerateMathProblemNumberParameterInput {
 
 input GenerateMathProblemValuesInput {
   answerConditionFunc: String
+  correctAnswerConditionFunc: String
   customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
   mathSubFieldId: ID!
   numberParams: [GenerateMathProblemNumberParameterInput!]!

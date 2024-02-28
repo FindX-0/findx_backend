@@ -2,7 +2,6 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Decimal } from 'decimal.js';
 
 import { weightedRandom } from '../../../shared/util/random';
-import { solveTexExpression } from '../../../shared/util/solveTexExpression';
 import { SelectableAnswerFunction } from '../../answerFunction/answerFunction.entity';
 import { AnswerFunctionQueryService } from '../../answerFunction/answerFunctionQuery.service';
 import { AnswerFunctionFunc } from '../../answerFunction/usecase/answerFunctionFunc';
@@ -17,30 +16,16 @@ export class MathProblemAnswerGenerator {
 
   async call({
     tex,
+    correctAnswer,
     mathSubFieldId,
     answerConditionFunc,
   }: {
     tex: string;
+    correctAnswer: Decimal;
     mathSubFieldId: string;
     answerConditionFunc: string | null;
   }): Promise<MathProblemAnswer[] | null> {
-    if (!tex) {
-      return null;
-    }
-
-    const correctAnswerTex = await solveTexExpression(tex);
-    if (!correctAnswerTex) {
-      return null;
-    }
-
-    const isCorrectAnswerNumber = /^-?[0-9]\d*(\.\d+)?$/.test(correctAnswerTex);
-    if (!isCorrectAnswerNumber) {
-      return null;
-    }
-
-    const correctAnswer = new Decimal(correctAnswerTex);
-
-    if (correctAnswer.isNaN()) {
+    if (!tex || correctAnswer.isNaN()) {
       return null;
     }
 
