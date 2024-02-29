@@ -192,7 +192,7 @@ model MathProblem {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  difficulty         Int      @db.SmallInt
+  difficulty         Float    @db.Real
   imageMediaIds      String[]
   text               String?
   tex                String?  @unique
@@ -249,7 +249,7 @@ model AnswerFunction {
   createdAt DateTime @default(now())
 
   func      String
-  weight    Decimal
+  weight    Float   @db.Real
   condition String?
 
   mathSubFieldId BigInt

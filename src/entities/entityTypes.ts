@@ -25,7 +25,7 @@ export type AnswerFunction = {
     id: Generated<string>;
     createdAt: Generated<Timestamp>;
     func: string;
-    weight: string;
+    weight: number;
     condition: string | null;
     mathSubFieldId: string;
 };

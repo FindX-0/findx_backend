@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class AnswerFunctionObject {
@@ -14,8 +14,8 @@ export class AnswerFunctionObject {
   @Field(() => String, { nullable: true })
   condition: string | null;
 
-  @Field()
-  weight: string;
+  @Field(() => Float)
+  weight: number;
 
   @Field(() => ID)
   mathSubFieldId: string;

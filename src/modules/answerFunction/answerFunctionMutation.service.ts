@@ -30,10 +30,7 @@ export class AnswerFunctionMutationService {
   ): Promise<SelectableAnswerFunction> {
     await this.normalizeAnswerFunctionWeight.normalizeForCreate(values);
 
-    const entity = await this.answerFunctionRepository.create({
-      ...values,
-      weight: values.weight.toString(),
-    });
+    const entity = await this.answerFunctionRepository.create(values);
 
     if (!entity) {
       throw new InternalServerErrorException(
@@ -64,7 +61,7 @@ export class AnswerFunctionMutationService {
       ...(condition && isAdminUserSuperAdmin && { condition }),
       ...(func && isAdminUserSuperAdmin && { func }),
       ...(mathSubFieldId && isAdminUserSuperAdmin && { mathSubFieldId }),
-      ...(weight && { weight: weight.toString() }),
+      ...(weight && { weight }),
     });
 
     if (!entity) {

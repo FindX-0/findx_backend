@@ -84,7 +84,7 @@ export class NormalizeAnswerFunctionWeight {
       answerFunctions,
       weightSum,
       newWeight: updateValues.weight,
-      oldWeight: parseFloat(answerFunctionToBeUpdated.weight),
+      oldWeight: answerFunctionToBeUpdated.weight,
     });
   }
 
@@ -106,7 +106,7 @@ export class NormalizeAnswerFunctionWeight {
       answerFunctions,
       weightSum,
       newWeight: 0,
-      oldWeight: parseFloat(answerFunctionToBeDeleted.weight),
+      oldWeight: answerFunctionToBeDeleted.weight,
     });
   }
 
@@ -123,7 +123,7 @@ export class NormalizeAnswerFunctionWeight {
     });
 
     const weightSum = answerFunctions.reduce(
-      (acc, answerFunction) => acc + parseFloat(answerFunction.weight),
+      (acc, answerFunction) => acc + answerFunction.weight,
       0,
     );
 
@@ -143,10 +143,9 @@ export class NormalizeAnswerFunctionWeight {
   }): Promise<void> {
     const updatePromises = answerFunctions.map((answerFunction) =>
       this.answerFunctionRepository.updateById(answerFunction.id, {
-        weight: (
-          parseFloat(answerFunction.weight) *
-          (1 + (oldWeight - newWeight) / (weightSum - oldWeight))
-        ).toString(),
+        weight:
+          answerFunction.weight *
+          (1 + (oldWeight - newWeight) / (weightSum - oldWeight)),
       }),
     );
 

@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, ID, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -18,7 +18,7 @@ import { CreateMathProblemAnswerInput } from './createMathProblemAnswer.input';
 
 @InputType()
 export class UpdateMathProblemInput extends IdentifierInput {
-  @Field(() => Int, { nullable: true })
+  @Field(() => Float, { nullable: true })
   @IsOptional()
   @IsInt()
   @Min(0)

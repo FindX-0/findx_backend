@@ -19,7 +19,7 @@ type AnswerFunctionObject {
   func: String!
   id: ID!
   mathSubFieldId: ID!
-  weight: String!
+  weight: Float!
 }
 
 type AnswerFunctionPageObject {
@@ -34,7 +34,7 @@ type AnswerFunctionWithRelationsObject {
   id: ID!
   mathSubField: MathSubFieldObject
   mathSubFieldId: ID!
-  weight: String!
+  weight: Float!
 }
 
 type AuthPayloadObject {
@@ -83,7 +83,7 @@ input CreateMathProblemAnswerInput {
 
 input CreateMathProblemInput {
   answers: [CreateMathProblemAnswerInput!]!
-  difficulty: Int!
+  difficulty: Float!
   imageMediaIds: [ID!]
   mathFieldId: ID!
   mathSubFieldId: ID!
@@ -93,7 +93,7 @@ input CreateMathProblemInput {
 
 type CreateMathProblemResObject {
   createdAt: DateTime!
-  difficulty: Int!
+  difficulty: Float!
   generatedBatchName: String
   id: ID!
   mathFieldId: String!
@@ -223,7 +223,7 @@ enum MatchState {
 type MathBattleMathProblemObject {
   answers: [MathProblemAnswerWoutCorrectObject!]!
   createdAt: DateTime!
-  difficulty: Int!
+  difficulty: Float!
   generatedBatchName: String
   id: ID!
   images: [MediaFileObject!]
@@ -266,7 +266,7 @@ type MathProblemAnswerWoutCorrectObject {
 type MathProblemObject {
   answers: [MathProblemAnswerObject!]!
   createdAt: DateTime!
-  difficulty: Int!
+  difficulty: Float!
   generatedBatchName: String
   id: ID!
   images: [MediaFileObject!]
@@ -392,7 +392,7 @@ input UpdateMathFieldInput {
 
 input UpdateMathProblemInput {
   answers: [CreateMathProblemAnswerInput!]
-  difficulty: Int
+  difficulty: Float
   id: ID!
   imageMediaIds: [ID!]
   mathFieldId: ID

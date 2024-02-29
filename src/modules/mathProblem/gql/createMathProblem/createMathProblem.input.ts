@@ -1,11 +1,11 @@
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Float } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
-  IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Max,
@@ -16,10 +16,10 @@ import { CreateMathProblemAnswerInput } from '../createMathProblemAnswer.input';
 
 @InputType()
 export class CreateMathProblemInput {
-  @Field(() => Int)
-  @IsInt()
+  @Field(() => Float)
   @Min(0)
   @Max(100)
+  @IsNumber()
   difficulty: number;
 
   @Field(() => String, { nullable: true })

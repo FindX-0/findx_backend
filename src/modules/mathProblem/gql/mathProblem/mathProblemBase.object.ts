@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class MathProblemBaseObject {
@@ -8,7 +8,7 @@ export class MathProblemBaseObject {
   @Field(() => Date)
   createdAt: Date;
 
-  @Field(() => Int)
+  @Field(() => Float)
   difficulty: number;
 
   @Field(() => String, { nullable: true })

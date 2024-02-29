@@ -49,22 +49,15 @@ export class MathProblemAnswerGenerator {
     answerFunctions: SelectableAnswerFunction[];
     answerConditionFunc: string | null;
   }): MathProblemAnswer[] {
-    const filteredOptions = answerFunctions
-      .filter((answerFunc) => {
-        if (!answerFunc.condition) {
-          return true;
-        }
+    const filteredOptions = answerFunctions.filter((answerFunc) => {
+      if (!answerFunc.condition) {
+        return true;
+      }
 
-        const conditionFunc = new Function('num', answerFunc.condition);
+      const conditionFunc = new Function('num', answerFunc.condition);
 
-        return conditionFunc(correctAnswer);
-      })
-      .map((answerFunc) => {
-        return {
-          ...answerFunc,
-          weight: parseFloat(answerFunc.weight),
-        };
-      });
+      return conditionFunc(correctAnswer);
+    });
 
     let safecondition = 0;
     const randomAnswers: MathProblemAnswer[] = [];
@@ -79,10 +72,7 @@ export class MathProblemAnswerGenerator {
       }
 
       const generatedAnswer = this.answerFunctionFunc.call({
-        answerFunction: {
-          ...answerFunction,
-          weight: answerFunction.weight.toString(),
-        },
+        answerFunction,
         correctAnswer,
       });
 
