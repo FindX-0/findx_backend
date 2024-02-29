@@ -333,7 +333,7 @@ type Mutation {
   deviceSignIn(input: DeviceSignInInput!): JwtTokenPayloadObject!
   emailSignIn(input: EmailSignInInput!): AuthPayloadObject!
   emailSignUp(input: EmailSignUpInput!): AuthPayloadObject!
-  enqueueTicket(input: EnqueueTicketInput!): SuccessObject!
+  enqueueTicket(input: EnqueueTicketInput!): TicketObject!
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
@@ -381,6 +381,23 @@ input SubmitMathProblemAnswerInput {
 
 type SuccessObject {
   success: Boolean!
+}
+
+type TicketObject {
+  concurrencyTimestamp: String
+  createdAt: DateTime!
+  id: ID!
+  matchId: ID
+  mathFieldId: ID!
+  state: TicketState!
+  userId: ID!
+}
+
+enum TicketState {
+  CANCELLED
+  COMPLETED
+  EXPIRED
+  PROCESSING
 }
 
 input UpdateAnswerFunctionInput {

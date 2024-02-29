@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { TicketState } from '@entities/index';
 import { TransactionRunner } from '@shared/util/transactionRunner';
 
+import { ExceptionMessageCode } from '../../../shared/constant';
 import { uuidV4 } from '../../../shared/util/random';
+import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 
 type EnqueueTicketParams = {
@@ -18,8 +20,11 @@ export class EnqueueTicket {
     private readonly transactionRunner: TransactionRunner,
   ) {}
 
-  async call({ userId, mathFieldId }: EnqueueTicketParams) {
-    await this.transactionRunner.runTransaction(async (txProvider) => {
+  async call({
+    userId,
+    mathFieldId,
+  }: EnqueueTicketParams): Promise<SelectableTicket> {
+    return this.transactionRunner.runTransaction(async (txProvider) => {
       await this.ticketRepository.updateAllProcessing(
         {
           userId,
@@ -31,7 +36,7 @@ export class EnqueueTicket {
         txProvider,
       );
 
-      await this.ticketRepository.create(
+      const ticket = await this.ticketRepository.create(
         {
           matchId: null,
           mathFieldId,
@@ -41,6 +46,14 @@ export class EnqueueTicket {
         },
         txProvider,
       );
+
+      if (!ticket) {
+        throw new InternalServerErrorException(
+          ExceptionMessageCode.TICKET_ENQUEUE_FAILED,
+        );
+      }
+
+      return ticket;
     });
   }
 }

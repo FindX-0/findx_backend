@@ -5,6 +5,7 @@ import { IdentifierInput, SuccessObject } from '@shared/gql';
 import { CancelTicketInput } from './gql/cancelTicket.input';
 import { EnqueueTicketInput } from './gql/enqueueTicket.input';
 import { MatchObject } from './gql/match.object';
+import { TicketObject } from './gql/ticket.object';
 import { MatchQueryService } from './service/matchQuery.service';
 import { CancelTicket } from './useCase/cancelTicket.usecase';
 import { EnqueueTicket } from './useCase/enqueueTicket.usecase';
@@ -19,17 +20,15 @@ export class MatchmakingResolver {
     private readonly cancelTicketUsecase: CancelTicket,
   ) {}
 
-  @Mutation(() => SuccessObject)
+  @Mutation(() => TicketObject)
   async enqueueTicket(
     @HttpAuthPayload() authPayload: UserAuthPayload,
     @Args('input') input: EnqueueTicketInput,
-  ): Promise<SuccessObject> {
-    await this.enqueueTicketUseCase.call({
+  ): Promise<TicketObject> {
+    return this.enqueueTicketUseCase.call({
       userId: authPayload.userId,
       ...input,
     });
-
-    return { success: true };
   }
 
   @Mutation(() => SuccessObject)
