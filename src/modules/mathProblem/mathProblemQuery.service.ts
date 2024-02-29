@@ -63,6 +63,26 @@ export class MathProblemQueryService {
   }
 
   async getByIds(ids: string[]): Promise<SelectableMathProblem[]> {
+    if (!ids.length) {
+      return [];
+    }
+
     return this.mathProblemRepository.getByIds(ids);
+  }
+
+  async getRandomIds({
+    maxCount,
+    mathSubFieldId,
+    difficultyRange,
+  }: {
+    maxCount: number;
+    mathSubFieldId: string;
+    difficultyRange: [number, number];
+  }): Promise<string[]> {
+    return this.mathProblemRepository.getRandomIds({
+      maxCount,
+      mathSubFieldId,
+      difficultyRange,
+    });
   }
 }

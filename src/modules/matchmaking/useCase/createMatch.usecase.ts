@@ -6,11 +6,11 @@ import {
 
 import { EnvService } from '@config/env/env.service';
 import { MatchState, TicketState } from '@entities/index';
-import { MathProblemIdStore } from '@modules/mathProblem/repository/mathProblemId.store';
 import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuery.service';
 import { TransactionProvider, splitNumIntoChunks } from '@shared/util';
 
 import { UpdateTicketAndPublish } from './updateTicketAndPublish.usecase';
+import { MathProblemQueryService } from '../../mathProblem/mathProblemQuery.service';
 import { SelectableMatch } from '../entity/match.entity';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { MatchRepository } from '../repository/match.repository';
@@ -21,8 +21,8 @@ export class CreateMatch {
     private readonly matchRepository: MatchRepository,
     private readonly envService: EnvService,
     private readonly updateTicketAndPublishUsecase: UpdateTicketAndPublish,
-    private readonly mathProblemIdStore: MathProblemIdStore,
     private readonly mathSubFieldQueryService: MathSubFieldQueryService,
+    private readonly mathProblemQueryService: MathProblemQueryService,
   ) {}
 
   private readonly logger = new Logger(CreateMatch.name);
@@ -127,10 +127,11 @@ export class CreateMatch {
           throw new InternalServerErrorException();
         }
 
-        return this.mathProblemIdStore.getRandomByMathSubFieldId(
+        return this.mathProblemQueryService.getRandomIds({
           mathSubFieldId,
-          count,
-        );
+          maxCount: count,
+          difficultyRange: [1, 100],
+        });
       }),
     );
 

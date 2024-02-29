@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ExpressionBuilder } from 'kysely';
+import { ExpressionBuilder, sql } from 'kysely';
 import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
@@ -177,6 +177,28 @@ export class MathProblemRepository {
       .execute();
 
     return entities as SelectableMathProblem[];
+  }
+
+  async getRandomIds({
+    maxCount,
+    mathSubFieldId,
+    difficultyRange,
+  }: {
+    maxCount: number;
+    mathSubFieldId: string;
+    difficultyRange: [number, number];
+  }): Promise<string[]> {
+    const entities = await this.db
+      .selectFrom('mathProblems')
+      .select('id')
+      .where('mathSubFieldId', '=', mathSubFieldId)
+      .where('difficulty', '>=', difficultyRange[0])
+      .where('difficulty', '<=', difficultyRange[1])
+      .orderBy(sql`RANDOM()`)
+      .limit(maxCount)
+      .execute();
+
+    return entities.map((e) => e.id);
   }
 
   private withMathField(eb: ExpressionBuilder<DB, 'mathProblems'>) {
