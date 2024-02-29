@@ -92,9 +92,5 @@ export class EnvironmentVariables {
 
   @Type(() => Number)
   @IsInt()
-  MATCHMAKING_INTERVAL_MILLIS: number;
-
-  @Type(() => Number)
-  @IsInt()
   MATH_PROBLEM_ANSWER_COUNT: number;
 }
