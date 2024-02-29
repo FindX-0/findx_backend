@@ -85,4 +85,17 @@ export class TicketRepository {
       .set(payload)
       .execute();
   }
+
+  async getById(
+    ticketId: string,
+    txProvider?: TransactionProvider,
+  ): Promise<SelectableTicket | null> {
+    const entity = await (txProvider?.get() ?? this.db)
+      .selectFrom('tickets')
+      .selectAll()
+      .where('id', '=', ticketId)
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
 }

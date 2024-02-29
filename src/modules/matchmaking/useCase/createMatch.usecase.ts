@@ -10,6 +10,7 @@ import { MathSubFieldQueryService } from '@modules/mathSubField/mathSubFieldQuer
 import { TransactionProvider, splitNumIntoChunks } from '@shared/util';
 
 import { UpdateTicketAndPublish } from './updateTicketAndPublish.usecase';
+import { uuidV4 } from '../../../shared/util/random';
 import { MathProblemQueryService } from '../../mathProblem/mathProblemQuery.service';
 import { SelectableMatch } from '../entity/match.entity';
 import { SelectableTicket } from '../entity/ticket.entity';
@@ -70,6 +71,7 @@ export class CreateMatch {
         payload: {
           state: TicketState.COMPLETED,
           matchId: match.id,
+          concurrencyTimestamp: uuidV4(),
         },
         txProvider,
       }),
@@ -78,6 +80,7 @@ export class CreateMatch {
         payload: {
           state: TicketState.COMPLETED,
           matchId: match.id,
+          concurrencyTimestamp: uuidV4(),
         },
         txProvider,
       }),

@@ -1,8 +1,14 @@
+import { v4 as v4Uuid } from 'uuid';
+
 import { primeFactors } from './number';
 
 const ASCII =
   '!"#$%&\'()*+,-./:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz0123456789{|}~';
 const HEX = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+export const uuidV4 = (): string => {
+  return v4Uuid();
+};
 
 export const randomBoolean = (): boolean => {
   return Math.random() < 0.5;

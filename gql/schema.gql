@@ -56,6 +56,11 @@ input BulkCreateMathProblemInput {
   values: [CreateMathProblemInput!]!
 }
 
+input CancelTicketInput {
+  concurrencyTimestamp: String!
+  ticketId: ID!
+}
+
 input CountGenerateMathProblemValuesInput {
   customStrParams: [GenerateMathProblemCustomStrParameterInput!]!
   numberParams: [GenerateMathProblemNumberParameterInput!]!
@@ -316,6 +321,7 @@ type Mutation {
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
   bulkCreateMathProblem(input: BulkCreateMathProblemInput!): [CreateMathProblemResObject!]!
+  cancelTicket(input: CancelTicketInput!): SuccessObject!
   createAnswerFunction(input: CreateAnswerFunctionInput!): AnswerFunctionObject!
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   createMathProblem(input: CreateMathProblemInput!): CreateMathProblemResObject!

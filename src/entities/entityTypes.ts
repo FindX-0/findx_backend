@@ -101,6 +101,7 @@ export type Ticket = {
     userId: string;
     state: TicketState;
     matchId: string | null;
+    concurrencyTimestamp: string | null;
     mathFieldId: string;
 };
 export type User = {

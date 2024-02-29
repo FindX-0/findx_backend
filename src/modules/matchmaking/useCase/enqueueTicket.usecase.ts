@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { TicketState } from '@entities/index';
 import { TransactionRunner } from '@shared/util/transactionRunner';
 
+import { uuidV4 } from '../../../shared/util/random';
 import { TicketRepository } from '../repository/ticket.repository';
 
 type EnqueueTicketParams = {
@@ -24,6 +25,7 @@ export class EnqueueTicket {
           userId,
           payload: {
             state: TicketState.CANCELLED,
+            concurrencyTimestamp: uuidV4(),
           },
         },
         txProvider,
@@ -35,6 +37,7 @@ export class EnqueueTicket {
           mathFieldId,
           userId,
           state: TicketState.PROCESSING,
+          concurrencyTimestamp: uuidV4(),
         },
         txProvider,
       );

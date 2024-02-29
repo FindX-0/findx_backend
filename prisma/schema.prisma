@@ -156,9 +156,10 @@ model Ticket {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  userId  BigInt
-  state   TicketState
-  matchId BigInt?
+  userId               BigInt
+  state                TicketState
+  matchId              BigInt?
+  concurrencyTimestamp String?     @default(uuid()) @db.Uuid
 
   mathFieldId BigInt
 

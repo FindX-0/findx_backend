@@ -8,6 +8,7 @@ import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
 import { MatchQueryService } from './service/matchQuery.service';
+import { CancelTicket } from './useCase/cancelTicket.usecase';
 import { CreateMatch } from './useCase/createMatch.usecase';
 import { EnqueueTicket } from './useCase/enqueueTicket.usecase';
 import { ExpireTicketsAndNotify } from './useCase/expireTIcketsAndNotify.usecase';
@@ -37,6 +38,7 @@ import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.mod
     FinishMatch,
     UpdateTicketAndPublish,
     ExpireTicketsAndNotify,
+    CancelTicket,
     // resolver/scheduler
     MatchmakingResolver,
     MatchmakingScheduler,
