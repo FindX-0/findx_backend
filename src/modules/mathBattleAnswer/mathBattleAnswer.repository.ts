@@ -57,4 +57,20 @@ export class MathBattleAnswerRepository {
       .where('matchId', '=', matchId)
       .execute();
   }
+
+  async getLastByMatchIdAndUserId(
+    matchId: string,
+    userId: string,
+  ): Promise<SelectableMathBattleAnswer | null> {
+    const entity = await this.db
+      .selectFrom('mathBattleAnswers')
+      .selectAll()
+      .where('matchId', '=', matchId)
+      .where('userId', '=', userId)
+      .orderBy('createdAt', 'desc')
+      .limit(1)
+      .executeTakeFirst();
+
+    return entity ?? null;
+  }
 }

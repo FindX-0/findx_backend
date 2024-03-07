@@ -14,4 +14,14 @@ export class MathBattleAnswerQueryService {
   ): Promise<SelectableMathBattleAnswer[]> {
     return this.mathBattleAnswerRepository.getAllByMatchId(matchId);
   }
+
+  async getLastByMatchIdAndUserId(
+    matchId: string,
+    userId: string,
+  ): Promise<SelectableMathBattleAnswer | null> {
+    return this.mathBattleAnswerRepository.getLastByMatchIdAndUserId(
+      matchId,
+      userId,
+    );
+  }
 }

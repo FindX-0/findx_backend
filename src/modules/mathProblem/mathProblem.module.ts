@@ -5,6 +5,7 @@ import { MathProblemValidator } from './mathProblem.validator';
 import { MathProblemMutationService } from './mathProblemMutation.service';
 import { MathProblemQueryService } from './mathProblemQuery.service';
 import { MathProblemRepository } from './repository/mathProblem.repository';
+import { CalculateMathProblemDifficulty } from './usecase/calculateMathProblemDifficulty';
 import { CountGenerateMathProblemValues } from './usecase/countGenerateMathProblemValues.usecase';
 import { GenerateMathProblemValues } from './usecase/generateMathProblemValues.usecase';
 import { MathProblemAnswerGenerator } from './usecase/mathProblemAnswerGenerator';
@@ -24,7 +25,12 @@ import { MediaFileModule } from '../mediaFile/mediaFile.module';
     GenerateMathProblemValues,
     CountGenerateMathProblemValues,
     MathProblemAnswerGenerator,
+    CalculateMathProblemDifficulty,
   ],
-  exports: [MathProblemQueryService, MathProblemMutationService],
+  exports: [
+    MathProblemQueryService,
+    MathProblemMutationService,
+    CalculateMathProblemDifficulty,
+  ],
 })
 export class MathProblemModule {}
