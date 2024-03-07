@@ -81,10 +81,11 @@ export class SubmitMathProblemAnswer {
       timeSpentInMillis,
     });
 
-    const meanTimeSpentInMillis =
+    const meanTimeSpentInMillis = Math.ceil(
       (mathProblem.meanTimeSpentInMillis * mathProblem.timesAnswered +
         timeSpentInMillis) /
-      (mathProblem.timesAnswered + 1);
+        (mathProblem.timesAnswered + 1),
+    );
 
     const newDifficulty = this.calculateMathProblemDifficulty.calculate({
       currentDifficulty: new Decimal(mathProblem.difficulty),
