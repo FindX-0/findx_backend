@@ -4,22 +4,10 @@ import { CalculateMathProblemDifficulty } from './calculateMathProblemDifficulty
 import { weightedRandom } from '../../../shared/util/random';
 
 const times: { weight: number; time: number }[] = [
-  { weight: 0.098, time: 1000 },
-  { weight: 0.106, time: 2000 },
-  { weight: 0.11, time: 3000 },
-  { weight: 0.11, time: 4000 },
-  { weight: 0.106, time: 5000 },
-  { weight: 0.098, time: 6000 },
-  { weight: 0.087, time: 7000 },
-  { weight: 0.074, time: 8000 },
-  { weight: 0.06, time: 9000 },
-  { weight: 0.048, time: 10000 },
-  { weight: 0.036, time: 11000 },
-  { weight: 0.026, time: 12000 },
-  { weight: 0.018, time: 13000 },
-  { weight: 0.012, time: 14000 },
-  { weight: 0.008, time: 15000 },
-  { weight: 0.005, time: 16000 },
+  { weight: 0.0227, time: 5000 },
+  { weight: 0.477, time: 6000 },
+  { weight: 0.477, time: 7000 },
+  { weight: 0.0227, time: 8000 },
 ];
 
 describe('Simulate math problem difficulty change', () => {
@@ -27,8 +15,8 @@ describe('Simulate math problem difficulty change', () => {
 
   it('simulate', () => {
     simulate(100, calculateMathProblemDifficulty);
-    // simulate(500, calculateMathProblemDifficulty);
-    // simulate(1000, calculateMathProblemDifficulty);
+    simulate(1000, calculateMathProblemDifficulty);
+    simulate(10_000, calculateMathProblemDifficulty);
   });
 });
 
@@ -39,9 +27,10 @@ const simulate = (
   let currentDifficulty = new Decimal(50);
   let correctCount = 0;
   let wrongCount = 0;
+  let meanTimeSpentInMillis = 0;
 
   for (let i = 0; i < n; i++) {
-    const isCorrect = Math.random() > 0.1;
+    const isCorrect = Math.random() > 0.02;
     if (isCorrect) {
       correctCount++;
     } else {
@@ -54,13 +43,17 @@ const simulate = (
       continue;
     }
 
+    meanTimeSpentInMillis =
+      (meanTimeSpentInMillis * i + timeSpentInMillis.time) / (i + 1);
+
     currentDifficulty = calculateMathProblemDifficulty.calculate({
       isCorrect,
       currentDifficulty,
       timeSpentInMillis: timeSpentInMillis.time,
+      meanTimeSpentInMillis: 6000,
     });
 
-    console.log(currentDifficulty);
+    // console.log(currentDifficulty);
   }
 
   console.log(
