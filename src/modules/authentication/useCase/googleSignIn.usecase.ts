@@ -7,10 +7,10 @@ import {
 import { AuthProvider } from '@entities/index';
 import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { UserValidator } from '@modules/user/user.validator';
-import { UserMutationService } from '@modules/user/userMutation.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { randomHEX } from '../../../shared/util/random';
+import { CreateUser } from '../../user/usecase/createUser.usecase';
 import { AuthPayloadObject } from '../gql/authPayload.object';
 import { GoogleOauthHelper } from '../util/googleOauth.helper';
 import { JwtHelper } from '../util/jwt.helper';
@@ -20,11 +20,11 @@ import { PasswordEncoder } from '../util/password.encoder';
 export class GoogleSignIn {
   constructor(
     private readonly googleOauthHelper: GoogleOauthHelper,
-    private readonly userService: UserMutationService,
     private readonly userValidator: UserValidator,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
+    private readonly createUser: CreateUser,
   ) {}
 
   async call(googleAccessToken: string): Promise<AuthPayloadObject> {
@@ -43,13 +43,16 @@ export class GoogleSignIn {
 
     const hashedPassword = await this.passwordEncoder.encode(generatedPassword);
 
-    const user = await this.userService.create({
+    const user = await this.createUser.execute({
       email,
       userName: null,
       deviceId: null,
       passwordHash: hashedPassword,
       isCompleted: false,
       authProvider: AuthProvider.GOOGLE,
+      userMeta: {
+        trophies: 0,
+      },
     });
 
     if (!user) {

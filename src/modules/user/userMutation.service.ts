@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { NewUser, SelectableUser } from './user.entity';
 import { UserRepository } from './user.repository';
+import { ExceptionMessageCode } from '../../shared/constant';
 import { randomHEX } from '../../shared/util/random';
 
 @Injectable()
@@ -10,14 +11,22 @@ export class UserMutationService {
 
   async create(
     params: Omit<NewUser, 'isOnline' | 'socketId'>,
-  ): Promise<SelectableUser | null> {
+  ): Promise<SelectableUser> {
     const socketId = randomHEX(32);
 
-    return this.userRepository.createUser({
+    const entity = await this.userRepository.createUser({
       ...params,
       socketId,
       isOnline: false,
     });
+
+    if (!entity) {
+      throw new InternalServerErrorException(
+        ExceptionMessageCode.COULD_NOT_CREATE_USER,
+      );
+    }
+
+    return entity;
   }
 
   async updatePasswordById(id: string, newHashedPassword: string) {

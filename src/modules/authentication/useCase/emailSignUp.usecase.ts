@@ -3,9 +3,9 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthProvider } from '@entities/index';
 import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { UserValidator } from '@modules/user/user.validator';
-import { UserMutationService } from '@modules/user/userMutation.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { CreateUser } from '../../user/usecase/createUser.usecase';
 import {
   AuthenticationPayload,
   SignUpWithTokenParams,
@@ -16,7 +16,7 @@ import { PasswordEncoder } from '../util/password.encoder';
 @Injectable()
 export class EmailSignUp {
   constructor(
-    private readonly userService: UserMutationService,
+    private readonly createUser: CreateUser,
     private readonly passwordEncoder: PasswordEncoder,
     private readonly jwtHelper: JwtHelper,
     private readonly userValidator: UserValidator,
@@ -32,13 +32,16 @@ export class EmailSignUp {
 
     const hashedPassword = await this.passwordEncoder.encode(password);
 
-    const user = await this.userService.create({
+    const user = await this.createUser.execute({
       email,
       userName,
       passwordHash: hashedPassword,
       isCompleted: true,
       authProvider: AuthProvider.EMAIL,
       deviceId: null,
+      userMeta: {
+        trophies: 0,
+      },
     });
 
     if (!user) {

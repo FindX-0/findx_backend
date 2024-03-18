@@ -72,9 +72,23 @@ model User {
   accountVerification AccountVerification?
   mathBattleAnswers   MathBattleAnswer[]
   mathBattleResults   MathBattleResult[]
+  userMeta            UserMeta?
 
   @@index([email, deviceId])
   @@map("users")
+}
+
+model UserMeta {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  trophies Int @default(0)
+
+  userId BigInt @unique
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("userMeta")
 }
 
 model AdminUser {

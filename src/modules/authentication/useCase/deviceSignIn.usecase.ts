@@ -3,11 +3,11 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthProvider } from '@entities/index';
 import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
 import { SelectableUser } from '@modules/user/user.entity';
-import { UserMutationService } from '@modules/user/userMutation.service';
 import { UserQueryService } from '@modules/user/userQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { randomHEX } from '../../../shared/util/random';
+import { CreateUser } from '../../user/usecase/createUser.usecase';
 import {
   AuthenticationPayload,
   DeviceSignInParams,
@@ -18,7 +18,7 @@ import { JwtHelper } from '../util/jwt.helper';
 export class DeviceSignIn {
   constructor(
     private readonly userQueryService: UserQueryService,
-    private readonly userMutationService: UserMutationService,
+    private readonly createUser: CreateUser,
     private readonly jwtHelper: JwtHelper,
     private readonly refreshTokenService: RefreshTokenService,
   ) {}
@@ -47,13 +47,16 @@ export class DeviceSignIn {
       return user;
     }
 
-    const newUser = await this.userMutationService.create({
+    const newUser = await this.createUser.execute({
       authProvider: AuthProvider.NONE,
       isCompleted: true,
       deviceId,
       email: null,
       passwordHash: null,
       userName: randomHEX(6),
+      userMeta: {
+        trophies: 0,
+      },
     });
 
     if (!newUser) {
