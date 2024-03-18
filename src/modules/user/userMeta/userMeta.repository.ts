@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { sql } from 'kysely';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database/kyselyDb.type';
@@ -8,6 +9,7 @@ import {
   SelectableUserMeta,
   UserMetaUpdate,
 } from './userMeta.entity';
+import { TransactionProvider } from '../../../shared/util';
 
 @Injectable()
 export class UserMetaRepository {
@@ -58,5 +60,24 @@ export class UserMetaRepository {
       .executeTakeFirst();
 
     return entity ?? null;
+  }
+
+  async addTrophies(params: {
+    userId: string;
+    amount: number;
+    txProvider: TransactionProvider;
+  }): Promise<boolean> {
+    const { userId, amount, txProvider } = params;
+
+    const res = await txProvider
+      .get()
+      .updateTable('userMeta')
+      .set({
+        trophies: sql`${sql.id('trophies')} + ${sql.val(amount)}`,
+      })
+      .where('userId', '=', userId)
+      .execute();
+
+    return Boolean(res.length) && (res[0]?.numUpdatedRows ?? 0) > 0;
   }
 }

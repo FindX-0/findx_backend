@@ -11,6 +11,7 @@ import {
 } from './userMeta.entity';
 import { UserMetaRepository } from './userMeta.repository';
 import { ExceptionMessageCode } from '../../../shared/constant';
+import { TransactionProvider } from '../../../shared/util';
 
 @Injectable()
 export class UserMetaMutationService {
@@ -49,5 +50,17 @@ export class UserMetaMutationService {
     }
 
     return entity;
+  }
+
+  async addTrophies(params: {
+    userId: string;
+    amount: number;
+    txProvider: TransactionProvider;
+  }): Promise<void> {
+    const didUpdate = await this.userMetaRepository.addTrophies(params);
+
+    if (!didUpdate) {
+      throw new NotFoundException(ExceptionMessageCode.USER_META_NOT_FOUND);
+    }
   }
 }
