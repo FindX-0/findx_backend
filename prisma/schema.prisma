@@ -142,11 +142,12 @@ model MathField {
   name     String
   isPublic Boolean @default(true)
 
-  mathProblems  MathProblem[]
-  mathSubFields MathSubField[]
-  matches       Match[]
-  tickets       Ticket[]
-  leagues       League[]
+  mathProblems              MathProblem[]
+  mathSubFields             MathSubField[]
+  matches                   Match[]
+  tickets                   Ticket[]
+  leagues                   League[]
+  standardTrophyRangeSystem StandardTrophyRangeSystem[]
 
   @@map("mathFields")
 }
@@ -293,4 +294,19 @@ model League {
   mathField MathField @relation(fields: [mathFieldId], references: [id])
 
   @@map("leagues")
+}
+
+model StandardTrophyRangeSystem {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  fromTrophy Int
+  loseChange Int
+  winChange  Int
+
+  mathFieldId BigInt
+
+  mathField MathField @relation(fields: [mathFieldId], references: [id])
+
+  @@map("standardTrophyRangeSystem")
 }
