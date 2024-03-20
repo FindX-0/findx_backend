@@ -29,6 +29,14 @@ export type AnswerFunction = {
     condition: string | null;
     mathSubFieldId: string;
 };
+export type League = {
+    id: Generated<string>;
+    createdAt: Generated<Timestamp>;
+    name: string;
+    description: string;
+    fromTrophy: number;
+    mathFieldId: string;
+};
 export type Match = {
     id: Generated<string>;
     createdAt: Generated<Timestamp>;
@@ -82,6 +90,7 @@ export type MathSubField = {
     id: Generated<string>;
     createdAt: Generated<Timestamp>;
     name: string;
+    minTrophy: Generated<number>;
     mathFieldId: string;
 };
 export type MediaFile = {
@@ -129,6 +138,7 @@ export type DB = {
     accountVerification: AccountVerification;
     adminUsers: AdminUser;
     answerFunctions: AnswerFunction;
+    leagues: League;
     matches: Match;
     mathBattleAnswers: MathBattleAnswer;
     mathBattleResults: MathBattleResult;

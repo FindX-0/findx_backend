@@ -144,8 +144,9 @@ model MathField {
 
   mathProblems  MathProblem[]
   mathSubFields MathSubField[]
-  Match         Match[]
-  Ticket        Ticket[]
+  matches       Match[]
+  tickets       Ticket[]
+  leagues       League[]
 
   @@map("mathFields")
 }
@@ -154,7 +155,8 @@ model MathSubField {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  name String
+  name      String
+  minTrophy Int    @default(0)
 
   mathFieldId BigInt
 
@@ -276,4 +278,19 @@ model AnswerFunction {
   mathSubField MathSubField @relation(fields: [mathSubFieldId], references: [id])
 
   @@map("answerFunctions")
+}
+
+model League {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  name        String
+  description String
+  fromTrophy  Int
+
+  mathFieldId BigInt
+
+  mathField MathField @relation(fields: [mathFieldId], references: [id])
+
+  @@map("leagues")
 }
