@@ -29,16 +29,6 @@ export class UserMetaMutationService {
     return entity;
   }
 
-  async getById(id: string): Promise<SelectableUserMeta | null> {
-    const entity = await this.userMetaRepository.getById(id);
-
-    if (!entity) {
-      throw new NotFoundException(ExceptionMessageCode.USER_META_NOT_FOUND);
-    }
-
-    return entity;
-  }
-
   async updateById(
     id: string,
     params: UserMetaUpdate,

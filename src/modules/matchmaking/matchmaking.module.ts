@@ -11,6 +11,7 @@ import { MatchQueryService } from './service/matchQuery.service';
 import { AfterUserMatchDraw } from './useCase/afterUserMatchDraw.usecase';
 import { AfterUserMatchLose } from './useCase/afterUserMatchLose.usecase';
 import { AfterUserMatchWin } from './useCase/afterUserMatchWin.usecase';
+import { CalculateTrophyChange } from './useCase/calculateTrophyChange.usecase';
 import { CancelTicket } from './useCase/cancelTicket.usecase';
 import { CreateMatch } from './useCase/createMatch.usecase';
 import { EnqueueTicket } from './useCase/enqueueTicket.usecase';
@@ -21,6 +22,8 @@ import { UpdateTicketAndPublish } from './useCase/updateTicketAndPublish.usecase
 import { GatewayModule } from '../gateway/gateway.module';
 import { MathBattleAnswerModule } from '../mathBattleAnswer/mathBattleAnswer.module';
 import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.module';
+import { StandardTrophyRangeSystemModule } from '../standardTrophyRangeSystem/standardTrophyRangeSystem.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -29,6 +32,8 @@ import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.mod
     MathSubFieldModule,
     MathBattleResultModule,
     MathBattleAnswerModule,
+    UserModule,
+    StandardTrophyRangeSystemModule,
   ],
   providers: [
     // repository
@@ -47,6 +52,7 @@ import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.mod
     AfterUserMatchWin,
     AfterUserMatchLose,
     AfterUserMatchDraw,
+    CalculateTrophyChange,
     // resolver/scheduler
     MatchmakingResolver,
     MatchmakingScheduler,

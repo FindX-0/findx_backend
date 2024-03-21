@@ -6,6 +6,7 @@ import { UserResolver } from './user.resolver';
 import { UserValidator } from './user.validator';
 import { UserMetaRepository } from './userMeta/userMeta.repository';
 import { UserMetaMutationService } from './userMeta/userMetaMutation.service';
+import { UserMetaQueryService } from './userMeta/userMetaQuery.service';
 import { UserMutationService } from './userMutation.service';
 import { UserQueryService } from './userQuery.service';
 
@@ -14,7 +15,7 @@ import { UserQueryService } from './userQuery.service';
     // userMeta
     UserMetaRepository,
     UserMetaMutationService,
-
+    UserMetaQueryService,
     // user
     UserMutationService,
     UserQueryService,
@@ -26,6 +27,7 @@ import { UserQueryService } from './userQuery.service';
   exports: [
     // userMeta
     UserMetaMutationService,
+    UserMetaQueryService,
     // user
     UserMutationService,
     UserValidator,

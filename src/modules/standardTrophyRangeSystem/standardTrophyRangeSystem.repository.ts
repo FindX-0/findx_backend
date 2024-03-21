@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { InjectKysely } from 'nestjs-kysely';
 
 import { SelectableStandardTrophyRangeSystem } from './standardTrophyRangeSystem.entity';
 import { KyselyDB } from '../../config/database/kyselyDb.type';
 
 @Injectable()
 export class StandardTrophyRangeSystemRepository {
-  constructor(private readonly db: KyselyDB) {}
+  constructor(@InjectKysely() private readonly db: KyselyDB) {}
 
   async getBellowClosestByMathFieldId(params: {
     trophy: number;

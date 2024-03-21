@@ -25,11 +25,11 @@ export class UserMetaRepository {
     return entity ?? null;
   }
 
-  async getById(id: string): Promise<SelectableUserMeta | null> {
+  async getByUserId(userId: string): Promise<SelectableUserMeta | null> {
     const entity = await this.db
       .selectFrom('userMeta')
       .selectAll()
-      .where('id', '=', id)
+      .where('userId', '=', userId)
       .executeTakeFirst();
 
     return entity ?? null;
@@ -79,5 +79,17 @@ export class UserMetaRepository {
       .execute();
 
     return Boolean(res.length) && (res[0]?.numUpdatedRows ?? 0) > 0;
+  }
+
+  async getByUserIds(userIds: string[]): Promise<SelectableUserMeta[]> {
+    if (!userIds.length) {
+      return [];
+    }
+
+    return this.db
+      .selectFrom('userMeta')
+      .selectAll()
+      .where('userId', 'in', userIds)
+      .execute();
   }
 }
