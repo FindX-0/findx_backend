@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class MathBattleResultObject {
@@ -14,7 +14,7 @@ export class MathBattleResultObject {
   @Field(() => ID)
   matchId: string;
 
-  @Field()
+  @Field(() => Int)
   score: number;
 
   @Field()
@@ -23,6 +23,6 @@ export class MathBattleResultObject {
   @Field()
   isDraw: boolean;
 
-  @Field()
+  @Field(() => Int)
   trophyChange: number;
 }

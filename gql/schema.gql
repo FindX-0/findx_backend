@@ -244,8 +244,8 @@ type MathBattleResultObject {
   isDraw: Boolean!
   isWinner: Boolean!
   matchId: ID!
-  score: Float!
-  trophyChange: Float!
+  score: Int!
+  trophyChange: Int!
   userId: ID!
 }
 
