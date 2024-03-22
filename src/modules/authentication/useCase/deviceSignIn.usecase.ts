@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 import { AuthProvider } from '@entities/index';
 import { RefreshTokenService } from '@modules/refreshToken/refreshToken.service';
-import { SelectableUser } from '@modules/user/user.entity';
+import { SelectableUser } from '@modules/user/user.type';
 import { UserQueryService } from '@modules/user/userQuery.service';
 import { ExceptionMessageCode } from '@shared/constant';
 

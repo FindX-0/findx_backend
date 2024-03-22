@@ -431,11 +431,19 @@ input UpdateMathSubFieldInput {
   name: String
 }
 
+type UserMetaObject {
+  createdAt: DateTime!
+  id: ID!
+  trophies: Int!
+  userId: ID!
+}
+
 type UserObject {
   authProvider: AuthProvider!
   createdAt: DateTime!
   email: String
   id: ID!
   isCompleted: Boolean!
+  userMeta: UserMetaObject
   userName: String
 }

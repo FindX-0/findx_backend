@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
-import { UserObject } from './gql';
+import { UserObject } from './gql/user.object';
 import { UserQueryService } from './userQuery.service';
 import { IdentifierInput } from '../../shared/gql';
 import { HttpAuthPayload } from '../authentication/filter/httpAuthPayload.interceptor';

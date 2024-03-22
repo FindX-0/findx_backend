@@ -3,7 +3,7 @@ import { Insertable, Selectable, Updateable } from 'kysely';
 import { MathBattleAnswer } from '@entities/entityTypes';
 import { SelectableMatch } from '@modules/matchmaking/entity/match.entity';
 import { SelectableMathProblem } from '@modules/mathProblem/mathProblem.entity';
-import { SelectableUser } from '@modules/user/user.entity';
+import { SelectableUser } from '@modules/user/user.type';
 
 export type SelectableMathBattleAnswer = Selectable<MathBattleAnswer>;
 

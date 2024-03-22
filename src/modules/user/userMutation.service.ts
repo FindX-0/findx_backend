@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
-import { NewUser, SelectableUser } from './user.entity';
 import { UserRepository } from './user.repository';
+import { NewUser, SelectableUser } from './user.type';
 import { ExceptionMessageCode } from '../../shared/constant';
 import { randomHEX } from '../../shared/util/random';
 

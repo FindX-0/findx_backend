@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ExceptionMessageCode } from '@shared/constant';
 
-import { SelectableUser, PublicSelectableUser } from './user.entity';
 import { UserRepository } from './user.repository';
+import { PublicSelectableUserWithRelations, SelectableUser } from './user.type';
 
 @Injectable()
 export class UserQueryService {
@@ -17,7 +17,7 @@ export class UserQueryService {
     return this.userRepository.getByDeviceId(deviceId);
   }
 
-  async getById(id: string): Promise<PublicSelectableUser> {
+  async getById(id: string): Promise<PublicSelectableUserWithRelations> {
     const user = await this.userRepository.getById(id);
 
     if (!user) {

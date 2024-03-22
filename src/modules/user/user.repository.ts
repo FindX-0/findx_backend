@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { ExpressionBuilder } from 'kysely';
+import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { InjectKysely } from 'nestjs-kysely';
 
 import { KyselyDB } from '@config/database/kyselyDb.type';
@@ -6,9 +8,10 @@ import { KyselyDB } from '@config/database/kyselyDb.type';
 import {
   NewUser,
   SelectableUser,
-  PublicSelectableUser,
   UserUpdate,
-} from './user.entity';
+  PublicSelectableUserWithRelations,
+} from './user.type';
+import { DB } from '../../entities';
 
 @Injectable()
 export class UserRepository {
@@ -57,7 +60,7 @@ export class UserRepository {
     return entity ?? null;
   }
 
-  async getById(id: string): Promise<PublicSelectableUser | null> {
+  async getById(id: string): Promise<PublicSelectableUserWithRelations | null> {
     const entity = await this.db
       .selectFrom('users')
       .select([
@@ -70,6 +73,7 @@ export class UserRepository {
         'isOnline',
         'deviceId',
       ])
+      .select(this.withUserMeta)
       .where('id', '=', id)
       .executeTakeFirst();
 
@@ -157,5 +161,14 @@ export class UserRepository {
       .execute();
 
     return entities.map((e) => e.socketId);
+  }
+
+  private withUserMeta(eb: ExpressionBuilder<DB, 'users'>) {
+    return jsonObjectFrom(
+      eb
+        .selectFrom('userMeta')
+        .selectAll()
+        .whereRef('users.id', '=', 'userMeta.userId'),
+    ).as('userMeta');
   }
 }

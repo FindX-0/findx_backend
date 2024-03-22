@@ -2,7 +2,7 @@ import { Insertable, Selectable } from 'kysely';
 
 import { MathBattleResult } from '@entities/entityTypes';
 import { SelectableMatch } from '@modules/matchmaking/entity/match.entity';
-import { SelectableUser } from '@modules/user/user.entity';
+import { SelectableUser } from '@modules/user/user.type';
 
 export type SelectableMathBattleResult = Selectable<MathBattleResult>;
 
