@@ -32,8 +32,10 @@ const simulate = (
   for (let i = 0; i < n; i++) {
     const isCorrect = Math.random() > 0.02;
     if (isCorrect) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       correctCount++;
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       wrongCount++;
     }
 
@@ -52,11 +54,9 @@ const simulate = (
       timeSpentInMillis: timeSpentInMillis.time,
       meanTimeSpentInMillis: 6000,
     });
-
-    // console.log(currentDifficulty);
   }
 
-  console.log(
-    `N = ${n} difficulty = ${currentDifficulty}, correct = ${correctCount}, wrong = ${wrongCount}`,
-  );
+  // console.log(
+  //   `N = ${n} difficulty = ${currentDifficulty}, correct = ${correctCount}, wrong = ${wrongCount}`,
+  // );
 };
