@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { SelectableUserMeta } from './userMeta.entity';
 import { UserMetaRepository } from './userMeta.repository';
-import { ExceptionMessageCode } from '../../../shared/constant';
+import { ExceptionMessageCode } from '../../shared/constant';
 
 @Injectable()
 export class UserMetaQueryService {

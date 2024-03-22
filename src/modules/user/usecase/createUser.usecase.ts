@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
+import { CreateUserMetaParams } from '../../userMeta/userMeta.type';
+import { UserMetaMutationService } from '../../userMeta/userMetaMutation.service';
 import { SelectableUserWithRelations } from '../user.entity';
 import { CreateUserParams } from '../user.type';
-import { CreateUserMetaParams } from '../userMeta/userMeta.type';
-import { UserMetaMutationService } from '../userMeta/userMetaMutation.service';
 import { UserMutationService } from '../userMutation.service';
 
 @Injectable()

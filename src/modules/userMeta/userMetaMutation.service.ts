@@ -10,8 +10,8 @@ import {
   UserMetaUpdate,
 } from './userMeta.entity';
 import { UserMetaRepository } from './userMeta.repository';
-import { ExceptionMessageCode } from '../../../shared/constant';
-import { TransactionProvider } from '../../../shared/util';
+import { ExceptionMessageCode } from '../../shared/constant';
+import { TransactionProvider } from '../../shared/util';
 
 @Injectable()
 export class UserMetaMutationService {

@@ -9,7 +9,7 @@ import {
   SelectableUserMeta,
   UserMetaUpdate,
 } from './userMeta.entity';
-import { TransactionProvider } from '../../../shared/util';
+import { TransactionProvider } from '../../shared/util';
 
 @Injectable()
 export class UserMetaRepository {

@@ -2,7 +2,7 @@ import { Insertable, Selectable, Updateable } from 'kysely';
 
 import { User } from '@entities/index';
 
-import { SelectableUserMeta } from './userMeta/userMeta.entity';
+import { SelectableUserMeta } from '../userMeta/userMeta.entity';
 
 export type SelectableUser = Selectable<User>;
 export type NewUser = Insertable<User>;

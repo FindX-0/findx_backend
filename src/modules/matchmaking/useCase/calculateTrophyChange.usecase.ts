@@ -7,7 +7,7 @@ import {
 import { ExceptionMessageCode } from '../../../shared/constant';
 import { MatchResultOutcome } from '../../../shared/type/matchResultOutcome';
 import { StandardTrophyRangeSystemQueryService } from '../../standardTrophyRangeSystem/standardTrophyRangeSystemQuery.service';
-import { UserMetaQueryService } from '../../user/userMeta/userMetaQuery.service';
+import { UserMetaQueryService } from '../../userMeta/userMetaQuery.service';
 import { SelectableMatch } from '../entity/match.entity';
 
 type Args = {

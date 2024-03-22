@@ -7,7 +7,7 @@ import { TransactionRunner } from '../../../shared/util';
 import { PublishMathBattleResultsChanged } from '../../gateway/usecase/pushMathBattleResultsChanged.usecase';
 import { MathBattleResultMutationService } from '../../mathBattleResult/mathBattleResultMutation.service';
 import { MathBattleResultQueryService } from '../../mathBattleResult/mathBattleResultQuery.service';
-import { UserMetaMutationService } from '../../user/userMeta/userMetaMutation.service';
+import { UserMetaMutationService } from '../../userMeta/userMetaMutation.service';
 import { SelectableMatch } from '../entity/match.entity';
 import { MatchRepository } from '../repository/match.repository';
 
