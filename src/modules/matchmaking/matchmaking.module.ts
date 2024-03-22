@@ -8,9 +8,6 @@ import { MatchRepository } from './repository/match.repository';
 import { TicketRepository } from './repository/ticket.repository';
 import { MatchmakingScheduler } from './schedule/matchmaking.scheduler';
 import { MatchQueryService } from './service/matchQuery.service';
-import { AfterUserMatchDraw } from './useCase/afterUserMatchDraw.usecase';
-import { AfterUserMatchLose } from './useCase/afterUserMatchLose.usecase';
-import { AfterUserMatchWin } from './useCase/afterUserMatchWin.usecase';
 import { CalculateTrophyChange } from './useCase/calculateTrophyChange.usecase';
 import { CancelTicket } from './useCase/cancelTicket.usecase';
 import { CreateMatch } from './useCase/createMatch.usecase';
@@ -49,9 +46,6 @@ import { UserModule } from '../user/user.module';
     ExpireTicketsAndNotify,
     CancelTicket,
     ResolveMatchResults,
-    AfterUserMatchWin,
-    AfterUserMatchLose,
-    AfterUserMatchDraw,
     CalculateTrophyChange,
     // resolver/scheduler
     MatchmakingResolver,

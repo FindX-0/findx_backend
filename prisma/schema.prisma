@@ -253,9 +253,10 @@ model MathBattleResult {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  score    Int
-  isWinner Boolean
-  isDraw   Boolean
+  score        Int
+  isWinner     Boolean
+  isDraw       Boolean
+  trophyChange Int     @default(0) @db.SmallInt
 
   matchId BigInt
   userId  BigInt

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import { CalculateTrophyChange } from './calculateTrophyChange.usecase';
+import { MatchResultOutcome } from '../../../shared/type/matchResultOutcome';
 import {
   CalculateMathMattleScore,
   MathBattleUserScore,
@@ -11,6 +13,7 @@ import { SelectableMatch } from '../entity/match.entity';
 export class ResolveMatchResults {
   constructor(
     private readonly calculateMathMattleScore: CalculateMathMattleScore,
+    private readonly calculateTrophyChange: CalculateTrophyChange,
   ) {}
 
   async call(match: SelectableMatch): Promise<NewMathBattleResult[]> {
@@ -31,12 +34,27 @@ export class ResolveMatchResults {
       userScores.map((e) => e.score),
     );
 
-    return userScores.map((userScore) => ({
-      ...userScore,
-      matchId: match.id,
-      isWinner: userScore.score === highestScore,
-      isDraw: false,
-    }));
+    return Promise.all(
+      userScores.map(async (userScore) => {
+        const isWinner = userScore.score === highestScore;
+
+        const trophyChange = await this.calculateTrophyChange.call({
+          userId: userScore.userId,
+          match,
+          matchResultOutcome: isWinner
+            ? MatchResultOutcome.WIN
+            : MatchResultOutcome.LOSE,
+        });
+
+        return {
+          ...userScore,
+          matchId: match.id,
+          isWinner,
+          isDraw: false,
+          trophyChange,
+        };
+      }),
+    );
   }
 
   private drawResults(
@@ -49,6 +67,7 @@ export class ResolveMatchResults {
       isDraw: true,
       matchId: match.id,
       score,
+      trophyChange: 0,
     }));
   }
 }

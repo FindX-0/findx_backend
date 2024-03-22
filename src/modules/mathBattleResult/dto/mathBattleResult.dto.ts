@@ -22,4 +22,7 @@ export class MathBattleResultDto {
 
   @Expose()
   matchId: string;
+
+  @Expose()
+  trophyChange: number;
 }

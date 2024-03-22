@@ -22,4 +22,7 @@ export class MathBattleResultObject {
 
   @Field()
   isDraw: boolean;
+
+  @Field()
+  trophyChange: number;
 }
