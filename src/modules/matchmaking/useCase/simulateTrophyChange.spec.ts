@@ -105,7 +105,10 @@ describe('Simulate trophy change', () => {
         winRate: calculateWinrate(userCount, i),
       }));
 
-    const n = 100000;
+    const n = 5000;
+
+    const changes = [];
+    const saveChanges = true;
 
     for (let i = 0; i < n; i++) {
       for (let userIndex = 0; userIndex < users.length - 1; userIndex += 2) {
@@ -136,6 +139,15 @@ describe('Simulate trophy change', () => {
           userTrophies: [userA!, userB!],
         });
 
+        if (saveChanges) {
+          changes.push({
+            userATrophy: userA.trophy,
+            userBTrophy: userB.trophy,
+            trophyChangeForUserA,
+            trophyChangeForUserB,
+          });
+        }
+
         users[userAIndex]!.trophy = Math.max(
           0,
           userA!.trophy + trophyChangeForUserA,
@@ -155,5 +167,9 @@ describe('Simulate trophy change', () => {
         2,
       ),
     );
+
+    if (saveChanges) {
+      writeFile('changes.json', JSON.stringify(changes, null, 2));
+    }
   });
 });
