@@ -50,11 +50,14 @@ const calculateTrophyChange = ({
     console.log('strs not found', userMeta!.trophy);
   }
 
+  const modifier =
+    trophyDiff > 0 ? Math.floor(trophyDiff / 10) : Math.ceil(trophyDiff / 10);
+
   switch (matchResultOutcome) {
     case MatchResultOutcome.WIN:
-      return Math.max(1, strs!.winChange + Math.floor(trophyDiff / 10));
+      return Math.max(1, strs!.winChange + modifier);
     case MatchResultOutcome.LOSE:
-      return Math.min(-1, strs!.loseChange + Math.floor(trophyDiff / 10));
+      return Math.min(-1, strs!.loseChange + modifier);
     default:
       return 0;
   }
@@ -96,7 +99,8 @@ const calculateWinrate = (total: number, index: number): number => {
 
 describe('Simulate trophy change', () => {
   it('simulate', async () => {
-    const userCount = 1000;
+    const userCount = 50_000;
+    const n = 2000;
 
     const users: { userId: string; trophy: number; winRate: number }[] =
       Array.from({ length: userCount }, (_, i) => ({
@@ -105,10 +109,8 @@ describe('Simulate trophy change', () => {
         winRate: calculateWinrate(userCount, i),
       }));
 
-    const n = 5000;
-
     const changes = [];
-    const saveChanges = true;
+    const saveChanges = false;
 
     for (let i = 0; i < n; i++) {
       for (let userIndex = 0; userIndex < users.length - 1; userIndex += 2) {
