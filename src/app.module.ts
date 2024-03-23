@@ -13,7 +13,7 @@ import { createPostgresPool } from '@config/database/postgresPool.factory';
 import { RedisModule } from '@config/database/redis.module';
 import { MathBattleModule } from '@modules/mathBattle/mathBattle.module';
 
-import { AppController } from './AppController';
+import { AppController } from './app.controller';
 import { EnvModule } from './config/env/env.module';
 import { EnvService } from './config/env/env.service';
 import { validationExceptionFactory } from './config/validation';

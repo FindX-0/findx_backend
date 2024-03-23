@@ -55,7 +55,7 @@ export class CalculateTrophyChange {
       case MatchResultOutcome.WIN:
         return strs.winChange - Math.floor(trophyDiff / 10);
       case MatchResultOutcome.LOSE:
-        return strs.winChange + Math.floor(trophyDiff / 10);
+        return strs.loseChange + Math.floor(trophyDiff / 10);
       default:
         return 0;
     }

@@ -1,4 +1,3 @@
-import { randomInt } from 'crypto';
 import { writeFile } from 'fs/promises';
 
 import { MatchResultOutcome } from '../../../shared/type/matchResultOutcome';
@@ -38,13 +37,14 @@ const calculateTrophyChange = ({
   userTrophies: { userId: string; trophy: number }[];
   matchResultOutcome: MatchResultOutcome;
 }) => {
-  const trophyDiff = Math.abs(
-    userTrophies[0]!.trophy - userTrophies[1]!.trophy,
-  );
-
   const userMeta = userTrophies.find((e) => e.userId === userId);
+  const otherUserMeta = userTrophies.find((e) => e.userId !== userId);
 
-  const strs = strsList.find((e) => e.fromTrophy <= userMeta!.trophy);
+  const trophyDiff = otherUserMeta!.trophy - userMeta!.trophy;
+
+  const strs = [...strsList]
+    .reverse()
+    .find((e) => e.fromTrophy <= userMeta!.trophy);
 
   if (!strs) {
     console.log('strs not found', userMeta!.trophy);
@@ -52,81 +52,105 @@ const calculateTrophyChange = ({
 
   switch (matchResultOutcome) {
     case MatchResultOutcome.WIN:
-      return Math.max(1, strs!.winChange - Math.floor(trophyDiff / 10));
+      return Math.max(1, strs!.winChange + Math.floor(trophyDiff / 10));
     case MatchResultOutcome.LOSE:
-      return Math.min(-1, strs!.winChange + Math.floor(trophyDiff / 10));
+      return Math.min(-1, strs!.loseChange + Math.floor(trophyDiff / 10));
     default:
       return 0;
   }
 };
 
-describe('Simulate trophy change', () => {
-  it('simulate', () => {
-    const users: { userId: string; trophy: number }[] = Array.from(
-      { length: 4000 },
-      () => ({ userId: uuidV4(), trophy: 0 }),
-    );
+const calculateWinrate = (total: number, index: number): number => {
+  const thresholds = [
+    total * 0.0168,
+    total * (0.0444 + 0.0168),
+    total * (0.0934 + 0.0444 + 0.0168),
+    total * (0.15 + 0.0934 + 0.0444 + 0.0168),
+    total * (0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
+    total * (0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
+    total * (0.1517 + 0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
+    total *
+      (0.0928 + 0.1517 + 0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
+    total *
+      (0.0446 +
+        0.0928 +
+        0.1517 +
+        0.1943 +
+        0.1951 +
+        0.15 +
+        0.0934 +
+        0.0444 +
+        0.0168),
+  ];
 
-    const n = 100_000;
-    for (let i = 0; i < n; i++) {
-      const user1Index = randomInt(0, users.length - 1);
-      const user1 = users[user1Index];
+  const winRates = [5, 15, 25, 35, 45, 55, 65, 75, 85, 95];
 
-      let user2Index = 0;
-      let trophyDiffToUser = Number.MAX_VALUE;
-
-      for (let j = 0; j < users.length; j++) {
-        const user = users[j]!;
-
-        if (user.userId === user1!.userId) {
-          continue;
-        }
-
-        const trophyDiff = Math.abs(user1!.trophy - user.trophy);
-        if (trophyDiffToUser <= trophyDiff) {
-          continue;
-        }
-
-        trophyDiffToUser = trophyDiff;
-        user2Index = j;
-      }
-      const user2 = users[user2Index!];
-
-      const matchResultOutcome =
-        randomNumber(0, 1) > 0.4
-          ? MatchResultOutcome.WIN
-          : MatchResultOutcome.LOSE;
-
-      const trophyChangeForUser1 = calculateTrophyChange({
-        matchResultOutcome,
-        userId: user1!.userId,
-        userTrophies: [user1!, user2!],
-      });
-
-      const trophyChangeForUser2 = calculateTrophyChange({
-        matchResultOutcome:
-          matchResultOutcome === MatchResultOutcome.WIN
-            ? MatchResultOutcome.LOSE
-            : MatchResultOutcome.WIN,
-        userId: user2!.userId,
-        userTrophies: [user1!, user2!],
-      });
-
-      users[user1Index]!.trophy = Math.max(
-        0,
-        user1!.trophy + trophyChangeForUser1,
-      );
-      users[user2Index]!.trophy = Math.max(
-        0,
-        user2!.trophy + trophyChangeForUser2,
-      );
+  for (let i = 0; i < thresholds.length; i++) {
+    if (index < thresholds[i]!) {
+      return winRates[i]!;
     }
+  }
 
-    console.log('writing file');
+  return winRates[winRates.length - 1]!;
+};
+
+describe('Simulate trophy change', () => {
+  it('simulate', async () => {
+    const userCount = 1000;
+
+    const users: { userId: string; trophy: number; winRate: number }[] =
+      Array.from({ length: userCount }, (_, i) => ({
+        userId: uuidV4(),
+        trophy: 0,
+        winRate: calculateWinrate(userCount, i),
+      }));
+
+    const n = 100000;
+
+    for (let i = 0; i < n; i++) {
+      for (let userIndex = 0; userIndex < users.length - 1; userIndex += 2) {
+        const userAIndex = userIndex;
+        const userBIndex = userIndex + 1;
+        const userA = users[userAIndex];
+        const userB = users[userBIndex];
+        if (!userA || !userB) {
+          continue;
+        }
+
+        const matchResultOutcome =
+          randomNumber(0, 1) < userA.winRate / (userA.winRate + userB.winRate)
+            ? MatchResultOutcome.WIN
+            : MatchResultOutcome.LOSE;
+
+        const trophyChangeForUserB = calculateTrophyChange({
+          matchResultOutcome:
+            matchResultOutcome === MatchResultOutcome.WIN
+              ? MatchResultOutcome.LOSE
+              : MatchResultOutcome.WIN,
+          userId: userB!.userId,
+          userTrophies: [userA!, userB!],
+        });
+        const trophyChangeForUserA = calculateTrophyChange({
+          matchResultOutcome,
+          userId: userA!.userId,
+          userTrophies: [userA!, userB!],
+        });
+
+        users[userAIndex]!.trophy = Math.max(
+          0,
+          userA!.trophy + trophyChangeForUserA,
+        );
+        users[userBIndex]!.trophy = Math.max(
+          0,
+          userB!.trophy + trophyChangeForUserB,
+        );
+      }
+      users.sort((a, b) => (a.trophy < b.trophy ? -1 : 1));
+    }
     writeFile(
       'trophy.json',
       JSON.stringify(
-        users.map((e) => e.trophy).filter((e) => e > 0),
+        users.map((e) => `${e.trophy} ${e.winRate}`),
         null,
         2,
       ),
