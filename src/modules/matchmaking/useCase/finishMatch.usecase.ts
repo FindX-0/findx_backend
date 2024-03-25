@@ -69,6 +69,7 @@ export class FinishMatch {
           userMeta,
           userMetaChange: {
             trophiesChange: gameResult?.trophyChange ?? 0,
+            matchId: match.id,
           },
         },
       };

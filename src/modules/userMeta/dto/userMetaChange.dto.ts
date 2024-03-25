@@ -4,4 +4,7 @@ import { Exclude, Expose } from 'class-transformer';
 export class UserMetaChangeDto {
   @Expose()
   trophyChange: number;
+
+  @Expose()
+  matchId: string;
 }

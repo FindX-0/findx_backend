@@ -8,4 +8,5 @@ export type UserMetaUpdate = Updateable<UserMeta>;
 
 export type UserMetaChange = {
   trophiesChange: number;
+  matchId: string;
 };
