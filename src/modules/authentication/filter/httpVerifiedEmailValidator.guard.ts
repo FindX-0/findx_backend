@@ -8,8 +8,8 @@ import { Reflector } from '@nestjs/core';
 
 import { ExceptionMessageCode } from '@shared/constant';
 import { getContextRequest } from '@shared/util';
-import { AccountVerificationService } from '@modules/accountVerification/accountVerification.service';
 
+import { AccountVerificationService } from '../../accountVerification/accountVerification.service';
 import { NO_AUTH_KEY } from '../decorator/noAuth.decorator';
 import { NO_EMAIL_VERIFICATION_VALIDATE } from '../decorator/noEmailVerificationValidate.decorator';
 import { getBearerTokenFromRequest } from '../util/getBearerTokenFromRequest';

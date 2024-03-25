@@ -12,13 +12,16 @@ export class CreateUser {
     private readonly userMetaMutationService: UserMetaMutationService,
   ) {}
 
-  async execute(
-    userParams: CreateUserParams & { userMeta: CreateUserMetaParams },
-  ): Promise<SelectableUserWithRelations> {
+  async execute(params: {
+    userParams: CreateUserParams;
+    userMetaParams: CreateUserMetaParams;
+  }): Promise<SelectableUserWithRelations> {
+    const { userParams, userMetaParams } = params;
+
     const user = await this.userMutationService.create(userParams);
 
     const userMeta = await this.userMetaMutationService.create({
-      ...userParams.userMeta,
+      ...userMetaParams,
       userId: user.id,
     });
 

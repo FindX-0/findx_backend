@@ -44,13 +44,15 @@ export class GoogleSignIn {
     const hashedPassword = await this.passwordEncoder.encode(generatedPassword);
 
     const user = await this.createUser.execute({
-      email,
-      userName: null,
-      deviceId: null,
-      passwordHash: hashedPassword,
-      isCompleted: false,
-      authProvider: AuthProvider.GOOGLE,
-      userMeta: {
+      userParams: {
+        email,
+        userName: null,
+        deviceId: null,
+        passwordHash: hashedPassword,
+        isCompleted: false,
+        authProvider: AuthProvider.GOOGLE,
+      },
+      userMetaParams: {
         trophies: 0,
       },
     });

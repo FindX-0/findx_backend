@@ -48,13 +48,15 @@ export class DeviceSignIn {
     }
 
     const newUser = await this.createUser.execute({
-      authProvider: AuthProvider.NONE,
-      isCompleted: true,
-      deviceId,
-      email: null,
-      passwordHash: null,
-      userName: randomHEX(6),
-      userMeta: {
+      userParams: {
+        authProvider: AuthProvider.NONE,
+        isCompleted: true,
+        deviceId,
+        email: null,
+        passwordHash: null,
+        userName: randomHEX(6),
+      },
+      userMetaParams: {
         trophies: 0,
       },
     });

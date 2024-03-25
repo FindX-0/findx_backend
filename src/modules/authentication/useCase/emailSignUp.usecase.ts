@@ -33,13 +33,15 @@ export class EmailSignUp {
     const hashedPassword = await this.passwordEncoder.encode(password);
 
     const user = await this.createUser.execute({
-      email,
-      userName,
-      passwordHash: hashedPassword,
-      isCompleted: true,
-      authProvider: AuthProvider.EMAIL,
-      deviceId: null,
-      userMeta: {
+      userParams: {
+        email,
+        userName,
+        passwordHash: hashedPassword,
+        isCompleted: true,
+        authProvider: AuthProvider.EMAIL,
+        deviceId: null,
+      },
+      userMetaParams: {
         trophies: 0,
       },
     });
