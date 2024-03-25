@@ -34,14 +34,14 @@ export class CalculateTrophyChange {
       );
     }
 
-    const trophyDiff = Math.abs(
-      userMetas[0]!.trophies - userMetas[1]!.trophies,
-    );
-
     const userMeta = userMetas.find((e) => e.userId === userId);
     if (!userMeta) {
       throw new NotFoundException(ExceptionMessageCode.USER_META_NOT_FOUND);
     }
+
+    const otherUserMeta = userMetas.find((e) => e.userId !== userId);
+
+    const trophyDiff = (otherUserMeta?.trophies ?? 0) - userMeta.trophies;
 
     const strs =
       await this.standardTrophyRangeSystemQueryService.getBellowClosestByMathFieldId(
@@ -51,11 +51,14 @@ export class CalculateTrophyChange {
         },
       );
 
+    const modifier =
+      trophyDiff > 0 ? Math.floor(trophyDiff / 10) : Math.ceil(trophyDiff / 10);
+
     switch (matchResultOutcome) {
       case MatchResultOutcome.WIN:
-        return strs.winChange - Math.floor(trophyDiff / 10);
+        return Math.max(1, strs!.winChange + modifier);
       case MatchResultOutcome.LOSE:
-        return strs.loseChange + Math.floor(trophyDiff / 10);
+        return Math.min(-1, strs!.loseChange + modifier);
       default:
         return 0;
     }

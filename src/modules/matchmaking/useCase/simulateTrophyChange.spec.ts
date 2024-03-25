@@ -3,6 +3,11 @@ import { writeFile } from 'fs/promises';
 import { MatchResultOutcome } from '../../../shared/type/matchResultOutcome';
 import { randomNumber, uuidV4 } from '../../../shared/util/random';
 
+const writeTrophies = false;
+const writeTrophyChanges = false;
+const userCount = 10;
+const numberOfMatches = 10;
+
 type Strs = {
   winChange: number;
   loseChange: number;
@@ -66,24 +71,14 @@ const calculateTrophyChange = ({
 const calculateWinrate = (total: number, index: number): number => {
   const thresholds = [
     total * 0.0168,
-    total * (0.0444 + 0.0168),
-    total * (0.0934 + 0.0444 + 0.0168),
-    total * (0.15 + 0.0934 + 0.0444 + 0.0168),
-    total * (0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
-    total * (0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
-    total * (0.1517 + 0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
-    total *
-      (0.0928 + 0.1517 + 0.1943 + 0.1951 + 0.15 + 0.0934 + 0.0444 + 0.0168),
-    total *
-      (0.0446 +
-        0.0928 +
-        0.1517 +
-        0.1943 +
-        0.1951 +
-        0.15 +
-        0.0934 +
-        0.0444 +
-        0.0168),
+    total * 0.0612,
+    total * 0.1546,
+    total * 0.3046,
+    total * 0.4997,
+    total * 0.694,
+    total * 0.8457,
+    total * 0.9385,
+    total * 0.9831,
   ];
 
   const winRates = [5, 15, 25, 35, 45, 55, 65, 75, 85, 95];
@@ -99,9 +94,6 @@ const calculateWinrate = (total: number, index: number): number => {
 
 describe('Simulate trophy change', () => {
   it('simulate', async () => {
-    const userCount = 50_000;
-    const n = 2000;
-
     const users: { userId: string; trophy: number; winRate: number }[] =
       Array.from({ length: userCount }, (_, i) => ({
         userId: uuidV4(),
@@ -110,9 +102,8 @@ describe('Simulate trophy change', () => {
       }));
 
     const changes = [];
-    const saveChanges = false;
 
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < numberOfMatches; i++) {
       for (let userIndex = 0; userIndex < users.length - 1; userIndex += 2) {
         const userAIndex = userIndex;
         const userBIndex = userIndex + 1;
@@ -141,7 +132,7 @@ describe('Simulate trophy change', () => {
           userTrophies: [userA!, userB!],
         });
 
-        if (saveChanges) {
+        if (writeTrophyChanges) {
           changes.push({
             userATrophy: userA.trophy,
             userBTrophy: userB.trophy,
@@ -161,16 +152,19 @@ describe('Simulate trophy change', () => {
       }
       users.sort((a, b) => (a.trophy < b.trophy ? -1 : 1));
     }
-    writeFile(
-      'trophy.json',
-      JSON.stringify(
-        users.map((e) => `${e.trophy} ${e.winRate}`),
-        null,
-        2,
-      ),
-    );
 
-    if (saveChanges) {
+    if (writeTrophies) {
+      writeFile(
+        'trophy.json',
+        JSON.stringify(
+          users.map((e) => `${e.trophy} ${e.winRate}`),
+          null,
+          2,
+        ),
+      );
+    }
+
+    if (writeTrophyChanges) {
       writeFile('changes.json', JSON.stringify(changes, null, 2));
     }
   });
