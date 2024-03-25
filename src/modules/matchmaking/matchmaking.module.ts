@@ -21,6 +21,7 @@ import { MathBattleAnswerModule } from '../mathBattleAnswer/mathBattleAnswer.mod
 import { MathBattleResultModule } from '../mathBattleResult/mathBattleResult.module';
 import { StandardTrophyRangeSystemModule } from '../standardTrophyRangeSystem/standardTrophyRangeSystem.module';
 import { UserModule } from '../user/user.module';
+import { UserMetaModule } from '../userMeta/userMeta.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserModule } from '../user/user.module';
     MathBattleResultModule,
     MathBattleAnswerModule,
     UserModule,
+    UserMetaModule,
     StandardTrophyRangeSystemModule,
   ],
   providers: [

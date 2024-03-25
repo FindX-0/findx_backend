@@ -65,12 +65,11 @@ export class UserMetaRepository {
   async addTrophies(params: {
     userId: string;
     amount: number;
-    txProvider: TransactionProvider;
+    txProvider?: TransactionProvider;
   }): Promise<boolean> {
     const { userId, amount, txProvider } = params;
 
-    const res = await txProvider
-      .get()
+    const res = await (txProvider?.get() ?? this.db)
       .updateTable('userMeta')
       .set({
         trophies: sql`${sql.id('trophies')} + ${sql.val(amount)}`,

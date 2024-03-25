@@ -356,6 +356,7 @@ type Query {
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAnswerFunctionById(input: IdentifierInput!): AnswerFunctionObject!
   getAuthUser: UserObject!
+  getAuthUserMeta: UserMetaObject!
   getMatchById(input: IdentifierInput!): MatchObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
   getMathBattleResults(input: GetMathBattleResultsInput!): [MathBattleResultObject!]!

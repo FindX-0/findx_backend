@@ -4,10 +4,12 @@ import { MatchState } from '@entities/index';
 
 import { ResolveMatchResults } from './resolveMatchResults.usecase';
 import { TransactionRunner } from '../../../shared/util';
+import { PublishUserMetaChanged } from '../../gateway/usecase/publishUserMetaChanged.usecase';
 import { PublishMathBattleResultsChanged } from '../../gateway/usecase/pushMathBattleResultsChanged.usecase';
 import { MathBattleResultMutationService } from '../../mathBattleResult/mathBattleResultMutation.service';
 import { MathBattleResultQueryService } from '../../mathBattleResult/mathBattleResultQuery.service';
 import { UserMetaMutationService } from '../../userMeta/userMetaMutation.service';
+import { UserMetaQueryService } from '../../userMeta/userMetaQuery.service';
 import { SelectableMatch } from '../entity/match.entity';
 import { MatchRepository } from '../repository/match.repository';
 
@@ -21,6 +23,8 @@ export class FinishMatch {
     private readonly resolveMatchResults: ResolveMatchResults,
     private readonly publishMathBattleResultsChanged: PublishMathBattleResultsChanged,
     private readonly userMetaMutationService: UserMetaMutationService,
+    private readonly userMetaQueryService: UserMetaQueryService,
+    private readonly publishUserMetaChanged: PublishUserMetaChanged,
   ) {}
 
   async call(match: SelectableMatch): Promise<void> {
@@ -49,13 +53,35 @@ export class FinishMatch {
       ]);
     });
 
-    const results = await this.mathBattleResultQueryService.getAllByMatchId(
-      match.id,
-    );
+    const [mathBattleResults, userMetas] = await Promise.all([
+      this.mathBattleResultQueryService.getAllByMatchId(match.id),
+      this.userMetaQueryService.getByUserIds(match.userIds),
+    ]);
 
-    await this.publishMathBattleResultsChanged.call({
-      userIds: match.userIds,
-      results,
+    const trophyChangeParams = userMetas.map((userMeta) => {
+      const gameResult = mathBattleResults.find(
+        (result) => result.userId === userMeta.userId,
+      );
+
+      return {
+        userId: userMeta.userId,
+        payload: {
+          userMeta,
+          change: {
+            trophiesChange: gameResult?.trophyChange ?? 0,
+          },
+        },
+      };
     });
+
+    await Promise.all([
+      this.publishMathBattleResultsChanged.call({
+        userIds: match.userIds,
+        results: mathBattleResults,
+      }),
+      ...trophyChangeParams.map((params) =>
+        this.publishUserMetaChanged.call(params),
+      ),
+    ]);
   }
 }

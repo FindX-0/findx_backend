@@ -45,7 +45,7 @@ export class UserMetaMutationService {
   async addTrophies(params: {
     userId: string;
     amount: number;
-    txProvider: TransactionProvider;
+    txProvider?: TransactionProvider;
   }): Promise<void> {
     const didUpdate = await this.userMetaRepository.addTrophies(params);
 
