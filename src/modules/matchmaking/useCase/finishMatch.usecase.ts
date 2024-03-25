@@ -67,7 +67,7 @@ export class FinishMatch {
         userId: userMeta.userId,
         payload: {
           userMeta,
-          change: {
+          userMetaChange: {
             trophiesChange: gameResult?.trophyChange ?? 0,
           },
         },

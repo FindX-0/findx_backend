@@ -3,7 +3,8 @@ import { plainToInstance } from 'class-transformer';
 
 import { UserQueryService } from '@modules/user/userQuery.service';
 
-import { UserMetaDto } from '../../userMeta/gql/userMeta.dto';
+import { UserMetaDto } from '../../userMeta/dto/userMeta.dto';
+import { UserMetaChangeDto } from '../../userMeta/dto/userMetaChange.dto';
 import {
   SelectableUserMeta,
   UserMetaChange,
@@ -13,7 +14,7 @@ import { GatewayEvent } from '../gatewayEvent.enum';
 
 type Args = {
   userId: string;
-  payload: { userMeta: SelectableUserMeta; change: UserMetaChange };
+  payload: { userMeta: SelectableUserMeta; userMetaChange: UserMetaChange };
 };
 
 @Injectable()
@@ -26,7 +27,13 @@ export class PublishUserMetaChanged {
   async call({ userId, payload }: Args): Promise<void> {
     const socketIds = await this.userQueryService.getSocketIdById(userId);
 
-    const mapped = plainToInstance(UserMetaDto, payload);
+    const mapped = {
+      userMeta: plainToInstance(UserMetaDto, payload.userMeta),
+      userMetaChange: plainToInstance(
+        UserMetaChangeDto,
+        payload.userMetaChange,
+      ),
+    };
 
     this.gateway.wss.to(socketIds).emit(GatewayEvent.USER_META_CHANGED, mapped);
   }
