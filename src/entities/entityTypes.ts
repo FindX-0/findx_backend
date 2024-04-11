@@ -72,6 +72,7 @@ export type MathField = {
     createdAt: Generated<Timestamp>;
     name: string;
     isPublic: Generated<boolean>;
+    spamDelayMillis: Generated<number>;
 };
 export type MathProblem = {
     id: Generated<string>;

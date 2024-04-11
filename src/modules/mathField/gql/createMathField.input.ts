@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { IsBoolean, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
 export class CreateMathFieldInput {
@@ -7,4 +7,13 @@ export class CreateMathFieldInput {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @Field()
+  @IsBoolean()
+  isPublic: boolean;
+
+  @Field(() => Int)
+  @IsInt()
+  @IsNotEmpty()
+  spamDelayMillis: number;
 }

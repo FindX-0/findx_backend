@@ -10,4 +10,10 @@ export class MathFieldObject {
 
   @Field()
   createdAt: Date;
+
+  @Field()
+  isPublic: boolean;
+
+  @Field()
+  spamDelayMillis: number;
 }

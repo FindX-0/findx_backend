@@ -6,6 +6,7 @@ import {
 
 import { ExceptionMessageCode } from '@shared/constant';
 
+import { SelectableMathField } from '../../mathField/mathField.entity';
 import { SelectableMatch } from '../entity/match.entity';
 import { MatchRepository } from '../repository/match.repository';
 
@@ -46,5 +47,15 @@ export class MatchQueryService {
     }
 
     return match;
+  }
+
+  async getMathFieldById(matchId: string): Promise<SelectableMathField> {
+    const mathField = await this.matchRepository.getMathFieldById(matchId);
+
+    if (!mathField) {
+      throw new NotFoundException(ExceptionMessageCode.MATCH_NOT_FOUND);
+    }
+
+    return mathField;
   }
 }

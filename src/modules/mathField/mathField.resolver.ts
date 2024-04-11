@@ -41,6 +41,10 @@ export class MathFieldResolver {
 
     return this.mathFieldMutationService.updateById(id, {
       ...(values.name && { name: values.name }),
+      ...(values.isPublic && { isPublic: values.isPublic }),
+      ...(values.spamDelayMillis && {
+        spamDelayMillis: values.spamDelayMillis,
+      }),
     });
   }
 

@@ -139,8 +139,9 @@ model MathField {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  name     String
-  isPublic Boolean @default(true)
+  name            String
+  isPublic        Boolean @default(true)
+  spamDelayMillis Int     @default(3) @db.SmallInt
 
   mathProblems              MathProblem[]
   mathSubFields             MathSubField[]

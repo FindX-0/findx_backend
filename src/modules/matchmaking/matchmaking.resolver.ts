@@ -4,6 +4,7 @@ import { IdentifierInput, SuccessObject } from '@shared/gql';
 
 import { CancelTicketInput } from './gql/cancelTicket.input';
 import { EnqueueTicketInput } from './gql/enqueueTicket.input';
+import { GetMatchMathFieldInput } from './gql/getMatchMathField.input';
 import { MatchObject } from './gql/match.object';
 import { TicketObject } from './gql/ticket.object';
 import { MatchQueryService } from './service/matchQuery.service';
@@ -11,6 +12,7 @@ import { CancelTicket } from './useCase/cancelTicket.usecase';
 import { EnqueueTicket } from './useCase/enqueueTicket.usecase';
 import { HttpAuthPayload } from '../authentication/filter/httpAuthPayload.interceptor';
 import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
+import { MathFieldObject } from '../mathField/gql/mathField.object';
 
 @Resolver()
 export class MatchmakingResolver {
@@ -54,5 +56,12 @@ export class MatchmakingResolver {
         userId: authPayload.userId,
       },
     });
+  }
+
+  @Query(() => MathFieldObject)
+  async getMatchMathField(
+    @Args('input') input: GetMatchMathFieldInput,
+  ): Promise<MathFieldObject> {
+    return this.matchQueryService.getMathFieldById(input.matchId);
   }
 }

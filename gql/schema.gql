@@ -78,7 +78,9 @@ input CreateAnswerFunctionInput {
 }
 
 input CreateMathFieldInput {
+  isPublic: Boolean!
   name: String!
+  spamDelayMillis: Int!
 }
 
 input CreateMathProblemAnswerInput {
@@ -182,6 +184,10 @@ input GetAllMathFieldsInput {
   onlyPublic: Boolean!
 }
 
+input GetMatchMathFieldInput {
+  matchId: ID!
+}
+
 input GetMathBattleMathProblemsInput {
   matchId: ID!
 }
@@ -252,7 +258,9 @@ type MathBattleResultObject {
 type MathFieldObject {
   createdAt: DateTime!
   id: ID!
+  isPublic: Boolean!
   name: String!
+  spamDelayMillis: Float!
 }
 
 type MathFieldPageObject {
@@ -358,6 +366,7 @@ type Query {
   getAuthUser: UserObject!
   getAuthUserMeta: UserMetaObject!
   getMatchById(input: IdentifierInput!): MatchObject!
+  getMatchMathField(input: GetMatchMathFieldInput!): MathFieldObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
   getMathBattleResults(input: GetMathBattleResultsInput!): [MathBattleResultObject!]!
   getMathFieldById(input: IdentifierInput!): MathFieldObject!
@@ -412,7 +421,9 @@ input UpdateAnswerFunctionInput {
 
 input UpdateMathFieldInput {
   id: ID!
+  isPublic: Boolean
   name: String
+  spamDelayMillis: Int
 }
 
 input UpdateMathProblemInput {
