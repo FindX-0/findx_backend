@@ -260,7 +260,7 @@ type MathFieldObject {
   id: ID!
   isPublic: Boolean!
   name: String!
-  spamDelayMillis: Float!
+  spamDelayMillis: Int!
 }
 
 type MathFieldPageObject {

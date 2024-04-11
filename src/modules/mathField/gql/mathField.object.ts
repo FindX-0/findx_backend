@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class MathFieldObject {
@@ -14,6 +14,6 @@ export class MathFieldObject {
   @Field()
   isPublic: boolean;
 
-  @Field()
+  @Field(() => Int)
   spamDelayMillis: number;
 }
