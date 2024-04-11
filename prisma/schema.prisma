@@ -43,6 +43,13 @@ enum Role {
   @@map("role")
 }
 
+enum FriendshipStatus {
+  REQUESTED
+  ACCEPTED
+
+  @@map("friendshipStatus")
+}
+
 model MediaFile {
   id        BigInt   @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -73,6 +80,8 @@ model User {
   mathBattleAnswers   MathBattleAnswer[]
   mathBattleResults   MathBattleResult[]
   userMeta            UserMeta?
+  friends             Friend[]             @relation(name: "friends")
+  friendsRequested    Friend[]             @relation(name: "friendsRequested")
 
   @@index([email, deviceId])
   @@map("users")
@@ -311,4 +320,19 @@ model StandardTrophyRangeSystem {
   mathField MathField @relation(fields: [mathFieldId], references: [id])
 
   @@map("standardTrophyRangeSystem")
+}
+
+model Friend {
+  userId    BigInt
+  friendId  BigInt
+  createdAt DateTime @default(now())
+
+  status FriendshipStatus
+
+  user   User @relation(name: "friends", fields: [userId], references: [id])
+  friend User @relation(name: "friendsRequested", fields: [friendId], references: [id])
+
+  @@id([userId, friendId])
+  @@unique([userId, friendId])
+  @@map("friends")
 }

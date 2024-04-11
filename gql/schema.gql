@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AcceptFriendRequestInput {
+  userId: ID!
+}
+
 input AdminSignInInput {
   email: String!
   password: String!
@@ -119,6 +123,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input DeclineFriendRequestInput {
+  userId: ID!
+}
+
 input DeviceSignInInput {
   deviceId: String!
 }
@@ -144,10 +152,26 @@ input FilterAnswerFunctionsInput {
   mathSubFieldId: ID
 }
 
+input FilterFriendsInput {
+  searchQuery: String
+}
+
 input FilterMathSubFieldsInput {
   lastId: ID
   limit: Int!
   mathFieldId: ID
+}
+
+type FriendObject {
+  createdAt: DateTime!
+  friendId: ID!
+  status: FriendshipStatus!
+  userId: ID!
+}
+
+enum FriendshipStatus {
+  ACCEPTED
+  REQUESTED
 }
 
 input GenerateMathProblemCustomStrParameterInput {
@@ -326,6 +350,7 @@ type MediaFileObject {
 }
 
 type Mutation {
+  acceptFriendRequest(input: AcceptFriendRequestInput!): SuccessObject!
   adminRefreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
   adminSignIn(input: AdminSignInInput!): JwtTokenPayloadObject!
   adminSignUp(input: AdminSignUpInput!): JwtTokenPayloadObject!
@@ -335,6 +360,7 @@ type Mutation {
   createMathField(input: CreateMathFieldInput!): MathFieldObject!
   createMathProblem(input: CreateMathProblemInput!): CreateMathProblemResObject!
   createMathSubField(input: CreateMathSubFieldInput!): MathSubFieldWithRelationsObject!
+  declineFriendRequest(input: DeclineFriendRequestInput!): SuccessObject!
   deleteAnswerFunction(input: IdentifierInput!): SuccessObject!
   deleteMathField(input: IdentifierInput!): SuccessObject!
   deleteMathProblem(input: IdentifierInput!): SuccessObject!
@@ -345,11 +371,13 @@ type Mutation {
   enqueueTicket(input: EnqueueTicketInput!): TicketObject!
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
+  sendFriendRequest(input: SendFriendRequestInput!): FriendObject!
   submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
   updateAnswerFunction(input: UpdateAnswerFunctionInput!): AnswerFunctionObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
   updateMathProblem(input: UpdateMathProblemInput!): MathProblemObject!
   updateMathSubField(input: UpdateMathSubFieldInput!): MathSubFieldWithRelationsObject!
+  withdrawFriendRequest(input: WithdrawFriendRequestInput!): SuccessObject!
 }
 
 type Query {
@@ -365,6 +393,8 @@ type Query {
   getAnswerFunctionById(input: IdentifierInput!): AnswerFunctionObject!
   getAuthUser: UserObject!
   getAuthUserMeta: UserMetaObject!
+  getFriendRequests(input: FilterFriendsInput!): [FriendObject!]!
+  getFriends(input: FilterFriendsInput!): [FriendObject!]!
   getMatchById(input: IdentifierInput!): MatchObject!
   getMatchMathField(input: GetMatchMathFieldInput!): MathFieldObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
@@ -378,6 +408,10 @@ type Query {
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+input SendFriendRequestInput {
+  userId: ID!
 }
 
 type ServerTimeObject {
@@ -458,4 +492,8 @@ type UserObject {
   isCompleted: Boolean!
   userMeta: UserMetaObject
   userName: String
+}
+
+input WithdrawFriendRequestInput {
+  userId: ID!
 }

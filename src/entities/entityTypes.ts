@@ -4,7 +4,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-import type { AuthProvider, TicketState, MatchState, Role } from "./entityEnums";
+import type { AuthProvider, TicketState, MatchState, Role, FriendshipStatus } from "./entityEnums";
 
 export type AccountVerification = {
     id: Generated<string>;
@@ -28,6 +28,12 @@ export type AnswerFunction = {
     weight: number;
     condition: string | null;
     mathSubFieldId: string;
+};
+export type Friend = {
+    userId: string;
+    friendId: string;
+    createdAt: Generated<Timestamp>;
+    status: FriendshipStatus;
 };
 export type League = {
     id: Generated<string>;
@@ -148,6 +154,7 @@ export type DB = {
     accountVerification: AccountVerification;
     adminUsers: AdminUser;
     answerFunctions: AnswerFunction;
+    friends: Friend;
     leagues: League;
     matches: Match;
     mathBattleAnswers: MathBattleAnswer;

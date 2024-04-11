@@ -25,6 +25,7 @@ import { HttpJwtAuthGuard } from './modules/authentication/filter/httpJwtAuth.gu
 import { HttpRolesGuard } from './modules/authentication/filter/httpRoles.guard';
 import { AuthenticationModule } from './modules/authentication/module/authentication.module';
 import { JwtHelperModule } from './modules/authentication/module/jwtHelper.module';
+import { FriendModule } from './modules/friend/friend.module';
 import { MatchmakingModule } from './modules/matchmaking/matchmaking.module';
 import { MathFieldModule } from './modules/mathField/mathField.module';
 import { MathProblemModule } from './modules/mathProblem/mathProblem.module';
@@ -80,6 +81,7 @@ import { TransactionRunnerModule } from './shared/util';
     MediaFileModule,
     MathBattleModule,
     AnswerFunctionModule,
+    FriendModule,
   ],
   controllers: [AppController],
   providers: [

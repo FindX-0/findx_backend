@@ -23,3 +23,8 @@ export const Role = {
     SUPER_ADMIN: "SUPER_ADMIN"
 } as const;
 export type Role = (typeof Role)[keyof typeof Role];
+export const FriendshipStatus = {
+    REQUESTED: "REQUESTED",
+    ACCEPTED: "ACCEPTED"
+} as const;
+export type FriendshipStatus = (typeof FriendshipStatus)[keyof typeof FriendshipStatus];
