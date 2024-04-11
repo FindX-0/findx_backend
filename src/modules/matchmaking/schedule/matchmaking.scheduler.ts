@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Interval, SchedulerRegistry } from '@nestjs/schedule';
+import { Interval } from '@nestjs/schedule';
 
 import { EnvService } from '@config/env/env.service';
 import { TicketState } from '@entities/index';
@@ -10,8 +10,8 @@ import {
   TransactionProvider,
   partition,
 } from '@shared/util';
-import { TimeoutNameFactory } from '@shared/util/timeoutName.factory';
 
+import { safeTimeoutCall } from '../../../shared/util/timeout';
 import { SelectableTicket } from '../entity/ticket.entity';
 import { TicketRepository } from '../repository/ticket.repository';
 import { CreateMatch } from '../useCase/createMatch.usecase';
@@ -25,7 +25,6 @@ export class MatchmakingScheduler {
     private readonly createMatchUseCase: CreateMatch,
     private readonly finishMatchUseCase: FinishMatch,
     private readonly transactionRunner: TransactionRunner,
-    private readonly schedulerRegistry: SchedulerRegistry,
     private readonly envService: EnvService,
     private readonly publishTicketChangesUsecase: PublishTicketChanged,
     private readonly expireTicketsAndNotifyUsecase: ExpireTicketsAndNotify,
@@ -127,14 +126,9 @@ export class MatchmakingScheduler {
       this.envService.get('MATCH_LIFETIME_MILLIS') -
       timePassed;
 
-    const timeout = setTimeout(
+    safeTimeoutCall(
       () => this.finishMatchUseCase.call(match),
       matchTimeout,
-    );
-
-    this.schedulerRegistry.addTimeout(
-      TimeoutNameFactory.finishMatchTimeoutName(match.id),
-      timeout,
-    );
+    ).catch((e) => this.logger.error(e));
   }
 }

@@ -72,7 +72,9 @@ export class UserMetaRepository {
     const res = await (txProvider?.get() ?? this.db)
       .updateTable('userMeta')
       .set({
-        trophies: sql`${sql.id('trophies')} + ${sql.val(amount)}`,
+        trophies: sql`${sql.raw('GREATEST')}(${sql.id('trophies')} + ${sql.val(
+          amount,
+        )}, 0)`,
       })
       .where('userId', '=', userId)
       .execute();

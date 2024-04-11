@@ -73,11 +73,18 @@ export class UserRepository {
         'isOnline',
         'deviceId',
       ])
-      .select(this.withUserMeta)
+      .select((eb) => [this.withUserMeta(eb)])
       .where('id', '=', id)
       .executeTakeFirst();
 
-    return entity ?? null;
+    const userMeta = entity?.userMeta
+      ? {
+          ...entity.userMeta,
+          createdAt: new Date(entity.userMeta.createdAt),
+        }
+      : null;
+
+    return entity ? { ...entity, userMeta } : null;
   }
 
   async getIdByEmail(email: string): Promise<string | null> {

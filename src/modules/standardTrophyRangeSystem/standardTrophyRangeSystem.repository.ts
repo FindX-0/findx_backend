@@ -18,7 +18,7 @@ export class StandardTrophyRangeSystemRepository {
       .selectFrom('standardTrophyRangeSystem')
       .selectAll()
       .where((eb) =>
-        eb('mathFieldId', '=', mathFieldId).and('fromTrophy', '<', trophy),
+        eb('mathFieldId', '=', mathFieldId).and('fromTrophy', '<=', trophy),
       )
       .orderBy('fromTrophy', 'desc')
       .limit(1)

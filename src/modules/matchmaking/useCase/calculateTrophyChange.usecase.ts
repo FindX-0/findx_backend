@@ -30,7 +30,7 @@ export class CalculateTrophyChange {
 
     if (userMetas.length !== 2) {
       throw new InternalServerErrorException(
-        'Unknown case of calculating trophies',
+        'Unknown case of calculating trophies, userMetas.length !== 2',
       );
     }
 

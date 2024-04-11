@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
   OnGatewayConnection,
@@ -31,11 +31,15 @@ export class SocketGateway implements OnGatewayConnection {
     }
 
     const { userId } = authPayload;
-    const userSocketId = await this.userQueryService.getSocketIdById(userId);
+    try {
+      const userSocketId = await this.userQueryService.getSocketIdById(userId);
 
-    await this.userMutationService.updateOnlineStatus(userId, true);
+      await this.userMutationService.updateOnlineStatus(userId, true);
 
-    client.join(userSocketId);
+      client.join(userSocketId);
+    } catch (e) {
+      Logger.error(e);
+    }
   }
 
   async handleDisconnect(@ConnectedSocket() client: Socket) {
@@ -47,11 +51,15 @@ export class SocketGateway implements OnGatewayConnection {
 
     const { userId } = authPayload;
 
-    const userSocketId = await this.userQueryService.getSocketIdById(userId);
+    try {
+      const userSocketId = await this.userQueryService.getSocketIdById(userId);
 
-    await this.userMutationService.updateOnlineStatus(userId, false);
+      await this.userMutationService.updateOnlineStatus(userId, false);
 
-    client.leave(userSocketId);
+      client.leave(userSocketId);
+    } catch (e) {
+      Logger.error(e);
+    }
   }
 
   private resolveAuthPayload(client: Socket): UserAuthPayload | null {
