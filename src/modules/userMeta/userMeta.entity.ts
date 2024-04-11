@@ -7,6 +7,6 @@ export type NewUserMeta = Insertable<UserMeta>;
 export type UserMetaUpdate = Updateable<UserMeta>;
 
 export type UserMetaChange = {
-  trophiesChange: number;
+  trophyChange: number;
   matchId: string;
 };
