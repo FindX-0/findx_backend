@@ -6,8 +6,8 @@ import { UserObject } from '../../../user/gql/user.object';
 @ObjectType()
 export class FriendWithRelationsObject extends FriendObject {
   @Field(() => UserObject, { nullable: true })
-  user: UserObject | null;
+  user?: UserObject | null;
 
   @Field(() => UserObject, { nullable: true })
-  friend: UserObject | null;
+  friend?: UserObject | null;
 }

@@ -5,7 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { NewFriend, SelectableFriend } from './friend.entity';
+import {
+  NewFriend,
+  SelectableFriend,
+  SelectableFriendWithRelations,
+} from './friend.entity';
 import { FriendRepository } from './friend.repository';
 import {
   AcceptFriendRequestParams,
@@ -193,7 +197,7 @@ export class FriendService {
 
   async filterFriendRequests(
     params: Omit<GetAllFriendParams, 'status'>,
-  ): Promise<SelectableFriend[]> {
+  ): Promise<SelectableFriendWithRelations[]> {
     const { friendId, ...restParams } = params;
 
     return this.friendRepository.getAll({
@@ -205,7 +209,7 @@ export class FriendService {
 
   async filterFriends(
     params: Omit<GetAllFriendParams, 'status'>,
-  ): Promise<SelectableFriend[]> {
+  ): Promise<SelectableFriendWithRelations[]> {
     const { friendId, ...restParams } = params;
 
     return this.friendRepository.getAll({

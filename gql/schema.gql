@@ -162,10 +162,12 @@ input FilterMathSubFieldsInput {
   mathFieldId: ID
 }
 
-type FriendObject {
+type FriendWithRelationsObject {
   createdAt: DateTime!
+  friend: UserObject
   friendId: ID!
   status: FriendshipStatus!
+  user: UserObject
   userId: ID!
 }
 
@@ -371,7 +373,7 @@ type Mutation {
   enqueueTicket(input: EnqueueTicketInput!): TicketObject!
   googleSignIn(input: GoogleSignInInput!): JwtTokenPayloadObject!
   refreshToken(input: RefreshTokenInput!): JwtTokenPayloadObject!
-  sendFriendRequest(input: SendFriendRequestInput!): FriendObject!
+  sendFriendRequest(input: SendFriendRequestInput!): SuccessObject!
   submitMathProblemAnswer(input: SubmitMathProblemAnswerInput!): SuccessObject!
   updateAnswerFunction(input: UpdateAnswerFunctionInput!): AnswerFunctionObject!
   updateMathField(input: UpdateMathFieldInput!): MathFieldObject!
@@ -391,10 +393,10 @@ type Query {
   getAllAnswerFunctions(input: GetAllAnswerFunctionsInput!): [AnswerFunctionObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
   getAnswerFunctionById(input: IdentifierInput!): AnswerFunctionObject!
-  getAuthUser: UserObject!
+  getAuthUser: UserWithRelationsObject!
   getAuthUserMeta: UserMetaObject!
-  getFriendRequests(input: FilterFriendsInput!): [FriendObject!]!
-  getFriends(input: FilterFriendsInput!): [FriendObject!]!
+  getFriendRequests(input: FilterFriendsInput!): [FriendWithRelationsObject!]!
+  getFriends(input: FilterFriendsInput!): [FriendWithRelationsObject!]!
   getMatchById(input: IdentifierInput!): MatchObject!
   getMatchMathField(input: GetMatchMathFieldInput!): MathFieldObject!
   getMathBattleMathProblems(input: GetMathBattleMathProblemsInput!): [MathBattleMathProblemObject!]!
@@ -403,7 +405,7 @@ type Query {
   getMathProblemById(input: IdentifierInput!): MathProblemObject!
   getMathSubFieldById(input: IdentifierInput!): MathSubFieldWithRelationsObject!
   getServerTime: ServerTimeObject!
-  getUserById(input: IdentifierInput!): UserObject!
+  getUserById(input: IdentifierInput!): UserWithRelationsObject!
 }
 
 input RefreshTokenInput {
@@ -485,6 +487,15 @@ type UserMetaObject {
 }
 
 type UserObject {
+  authProvider: AuthProvider!
+  createdAt: DateTime!
+  email: String
+  id: ID!
+  isCompleted: Boolean!
+  userName: String
+}
+
+type UserWithRelationsObject {
   authProvider: AuthProvider!
   createdAt: DateTime!
   email: String

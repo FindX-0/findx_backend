@@ -10,7 +10,7 @@ export type UserUpdate = Updateable<User>;
 
 export type PublicSelectableUser = Omit<
   Selectable<User>,
-  'passwordHash' | 'socketId'
+  'passwordHash' | 'socketId' | 'isOnline' | 'deviceId'
 >;
 
 export type SelectableUserWithRelations = SelectableUser & {

@@ -4,7 +4,7 @@ import { FriendService } from './friend.service';
 import { AcceptFriendRequestInput } from './gql/acceptFriendRequest.input';
 import { DeclineFriendRequestInput } from './gql/declineFriendRequest.input';
 import { FilterFriendsInput } from './gql/filterFriends.input';
-import { FriendObject } from './gql/friend/friend.object';
+import { FriendWithRelationsObject } from './gql/friend/friendWithRelations.object';
 import { SendFriendRequestInput } from './gql/sendFriendRequest.input';
 import { WithdrawFriendRequestInput } from './gql/withdrawFriendRequest.input';
 import { SuccessObject } from '../../shared/gql';
@@ -15,15 +15,17 @@ import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
 export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
-  @Mutation(() => FriendObject)
+  @Mutation(() => SuccessObject)
   async sendFriendRequest(
     @Args('input') input: SendFriendRequestInput,
     @HttpAuthPayload() authPayload: UserAuthPayload,
-  ): Promise<FriendObject> {
-    return this.friendService.create({
+  ): Promise<SuccessObject> {
+    await this.friendService.create({
       userId: authPayload.userId,
       friendId: input.userId,
     });
+
+    return { success: true };
   }
 
   @Mutation(() => SuccessObject)
@@ -66,22 +68,22 @@ export class FriendController {
     return { success: true };
   }
 
-  @Query(() => [FriendObject])
+  @Query(() => [FriendWithRelationsObject])
   async getFriendRequests(
     @Args('input') input: FilterFriendsInput,
     @HttpAuthPayload() authPayload: UserAuthPayload,
-  ): Promise<FriendObject[]> {
+  ): Promise<FriendWithRelationsObject[]> {
     return this.friendService.filterFriendRequests({
       ...input,
       friendId: authPayload.userId,
     });
   }
 
-  @Query(() => [FriendObject])
+  @Query(() => [FriendWithRelationsObject])
   async getFriends(
     @Args('input') input: FilterFriendsInput,
     @HttpAuthPayload() authPayload: UserAuthPayload,
-  ): Promise<FriendObject[]> {
+  ): Promise<FriendWithRelationsObject[]> {
     return this.friendService.filterFriends({
       ...input,
       friendId: authPayload.userId,

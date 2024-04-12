@@ -97,6 +97,8 @@ export class FriendRepository {
         'users.email as user_email',
         'users.userName as user_name',
         'users.createdAt as user_createdAt',
+        'users.isCompleted as user_isCompleted',
+        'users.authProvider as user_authProvider',
       ])
       .where('friendId', '=', friendId)
       .$if(Boolean(searchQuery), (q) =>
@@ -112,7 +114,10 @@ export class FriendRepository {
         email: entity.user_email,
         userName: entity.user_name,
         createdAt: entity.user_createdAt,
+        isCompleted: entity.user_isCompleted,
+        authProvider: entity.user_authProvider,
       },
+      friend: null,
     }));
   }
 }

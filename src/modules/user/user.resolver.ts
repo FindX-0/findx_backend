@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
-import { UserObject } from './gql/user.object';
+import { UserWithRelationsObject } from './gql/userWithRelations.object';
 import { UserQueryService } from './userQuery.service';
 import { IdentifierInput } from '../../shared/gql';
 import { HttpAuthPayload } from '../authentication/filter/httpAuthPayload.interceptor';
@@ -10,17 +10,17 @@ import { UserAuthPayload } from '../authentication/type/userAuthPayload.type';
 export class UserResolver {
   constructor(private readonly userQueryService: UserQueryService) {}
 
-  @Query(() => UserObject)
+  @Query(() => UserWithRelationsObject)
   async getAuthUser(
     @HttpAuthPayload() authPayload: UserAuthPayload,
-  ): Promise<UserObject> {
+  ): Promise<UserWithRelationsObject> {
     return this.userQueryService.getById(authPayload.userId);
   }
 
-  @Query(() => UserObject)
+  @Query(() => UserWithRelationsObject)
   async getUserById(
     @Args('input') input: IdentifierInput,
-  ): Promise<UserObject> {
+  ): Promise<UserWithRelationsObject> {
     return this.userQueryService.getById(input.id);
   }
 }
