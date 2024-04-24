@@ -162,6 +162,12 @@ input FilterMathSubFieldsInput {
   mathFieldId: ID
 }
 
+input FilterUsersArgs {
+  lastId: ID
+  limit: Int!
+  searchQuery: String
+}
+
 type FriendWithRelationsObject {
   createdAt: DateTime!
   friend: UserObject
@@ -389,6 +395,7 @@ type Query {
   filterMathFields(input: LastIdPageParamsObject!): MathFieldPageObject!
   filterMathProblems(input: LastIdPageParamsObject!): MathProblemPageObject!
   filterMathSubFields(input: FilterMathSubFieldsInput!): MathSubFieldPageObject!
+  filterUsers(input: FilterUsersArgs!): UserWithFriendshipStatusPageObject!
   generateMathProblemValues(input: GenerateMathProblemValuesInput!): [GenerateMathProblemValuesObject!]!
   getAllAnswerFunctions(input: GetAllAnswerFunctionsInput!): [AnswerFunctionObject!]!
   getAllMathFields(input: GetAllMathFieldsInput!): [MathFieldObject!]!
@@ -493,6 +500,21 @@ type UserObject {
   id: ID!
   isCompleted: Boolean!
   userName: String
+}
+
+type UserWithFriendshipStatusObject {
+  authProvider: AuthProvider!
+  createdAt: DateTime!
+  email: String
+  friendshipStatus: FriendshipStatus
+  id: ID!
+  isCompleted: Boolean!
+  userName: String
+}
+
+type UserWithFriendshipStatusPageObject {
+  count: Int!
+  data: [UserWithFriendshipStatusObject!]!
 }
 
 type UserWithRelationsObject {

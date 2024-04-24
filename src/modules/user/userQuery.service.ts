@@ -3,7 +3,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ExceptionMessageCode } from '@shared/constant';
 
 import { UserRepository } from './user.repository';
-import { PublicSelectableUserWithRelations, SelectableUser } from './user.type';
+import {
+  FilterUserParams,
+  PublicSelectableUserWithFriendshipStatus,
+  PublicSelectableUserWithRelations,
+  SelectableUser,
+} from './user.type';
+import { DataPage } from '../../shared/type';
 
 @Injectable()
 export class UserQueryService {
@@ -49,5 +55,19 @@ export class UserQueryService {
 
   async getSocketIds(userIds: string[]): Promise<string[]> {
     return this.userRepository.getSocketIds(userIds);
+  }
+
+  async filter(
+    params: FilterUserParams,
+  ): Promise<DataPage<PublicSelectableUserWithFriendshipStatus>> {
+    const count = await this.userRepository.count(params);
+
+    if (!count) {
+      return { data: [], count: 0 };
+    }
+
+    const data = await this.userRepository.filter(params);
+
+    return { data, count };
   }
 }

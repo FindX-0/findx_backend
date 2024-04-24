@@ -1,5 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 
+import { FilterUsersArgs } from './gql/filterUsers.input';
+import { UserWithFriendshipStatusPageObject } from './gql/userWithFriendshipStatusPage.object';
 import { UserWithRelationsObject } from './gql/userWithRelations.object';
 import { UserQueryService } from './userQuery.service';
 import { IdentifierInput } from '../../shared/gql';
@@ -22,5 +24,16 @@ export class UserResolver {
     @Args('input') input: IdentifierInput,
   ): Promise<UserWithRelationsObject> {
     return this.userQueryService.getById(input.id);
+  }
+
+  @Query(() => UserWithFriendshipStatusPageObject)
+  async filterUsers(
+    @HttpAuthPayload() authPayload: UserAuthPayload,
+    @Args('input') input: FilterUsersArgs,
+  ): Promise<UserWithFriendshipStatusPageObject> {
+    return this.userQueryService.filter({
+      authUserId: authPayload.userId,
+      ...input,
+    });
   }
 }

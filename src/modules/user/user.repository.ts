@@ -10,6 +10,8 @@ import {
   SelectableUser,
   UserUpdate,
   PublicSelectableUserWithRelations,
+  FilterUserParams,
+  PublicSelectableUserWithFriendshipStatus,
 } from './user.type';
 import { DB } from '../../entities';
 
@@ -168,6 +170,59 @@ export class UserRepository {
       .execute();
 
     return entities.map((e) => e.socketId);
+  }
+
+  async filter(
+    params: FilterUserParams,
+  ): Promise<PublicSelectableUserWithFriendshipStatus[]> {
+    const { limit, lastId, authUserId, searchQuery } = params;
+
+    const entities = await this.db
+      .selectFrom('users')
+      .leftJoin('friends', 'users.id', 'friends.friendId')
+      .where('friends.userId', '=', authUserId)
+      .select([
+        'users.id as userId',
+        'users.userName as userUserName',
+        'users.email as userEmail',
+        'users.createdAt as userCreatedAt',
+        'users.authProvider as userAuthProvider',
+        'users.isCompleted as userIsCompleted',
+        'friends.status as friendStatus',
+      ])
+      .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
+      .$if(Boolean(searchQuery), (qb) =>
+        qb.where('userName', 'like', searchQuery as string),
+      )
+      .orderBy('id desc')
+      .limit(limit)
+      .execute();
+
+    return entities.map((e) => ({
+      id: e.userId,
+      userName: e.userUserName,
+      email: e.userEmail,
+      createdAt: e.userCreatedAt,
+      isCompleted: e.userIsCompleted,
+      authProvider: e.userAuthProvider,
+      friendshipStatus: e.friendStatus,
+    }));
+  }
+
+  async count(params: FilterUserParams): Promise<number> {
+    const { searchQuery } = params;
+
+    const res = await this.db
+      .selectFrom('users')
+      .select(({ fn }) => [fn.count('users.id').as('count')])
+      .$if(Boolean(searchQuery), (qb) =>
+        qb.where('userName', 'like', searchQuery as string),
+      )
+      .executeTakeFirst();
+
+    const countStr = res?.count ?? '0';
+
+    return parseInt(countStr as string);
   }
 
   private withUserMeta(eb: ExpressionBuilder<DB, 'users'>) {
