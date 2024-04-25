@@ -61,7 +61,6 @@ export class FriendController {
   ): Promise<SuccessObject> {
     await this.friendService.acceptFriendRequest({
       friendId: input.userId,
-
       userId: authPayload.userId,
     });
 

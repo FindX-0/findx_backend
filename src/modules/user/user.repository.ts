@@ -222,6 +222,7 @@ export class UserRepository {
       .$if(Boolean(searchQuery), (qb) =>
         qb.where('userName', 'like', `%${searchQuery}%`),
       )
+      .where('users.id', '!=', params.authUserId)
       .executeTakeFirst();
 
     const countStr = res?.count ?? '0';
