@@ -179,8 +179,11 @@ export class UserRepository {
 
     const entities = await this.db
       .selectFrom('users')
-      .leftJoin('friends', 'users.id', 'friends.friendId')
-      .where('friends.userId', '=', authUserId)
+      .leftJoin('friends', (join) =>
+        join
+          .onRef('friends.friendId', '=', 'users.id')
+          .on('friends.userId', '=', authUserId),
+      )
       .select([
         'users.id as userId',
         'users.userName as userUserName',
@@ -190,9 +193,10 @@ export class UserRepository {
         'users.isCompleted as userIsCompleted',
         'friends.status as friendStatus',
       ])
+      .where('users.id', '!=', authUserId)
       .$if(Boolean(lastId), (qb) => qb.where('id', '<', lastId as string))
       .$if(Boolean(searchQuery), (qb) =>
-        qb.where('userName', 'like', searchQuery as string),
+        qb.where('userName', 'like', `%${searchQuery}%`),
       )
       .orderBy('id desc')
       .limit(limit)
@@ -216,7 +220,7 @@ export class UserRepository {
       .selectFrom('users')
       .select(({ fn }) => [fn.count('users.id').as('count')])
       .$if(Boolean(searchQuery), (qb) =>
-        qb.where('userName', 'like', searchQuery as string),
+        qb.where('userName', 'like', `%${searchQuery}%`),
       )
       .executeTakeFirst();
 
